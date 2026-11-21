@@ -39,7 +39,7 @@ beforeEach(() => {
   document.head.innerHTML = `
     <meta name="theme-color" content="${LIGHT}" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="${DARK}" media="(prefers-color-scheme: dark)">`;
-  document.body.innerHTML = `<button type="button" data-theme-toggle aria-label="Dark theme" aria-pressed="false" hidden></button>`;
+  document.body.innerHTML = `<button type="button" data-theme-toggle aria-label="Dark theme" aria-pressed="false"></button>`;
 });
 afterEach(() => {
   vi.unstubAllGlobals();
@@ -49,8 +49,9 @@ afterEach(() => {
 describe("the theme button", () => {
   it("shows itself, and follows the device until a press, keeping nothing", () => {
     device(false);
+    expect(button().dataset.ready).toBeUndefined();
     wireTheme();
-    expect(button().hidden).toBe(false);
+    expect(button().dataset.ready).toBe("");
     expect(button().getAttribute("aria-pressed")).toBe("false");
     expect(root.dataset.theme).toBeUndefined();
     expect(localStorage.length).toBe(0);
