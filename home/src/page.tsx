@@ -77,8 +77,9 @@ const TopBar = () => (
   <header className="top wrap">
     <Logo href="/" />
     <div className="tools">
-      {/* Shown by theme.ts: without the script it would do nothing. Left of GitHub's, so appearing moves nothing. */}
-      <button type="button" className="icon-btn" data-theme-toggle aria-label="Dark theme" aria-pressed="false" hidden>
+      {/* Shown by theme.ts, which marks it ready: without the script it would do nothing. In the page from the start and kept invisible
+          (home.css), not hidden: left of GitHub's it still has a box, and the box's arrival moves the tools' left edge. */}
+      <button type="button" className="icon-btn" data-theme-toggle aria-label="Dark theme" aria-pressed="false">
         <svg className="moon" {...ICON}>
           <path d="M20 14.6A8.4 8.4 0 0 1 9.4 4 8.4 8.4 0 1 0 20 14.6Z" />
         </svg>
@@ -189,8 +190,9 @@ export const Home = ({ guides, art }: { guides: Guide[]; art: Record<string, Gui
           <h2 id="guides">
             {guides.length} {guides.length === 1 ? "guide" : "guides"}
           </h2>
-          {/* Shown by find.ts: without the script there is nothing to type into. */}
-          <div className="find" data-find hidden>
+          {/* Shown by find.ts, which marks it ready: without the script there is nothing to type into. In the page from the start and kept
+              invisible (home.css), not hidden, so the bar has its height at the first paint and showing the field moves nothing. */}
+          <div className="find" data-find>
             <label htmlFor="find">Find</label>
             <input id="find" type="search" placeholder="Game or guide" autoComplete="off" spellCheck={false} />
           </div>

@@ -1,5 +1,5 @@
 // The Find field over the guides: it narrows the list as a reader types, on the guide's name, its game and its publisher. Without this
-// script the field stays hidden and every guide shows.
+// script the field stays invisible (home.css keeps its room, so showing it moves nothing; with scripts off it is gone) and every guide shows.
 import type { Guide } from "./guides";
 
 /** What the field matches a guide on, written into its band at build (page.tsx). */
@@ -38,7 +38,7 @@ export const wireFind = (root: ParentNode = document) => {
   const line = root.querySelector<HTMLElement>("[data-find-status]");
   const guides = [...root.querySelectorAll<HTMLElement>("[data-guide]")];
   if (!field || !input || !line || !guides.length) return;
-  field.hidden = false;
+  field.dataset.ready = "";
   const update = () => {
     let shown = 0;
     for (const guide of guides) {

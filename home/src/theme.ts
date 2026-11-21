@@ -38,12 +38,12 @@ function keep(choice: Theme | null) {
   }
 }
 
-/** Wires the theme button, if the page has one: shows it (without this script it would do nothing), and flips the theme on a click. */
+/** Wires the theme button, if the page has one: marks it ready, which shows it (without this script it would do nothing), and flips the theme on a click. */
 export function wireTheme(root: ParentNode = document) {
   const button = root.querySelector<HTMLButtonElement>("[data-theme-toggle]");
   if (!button) return;
   const pressed = () => button.setAttribute("aria-pressed", String(shownTheme() === "dark"));
-  button.hidden = false;
+  button.dataset.ready = "";
   pressed();
   button.addEventListener("click", () => {
     const next: Theme = shownTheme() === "dark" ? "light" : "dark";

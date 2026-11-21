@@ -103,7 +103,9 @@ production build as CI's `lighthouse-home` job does.
   game the band's title and its own name above it, unless it is the game's, with no publisher. Its pictures and fonts are among the files
   the build writes, and each guide's dark palette is written for both ways into dark. The hero's backdrop lists every guide's banner A to Z, their
   288px copies, and holds only the first, at low priority, never preloaded, hidden from assistive technology. The top bar links to the repository in a new tab and holds
-  the theme button, hidden until its script runs. Find narrows the guides. A guide's cookie fills in its band and no other, and
+  the theme button, invisible until its script runs. Find narrows the guides. The theme button and the Find field keep their room before
+  their script runs (never `hidden`, which gave them none: showing the field grew the guides' bar from 26 to 82px on a phone and pushed
+  the guides down) and go, room and all, where scripts are off. A guide's cookie fills in its band and no other, and
   a linked browser's group draws over them.
 - `backdrop.test.ts`: the hero's backdrop crossfades A to Z, fetching each next banner shortly before it's due and laying it over the one
   before; it shows none before it's decoded and skips one that won't load; it keeps the first and fetches nothing under reduced motion,

@@ -72,6 +72,21 @@ ul {
 [hidden] {
   display: none !important;
 }
+/* The two controls only the page's script can work (the Find field, the theme button) are in the page from the first paint, invisible
+   until their script marks them data-ready, and keep their room meanwhile. `hidden` gave them none: showing the field grew the guides' bar
+   from 26 to 82px on a phone and pushed the guides down, and the button moved its bar-mate. Where scripts are off for good they go, room
+   and all, since nothing will ever fill it. */
+[data-find]:not([data-ready]),
+[data-theme-toggle]:not([data-ready]) {
+  visibility: hidden;
+}
+@media (scripting: none) {
+  /* Each with its class, to win over the display it is given further down whatever the order. */
+  .find[data-find],
+  .icon-btn[data-theme-toggle] {
+    display: none;
+  }
+}
 
 .wrap {
   max-width: 84rem;

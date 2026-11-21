@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 // The page as the build makes it, from every guide's own files: a guide in apps/ that doesn't show here fails.
-import { existsSync, readdirSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import sharp from "sharp";
 import { wireFind } from "./find";
@@ -8,6 +8,7 @@ import { wireGroup, wireProgress } from "./progress";
 import { APPS, readGuides, type Guide } from "./guides";
 import { GITHUB } from "./page";
 import { BACKDROP_WIDTH, make, type Made } from "./plugin";
+import { wireTheme } from "./theme";
 
 const deployed = readdirSync(APPS).filter((name) => existsSync(join(APPS, name, "vercel.json")));
 
@@ -81,11 +82,11 @@ describe("the landing page", () => {
     expect(document.body.textContent).toContain("not affiliated with the games’ publishers");
   });
 
-  it("narrows the guides as a reader types in Find, and shows the field only when its script runs", () => {
+  it("narrows the guides as a reader types in Find, and marks the field ready only when its script runs", () => {
     const field = document.querySelector<HTMLElement>("[data-find]")!;
-    expect(field.hidden).toBe(true);
+    expect(field.dataset.ready).toBeUndefined();
     wireFind(document);
-    expect(field.hidden).toBe(false);
+    expect(field.dataset.ready).toBe("");
     const input = field.querySelector("input")!;
     const type = (value: string) => {
       input.value = value;
@@ -100,6 +101,41 @@ describe("the landing page", () => {
     type("");
     expect(bands().some((band) => band.hidden)).toBe(false);
     expect(document.querySelector("[data-find-status]")!.textContent).toBe("");
+  });
+
+  it("keeps the room of the controls its script shows, the Find field and the theme button, so showing them moves nothing", () => {
+    // Showing the field grew the guides' bar from 26 to 82px on a phone and pushed the guides down; the button moved the tools' left edge.
+    document.body.innerHTML = made.home;
+    vi.stubGlobal("matchMedia", () => ({ matches: false, addEventListener() {}, removeEventListener() {} }));
+    const sheet = document.createElement("style");
+    sheet.textContent = readFileSync(join(import.meta.dirname, "home.css"), "utf8");
+    document.head.append(sheet);
+    try {
+      const controls = [...document.querySelectorAll<HTMLElement>("[data-find], [data-theme-toggle]")];
+      expect(controls.length).toBe(2);
+      // laid out from the first paint, only invisible: `hidden`, or display: none, would give them no room until the script runs
+      for (const control of controls) {
+        expect(control.hasAttribute("hidden"), control.outerHTML).toBe(false);
+        expect(getComputedStyle(control).display, control.outerHTML).not.toBe("none");
+        expect(getComputedStyle(control).visibility, control.outerHTML).toBe("hidden");
+      }
+      wireFind(document);
+      wireTheme(document);
+      for (const control of controls) expect(getComputedStyle(control).visibility, control.outerHTML).toBe("visible");
+      // Where scripts are off for good they go, room and all. Each rule names its class beside the attribute, to beat the display the control
+      // gets further down.
+      const off = [...sheet.sheet!.cssRules].find((rule) => (rule as CSSMediaRule).media?.mediaText === "(scripting: none)") as CSSMediaRule | undefined;
+      expect(off, "a rule for where scripts are off").toBeDefined();
+      const [rule, ...rest] = [...off!.cssRules] as CSSStyleRule[];
+      expect(rest).toEqual([]);
+      expect(rule.selectorText.split(",").map((part) => part.trim())).toEqual([".find[data-find]", ".icon-btn[data-theme-toggle]"]);
+      expect(rule.style.display).toBe("none");
+      for (const selector of [".find[data-find]", ".icon-btn[data-theme-toggle]"]) expect(document.querySelector(selector), selector).not.toBeNull();
+    } finally {
+      vi.unstubAllGlobals();
+      sheet.remove();
+      document.body.innerHTML = made.home;
+    }
   });
 
   it("names each band by its guide's brand id, and shows a started guide's progress from its cookie, the others as they were", () => {
@@ -162,7 +198,7 @@ describe("the landing page", () => {
     expect(made.head + made.home).not.toMatch(/rel="preload"[^>]*-backdrop-/);
   });
 
-  it("has the repository and the theme button in its top bar, the button shown only by the script that runs it", () => {
+  it("has the repository and the theme button in its top bar, the button marked ready only by the script that runs it", () => {
     for (const page of [made.home, made.notFound]) {
       document.body.innerHTML = page;
       const github = document.querySelector<HTMLAnchorElement>("header.top a.icon-btn")!;
@@ -173,7 +209,8 @@ describe("the landing page", () => {
       expect(github.getAttribute("aria-label")).toBe("Hundo on GitHub (opens in a new tab)");
       const toggle = document.querySelector<HTMLButtonElement>("header.top button[data-theme-toggle]")!;
       expect(toggle.type).toBe("button");
-      expect(toggle.hidden).toBe(true);
+      expect(toggle.hasAttribute("hidden")).toBe(false);
+      expect(toggle.dataset.ready).toBeUndefined();
       expect(toggle.getAttribute("aria-label")).toBe("Dark theme");
       expect(toggle.getAttribute("aria-pressed")).toBe("false");
       expect(toggle.compareDocumentPosition(github) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
