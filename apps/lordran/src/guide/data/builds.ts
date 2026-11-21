@@ -19,7 +19,8 @@ import type { BuildEntry } from "@hundo/core/types";
  * - Upgrade paths (kind "path": the embers, the smiths, the slabs, the maximum reinforcements and the flame’s reinforcement and
  *   ascension) serve the stats of the path they open or finish: Normal, Raw and Crystal keep Strength and Dexterity scaling, Magic
  *   and Enchanted add Intelligence, Divine and Occult add Faith, Chaos scales with Humanity. Fire and Lightning drop stat scaling and
- *   serve none, so the Large Flame Ember and the Fire and Lightning reinforcements have no entry.
+ *   serve none, so the Large Flame Ember and the Fire and Lightning reinforcements have no entry. An ember or smith whose step in
+ *   build-plan.ts already says what it opens has no entry either: the step shows to the same readers, so a fact would repeat it.
  * - Rings, armor, trainers, merchants and covenants serve a leaning when what they give does: spell slots, casts and spell damage
  *   serve every school.
  */
@@ -50,7 +51,7 @@ export const builds: BuildEntry[] = [
     row: "covenant-way-of-white",
     serves: ["fth"],
     kind: "catalyst",
-    note: "Talisman: Petrus sells it for 1,000 souls. It needs 4 Strength and 10 Faith, and scales with Faith.",
+    note: "Talisman: needs 4 Strength and 10 Faith, and scales with Faith.",
     sources: ["https://darksouls.wikidot.com/petrus-of-thorolund", "https://darksouls.wikidot.com/talisman"],
   },
   {
@@ -66,20 +67,6 @@ export const builds: BuildEntry[] = [
     kind: "weapon",
     note: "Claymore: needs 16 Strength and 10 Dexterity, and scales with both.",
     sources: ["https://darksouls.wikidot.com/claymore"],
-  },
-  {
-    row: "route-andre",
-    serves: ["str", "dex"],
-    kind: "path",
-    note: "Normal and Raw paths: Andre reinforces normal weapons to +15 and ascends a normal +5 weapon to Raw. Both keep Strength and Dexterity scaling, Raw less of it for more base damage.",
-    sources: ["https://darksouls.wikidot.com/normal", "https://darksouls.wikidot.com/raw", "https://darksouls.wiki.fextralife.com/Upgrades"],
-  },
-  {
-    row: "route-andre",
-    serves: ["fth"],
-    kind: "path",
-    note: "Divine and Occult paths: Andre ascends a normal +5 weapon to Divine and a Divine +5 one to Occult. Both add magic damage that scales with Faith.",
-    sources: ["https://darksouls.wikidot.com/divine", "https://darksouls.wikidot.com/occult", "https://darksouls.wiki.fextralife.com/Upgrades"],
   },
   {
     row: "extra-gargoyle-tail",
@@ -99,23 +86,9 @@ export const builds: BuildEntry[] = [
   {
     row: "quest-griggs",
     serves: ["int"],
-    kind: "spell",
-    note: "Griggs sells sorceries at Firelink once rescued, Soul Arrow among them, to a character with at least 10 Intelligence.",
-    sources: ["https://darksouls.wikidot.com/griggs-of-vinheim"],
-  },
-  {
-    row: "quest-griggs",
-    serves: ["int"],
     kind: "catalyst",
     note: "Sorcerer’s Catalyst: lies in a barrel in Griggs’s room. It needs 6 Strength and 10 Intelligence, and scales with Intelligence.",
     sources: ["https://darksouls.wikidot.com/griggs-of-vinheim", "https://darksouls.wikidot.com/sorcerer-s-catalyst"],
-  },
-  {
-    row: "ember-large",
-    serves: ["str", "dex"],
-    kind: "path",
-    note: "Large Ember: Andre takes a Normal weapon past +5 with it, up to +10, and each Normal level raises its Strength and Dexterity scaling.",
-    sources: ["https://darksouls.wikidot.com/large-ember", "https://darksouls.wiki.fextralife.com/Regular+Upgrades"],
   },
   {
     row: "quest-laurentius",
@@ -170,15 +143,8 @@ export const builds: BuildEntry[] = [
   {
     row: "route-rickert",
     serves: ["int"],
-    kind: "path",
-    note: "Magic and Enchanted paths: Rickert ascends a normal +5 weapon to Magic and a Magic +5 one to Enchanted. Both add magic damage that scales with Intelligence.",
-    sources: ["https://darksouls.wikidot.com/rickert-of-vinheim", "https://darksouls.wikidot.com/magic", "https://darksouls.wiki.fextralife.com/Upgrades"],
-  },
-  {
-    row: "route-rickert",
-    serves: ["int"],
     kind: "catalyst",
-    note: "Sorcerer’s Catalyst: Rickert sells it for 500 souls, with Soul Arrow and Heavy Soul Arrow.",
+    note: "Sorcerer’s Catalyst: Rickert sells it for 500 souls.",
     sources: ["https://darksouls.wikidot.com/rickert-of-vinheim"],
   },
   {
@@ -225,24 +191,10 @@ export const builds: BuildEntry[] = [
   },
   // Chapter 4
   {
-    row: "ember-divine",
-    serves: ["fth"],
-    kind: "path",
-    note: "Divine Ember: Andre ascends a normal +5 weapon to Divine, which adds magic damage that scales with Faith.",
-    sources: ["https://darksouls.wikidot.com/divine", "https://darksouls.wiki.fextralife.com/Upgrades"],
-  },
-  {
-    row: "ember-enchanted",
-    serves: ["int"],
-    kind: "path",
-    note: "Enchanted Ember: Rickert ascends a Magic +5 weapon to Enchanted, whose magic damage gains Intelligence scaling faster than Magic’s.",
-    sources: ["https://darksouls.wikidot.com/enchanted", "https://darksouls.wiki.fextralife.com/Upgrades"],
-  },
-  {
     row: "quest-shiva-shop",
     serves: ["dex"],
     kind: "weapon",
-    note: "Uchigatana: Shiva sells it for 5,000 souls to a Forest Hunter. It needs 14 Strength and 14 Dexterity, and scales with Dexterity.",
+    note: "Uchigatana: needs 14 Strength and 14 Dexterity, and scales with Dexterity.",
     sources: ["https://darksouls.wikidot.com/uchigatana"],
   },
   {
@@ -256,14 +208,14 @@ export const builds: BuildEntry[] = [
     row: "quest-dusk",
     serves: ["int"],
     kind: "catalyst",
-    note: "Oolacile Ivory Catalyst: Dusk sells it for 1,000 souls. Its magic adjustment is fixed, the same at any Intelligence.",
-    sources: ["https://darksouls.wikidot.com/dusk-of-oolacile", "https://darksouls.wikidot.com/oolacile-ivory-catalyst"],
+    note: "Oolacile Ivory Catalyst: its magic adjustment is fixed, the same at any Intelligence.",
+    sources: ["https://darksouls.wikidot.com/dusk-of-oolacile", "https://darksouls.wikidot.com/oolacile-ivory-catalyst", "https://darksouls.wiki.fextralife.com/Oolacile+Ivory+Catalyst"],
   },
   {
     row: "quest-dusk",
     serves: ["int", "fth", "pyro"],
     kind: "armor",
-    note: "Crown of Dusk: part of the Antiquated Set. It raises your spells’ damage by a fifth but lowers your magic defense by 30%.",
+    note: "Crown of Dusk: raises your spells’ damage by a fifth but lowers your magic defense by 30%.",
     sources: ["https://darksouls.wikidot.com/crown-of-dusk"],
   },
   {
@@ -287,13 +239,6 @@ export const builds: BuildEntry[] = [
     note: "Hush: a sorcery that needs 15 Intelligence.",
     sources: ["https://darksouls.wikidot.com/sorceries"],
   },
-  {
-    row: "quest-logan",
-    serves: ["int"],
-    kind: "spell",
-    note: "Logan’s sorceries: at Firelink he sells them only to a character with 15 Intelligence or more.",
-    sources: ["https://darksouls.wikidot.com/big-hat-logan"],
-  },
   // Chapter 5
   {
     row: "pickup-havel-trove",
@@ -315,13 +260,6 @@ export const builds: BuildEntry[] = [
     kind: "weapon",
     note: "Dragon Tooth: needs 40 Strength, and scales with it.",
     sources: ["https://darksouls.wikidot.com/dragon-tooth"],
-  },
-  {
-    row: "route-giant-blacksmith",
-    serves: ["str", "dex"],
-    kind: "path",
-    note: "Crystal path: the Giant Blacksmith ascends a normal +10 weapon to Crystal with the Crystal Ember, which raises its Strength and Dexterity scaling. His other path, Lightning, drops stat scaling.",
-    sources: ["https://darksouls.wikidot.com/crystal", "https://darksouls.wikidot.com/lightning", "https://darksouls.wiki.fextralife.com/Upgrades"],
   },
   {
     row: "route-giant-blacksmith",
@@ -380,13 +318,6 @@ export const builds: BuildEntry[] = [
     sources: ["https://darksouls.wikidot.com/miracles"],
   },
   {
-    row: "ember-dark",
-    serves: ["fth"],
-    kind: "path",
-    note: "Dark Ember: Andre ascends a Divine +5 weapon to Occult, which keeps magic damage that scales with Faith.",
-    sources: ["https://darksouls.wikidot.com/occult", "https://darksouls.wiki.fextralife.com/Upgrades"],
-  },
-  {
     row: "invasion-jeremiah",
     serves: ["dex"],
     kind: "weapon",
@@ -401,13 +332,6 @@ export const builds: BuildEntry[] = [
     sources: ["https://darksouls.wikidot.com/priscilla-s-dagger"],
   },
   // Chapter 6
-  {
-    row: "ember-very-large",
-    serves: ["str", "dex"],
-    kind: "path",
-    note: "Very Large Ember: Andre needs it to take a normal weapon past +10 to +15. The normal path’s Strength and Dexterity scaling grows with each level.",
-    sources: ["https://darksouls.wikidot.com/normal", "https://darksouls.wiki.fextralife.com/Upgrades"],
-  },
   {
     row: "quest-beatrice-remains",
     serves: ["int"],
@@ -476,7 +400,7 @@ export const builds: BuildEntry[] = [
     row: "ember-archives-crystal",
     serves: ["str", "dex"],
     kind: "path",
-    note: "Crystal Ember: the Giant Blacksmith ascends a normal +10 weapon to Crystal, which raises its Strength and Dexterity scaling.",
+    note: "Crystal Ember: the Giant Blacksmith ascends a normal +10 weapon to Crystal, which raises its Strength and Dexterity scaling but can’t be repaired.",
     sources: ["https://darksouls.wikidot.com/crystal", "https://darksouls.wiki.fextralife.com/Upgrades"],
   },
   {
@@ -521,13 +445,6 @@ export const builds: BuildEntry[] = [
     note: "Logan’s Catalyst: the chest here. It needs 6 Strength and 24 Intelligence, and scales with Intelligence.",
     sources: ["https://darksouls.wikidot.com/logan-s-catalyst"],
   },
-  {
-    row: "ember-large-magic",
-    serves: ["int"],
-    kind: "path",
-    note: "Large Magic Ember: Rickert needs it to take a Magic weapon past +5 to +10. Magic adds magic damage that scales with Intelligence.",
-    sources: ["https://darksouls.wikidot.com/magic", "https://darksouls.wiki.fextralife.com/Upgrades"],
-  },
   // Chapter 8
   {
     row: "ring-darkmoon-seance",
@@ -556,13 +473,6 @@ export const builds: BuildEntry[] = [
     kind: "spell",
     note: "Gravelord Greatsword Dance: a miracle that needs no Faith, so Velka’s Talisman casts it from Intelligence. Its damage falls back to base if you leave the covenant.",
     sources: ["https://darksouls.wikidot.com/gravelord-servant"],
-  },
-  {
-    row: "route-vamos",
-    serves: ["hum"],
-    kind: "path",
-    note: "Chaos path: Vamos ascends a Fire +5 weapon to Chaos with the Chaos Flame Ember, and Chaos weapons scale with Humanity. His Fire path drops stat scaling.",
-    sources: ["https://darksouls.wikidot.com/vamos", "https://darksouls.wikidot.com/chaos", "https://darksouls.wikidot.com/fire", "https://darksouls.wiki.fextralife.com/Upgrades"],
   },
   {
     row: "miracle-replenishment",
@@ -598,13 +508,6 @@ export const builds: BuildEntry[] = [
     kind: "catalyst",
     note: "Ivory Talisman: Reah drops it. It needs 4 Strength and 16 Faith, and scales with Faith.",
     sources: ["https://darksouls.wikidot.com/ivory-talisman"],
-  },
-  {
-    row: "ember-large-divine",
-    serves: ["fth"],
-    kind: "path",
-    note: "Large Divine Ember: Andre needs it to take a Divine weapon past +5 to +10.",
-    sources: ["https://darksouls.wikidot.com/divine"],
   },
   {
     row: "invasion-leeroy",
@@ -676,13 +579,6 @@ export const builds: BuildEntry[] = [
     kind: "spell",
     note: "Undead Rapport: 7 casts and one slot.",
     sources: ["https://darksouls.wiki.fextralife.com/Pyromancies"],
-  },
-  {
-    row: "ember-chaos-flame",
-    serves: ["hum"],
-    kind: "path",
-    note: "Chaos Flame Ember: Vamos ascends a Fire +5 weapon to Chaos with it, and a Chaos weapon scales with humanity, up to 10, not with Strength or Dexterity.",
-    sources: ["https://darksouls.wikidot.com/chaos", "https://darksouls.wiki.fextralife.com/Chaos+Upgrades"],
   },
   {
     row: "boss-firesage",
@@ -813,24 +709,17 @@ export const builds: BuildEntry[] = [
     sources: ["https://darksouls.wikidot.com/bellowing-dragoncrest-ring", "https://darksouls.wikidot.com/lingering-dragoncrest-ring"],
   },
   {
-    row: "covenant-sunlight",
-    serves: ["fth"],
-    kind: "spell",
-    note: "Lightning Spear: joining gives it, at 25 Faith, five less for each boss you’ve helped kill as a white phantom. Rank +1, 10 Sunlight Medals, gives Great Lightning Spear.",
-    sources: ["https://darksouls.wikidot.com/warrior-of-sunlight"],
-  },
-  {
     row: "quest-darkmoon-rank",
     serves: ["fth"],
     kind: "catalyst",
-    note: "Darkmoon Talisman: rank +1 gives it. It needs 4 Strength and 24 Faith, and scales with Faith.",
+    note: "Darkmoon Talisman: needs 4 Strength and 24 Faith, and scales with Faith.",
     sources: ["https://darksouls.wikidot.com/blade-of-the-darkmoon", "https://darksouls.wikidot.com/darkmoon-talisman"],
   },
   {
     row: "quest-darkmoon-rank",
     serves: ["fth"],
     kind: "spell",
-    note: "Darkmoon Blade: rank +1 gives it. Leave the covenant and it can’t be cast until you rejoin.",
+    note: "Darkmoon Blade: leave the covenant and it can’t be cast until you rejoin.",
     sources: ["https://darksouls.wikidot.com/blade-of-the-darkmoon"],
   },
   {
@@ -1422,13 +1311,6 @@ export const builds: BuildEntry[] = [
     sources: ["https://darksouls.wikidot.com/enchanted", "https://darksouls.wiki.fextralife.com/Upgrades"],
   },
   {
-    row: "reinforcement-chaos",
-    serves: ["hum"],
-    kind: "path",
-    note: "Chaos path: scales with your Humanity, up to 10, instead of Strength or Dexterity.",
-    sources: ["https://darksouls.wikidot.com/chaos", "https://darksouls.wiki.fextralife.com/Upgrades"],
-  },
-  {
     row: "reinforcement-crystal",
     serves: ["str", "dex"],
     kind: "path",
@@ -1482,7 +1364,7 @@ export const builds: BuildEntry[] = [
     serves: ["int"],
     kind: "catalyst",
     note: "Oolacile Catalyst: needs 6 Strength and 10 Intelligence, and its magic adjustment is fixed, like the Oolacile Ivory Catalyst’s.",
-    sources: ["https://darksouls.wikidot.com/oolacile-catalyst"],
+    sources: ["https://darksouls.wikidot.com/oolacile-catalyst", "https://darksouls.wiki.fextralife.com/Oolacile+Catalyst", "https://darksouls.wiki.fextralife.com/Oolacile+Ivory+Catalyst"],
   },
   {
     row: "extra-ricard",
