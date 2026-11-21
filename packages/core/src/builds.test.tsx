@@ -173,10 +173,22 @@ describe.runIf(hasBuilds)("a guide with builds", () => {
     expect(useBuild.getState().picked).toEqual(saved);
     expect(localStorage.getItem(BUILD_KEY)).toBe(saved.join(" "));
     await waitFor(() => expect(within(screen.getByRole("region", { name: "Your build" })).getByText(buildName(saved))).toBeInTheDocument());
+    // Changing a build has no button that reads like a way out: Clear build says what it does.
     await user.click(within(screen.getByRole("region", { name: "Your build" })).getByRole("button", { name: "Change build" }));
-    await user.click(within(await screen.findByRole("dialog", { name: "Your build" })).getByRole("button", { name: "Just the checklist" }));
+    const again = await screen.findByRole("dialog", { name: "Your build" });
+    expect(within(again).queryByRole("button", { name: "Just the checklist" })).toBeNull();
+    await user.click(within(again).getByRole("button", { name: "Clear build" }));
     expect(useBuild.getState().picked).toEqual([]);
     expect(localStorage.getItem(BUILD_KEY)).toBeNull();
+  });
+
+  it("offers neither Just the checklist nor Clear build when choosing a build with none saved: Close keeps things as they were", async () => {
+    const user = userEvent.setup();
+    await open("/guide/1");
+    await user.click(within(screen.getByRole("region", { name: "Your build" })).getByRole("button", { name: "Choose build" }));
+    const dialog = await screen.findByRole("dialog", { name: "Your build" });
+    expect(within(dialog).queryByRole("button", { name: "Just the checklist" })).toBeNull();
+    expect(within(dialog).queryByRole("button", { name: "Clear build" })).toBeNull();
   });
 
   it("shows a row's step, numbered, its picks with who recommends them, and its facts, for the pick only", async () => {

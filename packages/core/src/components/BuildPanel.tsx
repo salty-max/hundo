@@ -126,7 +126,7 @@ function PlanItem({ item: { row, tasks, picks, entries }, picked, ticked }: { it
               </span>
               <span>
                 <span className="sr-only">Build guides use </span>
-                <strong className="text-ink">{pick.item}</strong>: {pick.why} · {recommendedBy(pick)}
+                <strong className="text-ink">{pick.item}</strong>: {pick.why} · {recommendedBy(pick, picked)}
               </span>
             </p>
           ))}

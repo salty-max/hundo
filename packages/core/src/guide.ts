@@ -1,6 +1,6 @@
 import config from "virtual:guide/config";
 import { pct } from "./format";
-import type { BuildEntry, BuildKind, BuildPick, BuildTask, Chapter, Checks, Choice, LeftItem, NamedBuild, Row } from "./types";
+import type { BuildEntry, BuildGuide, BuildKind, BuildPick, BuildTask, Chapter, Checks, Choice, LeftItem, NamedBuild, Row } from "./types";
 
 export { config };
 export const { brand, categories: cats, completion, text } = config;
@@ -149,8 +149,16 @@ export function picksFor(rowId: string, picked: readonly string[]): BuildPick[] 
   return (picksByRow.get(rowId) ?? []).filter((pick) => pick.for.some((id) => ids.includes(id)));
 }
 
-/** The sites that recommend a pick, by name, build guides first: "Fextralife, TheGamer". Never their links. */
-export const recommendedBy = (pick: BuildPick) => [...new Set([...pick.guides, ...(pick.lists ?? [])].map(([name]) => name))].join(", ");
+/** Which builds a pick's guide or list backs: the ones it names, else every build the pick is for. */
+export const backs = (link: BuildGuide, pick: BuildPick) => link[2] ?? pick.for;
+
+/** The sites that recommend a pick for the reader's build, by name, build guides first: "Fextralife, TheGamer". Never their links. */
+export function recommendedBy(pick: BuildPick, picked: readonly string[]) {
+  const of = buildOf(picked);
+  const ids = of ? [of.build.id, ...of.addons.map((addon) => addon.id)] : [];
+  const links = [...pick.guides, ...(pick.lists ?? [])].filter((link) => backs(link, pick).some((id) => ids.includes(id)));
+  return [...new Set(links.map(([name]) => name))].join(", ");
+}
 
 /** A row's steps that serve any of the picked leanings. */
 export const tasksFor = (rowId: string, picked: readonly string[]): BuildTask[] =>
