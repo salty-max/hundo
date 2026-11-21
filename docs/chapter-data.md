@@ -138,27 +138,47 @@ export const questlines: Questlines = {
 
 ## Builds
 
-A guide whose game is played by build can point a reader toward theirs: `data/builds.ts` exports `builds`, and `config.ts` passes them with the guide's leanings as `builds: { leanings, entries: builds }`. Only Lordran has builds (decided 21 Nov 2026, after a research pass on how Dark Souls builds work and how build guides present them). A build never counts: an entry points at a row that already exists and changes nothing about it ([core.md](core.md#builds) has what the reader sees).
+A guide whose game is played by build can point a reader toward theirs: `config.ts` passes `builds: { leanings, named, entries, picks, tasks }`, the facts from `data/builds.ts` and the rest from `data/build-plan.ts` (Lordran's). Only Lordran has builds (decided 21 Nov 2026, after research on how Dark Souls builds work and what build guides recommend). A build never counts: everything in it points at a row that already exists and changes nothing about it ([core.md](core.md#builds) has what the reader sees).
+
+- **Leanings** (`builds.leanings`): `{ id, label }`, the ways a reader levels. Lordran's are Strength, Dexterity, Intelligence and Faith (the stats behind every requirement and scaling), Pyromancy (which grows with the flame, not a stat) and Humanity (which the Chaos path and a few weapons scale with). Attunement isn't a leaning, since every caster needs it. Ids are lowercase and unique **(tested)**, and **never change once live**: a reader's pick saves them, so the guide's `guide.test.ts` pins them.
+- **Named builds** (`builds.named`): `{ id, name, stats, blurb, addon? }`, the builds readers know by name, as build guides name them, each a set of leanings: Quality is `["str", "dex"]`, Pyromancer `["pyro"]`. An add-on (Pyromancy, Chaos weapons) goes on top of another build. No two named builds, and no two add-ons, share their leanings **(tested)**, so a pick has one name. The blurb is a play style, never a later item. Ids are data only, never saved.
+
+### Facts (`entries`)
 
 ```ts
-export const builds: BuildEntry[] = [
-  {
-    row: "pickup-claymore",
-    serves: ["str", "dex"],
-    kind: "weapon",
-    note: "Claymore: needs 16 Strength and 10 Dexterity, and scales with both.",
-    sources: ["https://darksouls.wikidot.com/claymore"],
-  },
-];
+{ row: "pickup-claymore", serves: ["str", "dex"], kind: "weapon", note: "Claymore: needs 16 Strength and 10 Dexterity, and scales with both.", sources: ["https://darksouls.wikidot.com/claymore"] }
 ```
 
-- **Leanings** (`builds.leanings`): `{ id, label }`, the ways a reader levels that the guide can point toward. Lordran's are Strength, Dexterity, Intelligence and Faith (the stats behind every requirement and scaling), Pyromancy (which grows with the flame, not a stat) and Humanity (which the Chaos path and a few weapons scale with). A player's build name is a combination: Quality is Strength and Dexterity. Attunement isn't a leaning, since every caster needs it: an item that adds slots serves every casting leaning. Ids are lowercase and unique **(tested)**, and **never change once live**: a reader's pick saves them, so the guide's `guide.test.ts` pins them.
-- **One entry per item**: a row that holds two items a build wants has two entries (the Firelink graveyard's Winged Spear and Zweihander).
-- **`row`**: a real row **(tested)**.
-- **`serves`**: the leanings it serves, each one the guide names, each once **(tested)**. Serve what the item's facts back: a weapon serves the stats it scales with, a spell the stat it needs, the Pyromancy Flame Pyromancy.
-- **`kind`**: `weapon`, `catalyst` (catalysts, talismans, the pyromancy flame), `spell`, `ring`, `armor`, or `path`, an upgrade path: an ember, the flame's reinforcement, a smith who opens a path **(tested)**. Next for your build groups by it, the path last.
-- **`note`**: the item's name first ("Winged Spear: …"), then facts its sources state: what it needs (one-handed), which stats it scales with, what only one seller has, how far it goes. **Never a scaling letter** **(tested)**: the wikis' letter ranges differ, and a letter at +0 rises with each upgrade, so say "scales mostly with Dexterity" where the page gives E and C. Never "best", a stat target or a starting-class tip, which are opinion. It shows beside the row and in Next for your build, so it names no place, boss or character the row's chapter hasn't reached, and no fate (no test can catch that). It's reader text, so the achievements rule holds **(tested)**. Missable-ness is never repeated in it: core reads that from `missables.ts`, and lists the missables first.
-- **`sources`**: one or more https pages that state the note **(tested)**, a second host where one page doesn't state it all. Like every source, never shown. Notes go through the `source-checker` helper before they're committed, as rows do.
+- **One entry per item**, on the row that holds it; a row that holds two has two.
+- **`serves`**: the leanings it serves, each one the guide names, each once **(tested)**: a weapon serves the stats it scales with, a spell the stat it needs.
+- **`kind`**: `weapon`, `catalyst` (catalysts, talismans, the pyromancy flame), `spell`, `ring`, `armor`, or `path` (an ember, a smith who opens a path) **(tested)**.
+- **`note`**: the item's name first, then facts its sources state: what it needs (one-handed), which stats it scales with, casts and slots, what only one seller has. **Never a scaling letter** **(tested)**: the wikis' letter ranges differ and a letter at +0 rises with each upgrade, so say "scales mostly with Dexterity". Never "best", a stat target or a class tip. It shows beside the row and in the plan, so it names no place, boss or character the row's chapter hasn't reached, and no fate (no test can catch that). Missable-ness is never repeated in it.
+- **`sources`**: https pages that state the note **(tested)**. Like every source, never shown.
+
+### Picks (`picks`): what build guides use
+
+```ts
+{ row: "quest-quelaana", for: ["pyromancer", "pyromancy"], kind: "spell", item: "Great Combustion", why: "a close-range burst, from Quelana for 5,000 souls",
+  guides: [["Fextralife", "https://darksouls.wiki.fextralife.com/Pyromaniac+Build"]], lists: [["TheGamer", "https://www.thegamer.com/dark-souls-best-builds/"]], sources: ["https://darksouls.wikidot.com/quelaana-of-izalith"] }
+```
+
+- **The sourcing rule.** A pick needs **two independent hosts, at least one of them a build guide** **(tested: one guide, two hosts, "www." aside)**. A build guide (`guides`) lays a build out: a Fextralife build page (all of Fextralife is one host), a class guide such as gamevoyagers', a build page such as magicgameworld's, a Steam guide. A ranked "best builds" list (`lists`: TheGamer, Gameranx, GamersDecide and the like) is a second voice only. Forum threads (Steam discussions, Reddit) and machine-written pages don't count. A pick that stands on lists alone, or on one host, goes to `docs/facts-to-verify.md`, not into the data. Whether a page is a guide or a list is the writer's and the reviewer's call; the test only counts hosts.
+- **`row`**: where the reader comes by it, as early as the guide offers it (Great Combustion on Quelana's row in chapter 3, not the spell's own row in chapter 9).
+- **`for`**: the named builds (ids) the guides recommend it for. Each build in it should meet the rule on its own.
+- **`item`** as the game names it; **`why`**: what guides use it for, in a few words, with a fact where it helps (a price, what it can't do), under the note's rules: no scaling letter **(tested)**, never "best" **(tested)**, nothing past the row's chapter.
+- **The guides' names** are shown ("· Fextralife, TheGamer"), never their links. **`sources`**: wiki pages for any fact in `why`.
+
+### Steps (`tasks`): what a build does
+
+```ts
+{ row: "quest-laurentius", serves: ["pyro"], title: "Buy his pyromancies and start on the flame", text: "Laurentius sells Fireball for 800 souls…", sources: ["https://darksouls.wikidot.com/laurentius"] }
+```
+
+- **A step is done when its row is ticked**, so it sits only on a row whose tick means it's done: a trainer's row that includes buying, a covenant joined, an ember taken, a milestone the row names (Quelana's row needs a +10 flame, so it carries the +10). An upgrade no row stands for is part of the step it leads to; never a numbered step on a row ticked for something else ("Find Andre" isn't "reinforce to +5"). Don't add rows for steps: they'd show for every reader.
+- **`serves`**: leanings, any of them **(tested)**. **`title`**: a short imperative, no full stop **(tested)**. **`text`**: who, where, what it costs, what it opens, from the wikis, nothing past the row's chapter.
+- **`before`**: what's lost if it waits, in the row's own terms, on **two independent hosts** **(tested)**, and **never on a missable row** **(tested)**, whose warning already says it.
+- Steps are numbered per pick in route order; where the wikis disagree on a price or a condition, the text says what both agree on and `facts-to-verify.md` keeps both readings.
+- Picks and steps go through the `source-checker` helper before they're committed, as rows do.
 
 ## Achievements
 

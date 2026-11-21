@@ -3,6 +3,7 @@ import { Link, useLocation, useParams } from "react-router";
 import { buttonClass } from "../components/buttonStyle";
 import { Icon } from "../components/Icon";
 import { ArticleRoute } from "../components/ArticleRoute";
+import { BuildStrip } from "../components/BuildStrip";
 import { ChapterHero } from "../components/ChapterHero";
 import { ChapterNav } from "../components/ChapterNav";
 import { ChecklistRoute } from "../components/ChecklistRoute";
@@ -10,7 +11,7 @@ import { MissablesStrip } from "../components/MissablesStrip";
 import { NextUp } from "../components/NextUp";
 import { SealedChapter } from "../components/SealedChapter";
 import { LinkButton } from "../components/ui";
-import { chapterRows, chapters, config, guideAnchor, overall, readChapter } from "../guide";
+import { chapterRows, chapters, config, guideAnchor, hasBuilds, overall, readChapter } from "../guide";
 import { useReveal } from "../useReveal";
 import { isOpen, useProgress } from "../store/progress";
 import type { Chapter } from "../types";
@@ -77,6 +78,7 @@ function GuideView({ chapter, target }: { chapter: Chapter; target?: string }) {
             Chapter checklist
           </LinkButton>
         </ChapterHero>
+        {hasBuilds && <BuildStrip chapter={chapter} />}
         <NextUp chapter={chapter.id} />
         <MissablesStrip chapter={chapter} />
         <Link

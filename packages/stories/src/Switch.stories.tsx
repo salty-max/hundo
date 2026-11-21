@@ -30,6 +30,14 @@ export const Disabled: Story = {
   },
 };
 
+/** A quieter line under it, which the switch is described by (the build dialog's add-ons). */
+export const WithDescription: Story = {
+  args: { label: "Pyromancy", description: "A flame beside any build: it needs no stat." },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole("switch", { name: "Pyromancy" })).toHaveAccessibleDescription("A flame beside any build: it needs no stat.");
+  },
+};
+
 /** Tab to it, Space turns it on, Space again off; the 3px focus ring shows while it has the keyboard focus. */
 export const Keyboard: Story = {
   play: async ({ canvas }) => {

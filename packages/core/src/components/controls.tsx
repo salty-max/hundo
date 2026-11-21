@@ -79,25 +79,38 @@ interface SwitchProps {
   checked: boolean;
   onChange: (checked: boolean) => void;
   disabled?: boolean;
+  /** A quieter line under it, which the switch is described by. */
+  description?: string;
 }
 
 /**
  * An on/off setting, Base UI's switch: the words, then the switch at the end of the line, which is 44px tall and the target as a whole. The
  * track takes the guide's button corners (a pill where buttons are pills), the house edge while off and the primary fill while on.
  */
-export function Switch({ label, checked, onChange, disabled = false }: SwitchProps) {
-  return (
+export function Switch({ label, checked, onChange, disabled = false, description }: SwitchProps) {
+  const descriptionId = useId();
+  const line = (
     <label className="flex min-h-11 cursor-pointer items-center justify-between gap-2.5 text-14/sm font-bold has-data-disabled:cursor-not-allowed has-data-disabled:opacity-[.46]">
       {label}
       <BaseSwitch.Root
         checked={checked}
         disabled={disabled}
         onCheckedChange={onChange}
+        aria-describedby={description ? descriptionId : undefined}
         className={`${pressClasses} relative inline-flex h-7 w-12 shrink-0 items-center rounded-button border-2 border-edge bg-surface p-0.5 data-checked:border-primary data-checked:bg-primary`}
       >
         <BaseSwitch.Thumb className="size-5 rounded-button bg-edge transition-[translate,background-color] duration-150 ease-out in-data-theme-switch:transition-none data-checked:translate-x-5 data-checked:bg-on-primary" />
       </BaseSwitch.Root>
     </label>
+  );
+  if (!description) return line;
+  return (
+    <div>
+      {line}
+      <p id={descriptionId} className="-mt-2 mb-1 text-13 text-muted">
+        {description}
+      </p>
+    </div>
   );
 }
 
@@ -122,6 +135,65 @@ export function RadioGroup({ label, choices, value, onChange }: RadioGroupProps)
           >
             <Radio.Root value={key} className="sr-only" />
             {text}
+          </label>
+        ))}
+      </BaseRadioGroup>
+    </div>
+  );
+}
+
+interface CardRadioGroupProps {
+  label: string;
+  choices: { value: string; title: string; text: string; chips: string[] }[];
+  /** "" for none chosen. */
+  value: string;
+  onChange: (value: string) => void;
+}
+
+/**
+ * One of several choices that each need a line to explain: a grid of cards (three across in a wide dialog, two on a phone, where the line
+ * goes and the chips stay). Tab enters the group once and the arrow keys move between cards; each card is its whole target.
+ */
+export function CardRadioGroup({ label, choices, value, onChange }: CardRadioGroupProps) {
+  const labelId = useId();
+  return (
+    <div className="grid gap-1.5">
+      <span id={labelId} className="text-13 font-bold">
+        {label}
+      </span>
+      <BaseRadioGroup
+        aria-labelledby={labelId}
+        value={value}
+        onValueChange={(next) => onChange(String(next))}
+        className="grid grid-cols-[repeat(auto-fill,minmax(12.5rem,1fr))] gap-2 phone:grid-cols-2"
+      >
+        {choices.map((choice) => (
+          <label
+            key={choice.value}
+            className={`${pressClasses} grid cursor-pointer content-start gap-1 rounded-control border border-control-line bg-surface px-3 py-2.5 text-left select-none not-has-data-checked:hover:bg-raised has-focus-visible:outline-3 has-focus-visible:outline-offset-3 has-focus-visible:outline-focus has-data-checked:border-primary has-data-checked:bg-soft has-data-checked:inset-ring has-data-checked:inset-ring-primary`}
+          >
+            <span className="flex items-center gap-2">
+              {/* Named by its title alone, and described by its line and chips, so a screen reader hears "Quality" first, not the whole card. */}
+              <Radio.Root
+                value={choice.value}
+                aria-labelledby={`${labelId}-${choice.value}`}
+                aria-describedby={`${labelId}-${choice.value}-text ${labelId}-${choice.value}-chips`}
+                className="grid size-4.5 shrink-0 place-items-center rounded-full border-2 border-edge bg-surface data-checked:border-5 data-checked:border-primary"
+              />
+              <strong id={`${labelId}-${choice.value}`} className="text-14/sm font-extrabold">
+                {choice.title}
+              </strong>
+            </span>
+            <span id={`${labelId}-${choice.value}-text`} className="text-13/normal text-muted phone:hidden">
+              {choice.text}
+            </span>
+            <span id={`${labelId}-${choice.value}-chips`} className="flex flex-wrap gap-1">
+              {choice.chips.map((chip) => (
+                <span key={chip} className="rounded-tag border border-soft-line px-1.5 py-0.5 text-11 font-extrabold text-soft-ink">
+                  {chip}
+                </span>
+              ))}
+            </span>
           </label>
         ))}
       </BaseRadioGroup>

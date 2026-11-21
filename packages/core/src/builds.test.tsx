@@ -1,9 +1,9 @@
 import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { App } from "./App";
-import { allRows, buildGroups, buildKinds, byId, config, forBuild, hasBuilds, leaningName, leanings } from "./guide";
+import { addons, allRows, buildName, buildOf, byId, chapters, config, forBuild, hasBuilds, leanings, namedBuilds, picksFor, stepNumber, tasksFor } from "./guide";
 import { defaultState } from "./progress-state";
-import { BUILD_KEY, normalizeBuild, useBuild } from "./store/build";
+import { BUILD_ASKED_KEY, BUILD_KEY, normalizeBuild, useBuild } from "./store/build";
 import { forgetPlaces } from "./store/place";
 import { useProgress } from "./store/progress";
 import { useUi } from "./store/ui";
@@ -14,9 +14,9 @@ allowSlowMounts();
 beforeEach(() => {
   localStorage.clear();
   forgetPlaces();
-  useBuild.setState({ picked: [] });
+  useBuild.setState({ picked: [], asked: false });
   useProgress.setState({ data: defaultState(), storageError: false });
-  useUi.setState({ toast: null, openGroups: {}, dialog: null, afterClose: null, announcement: "" });
+  useUi.setState({ toast: null, openGroups: {}, dialog: null, dialogKey: 0, afterClose: null, announcement: "" });
 });
 
 const open = async (path: string, heading?: string) => {
@@ -25,120 +25,216 @@ const open = async (path: string, heading?: string) => {
   return heading ? screen.findByRole("heading", { level: 1, name: heading }) : screen.findByRole("heading", { level: 1 });
 };
 
-const openSettings = async (user: ReturnType<typeof userEvent.setup>) => {
-  await user.click(screen.getByRole("button", { name: "Import progress" }));
-  return screen.findByRole("dialog", { name: "Guide settings" });
-};
+const escape = (text: string) => new RegExp(text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+const firstBox = (step: HTMLElement) => within(step).getAllByRole("checkbox")[0];
 
 describe.runIf(!hasBuilds)("a guide without builds", () => {
-  it("shows nothing of builds: no Your build in the settings and no Next for your build, even with a pick saved under the key", async () => {
+  it("shows nothing of builds: no strip, no Your build, no welcome on a tick, even with a pick saved under the key", async () => {
     localStorage.setItem(BUILD_KEY, "dex fth");
     useBuild.setState({ picked: normalizeBuild(localStorage.getItem(BUILD_KEY)) });
     expect(useBuild.getState().picked).toEqual([]);
     const user = userEvent.setup();
-    await open("/dashboard", "Your progress");
-    expect(screen.queryByRole("heading", { name: "Next for your build" })).toBeNull();
-    const dialog = await openSettings(user);
-    expect(within(dialog).queryByRole("group", { name: "Your build" })).toBeNull();
-    expect(within(dialog).getByText("Choose your theme and how far the guide can reveal.")).toBeInTheDocument();
-    expect(allRows.some((row) => forBuild(row.id, ["dex", "fth"]).length > 0)).toBe(false);
+    await open("/guide/1");
+    expect(screen.queryByRole("region", { name: "Your build" })).toBeNull();
+    const row = chapters[0].groups[0].rows[0];
+    await user.click(firstBox(document.getElementById(`entry-${row.id}`) ?? document.body));
+    await new Promise((resolve) => setTimeout(resolve, 10));
+    expect(useUi.getState().dialog).toBeNull();
+    expect(localStorage.getItem(BUILD_ASKED_KEY)).toBeNull();
+    expect(allRows.some((item) => forBuild(item.id, ["dex", "fth"]).length + tasksFor(item.id, ["dex", "fth"]).length > 0)).toBe(false);
   });
 });
 
 describe.runIf(hasBuilds)("a guide with builds", () => {
   // (the suite's body runs in every guide, skipped or not, so nothing here reads builds a guide may not have)
-  const entry = config.builds?.entries[0] ?? { row: "", serves: [""], kind: "weapon" as const, note: "", sources: [] };
-  const row = byId.get(entry.row) ?? allRows[0];
-  const leaning = entry.serves[0];
-  const reveal = () => useProgress.setState({ data: { ...defaultState(), ceiling: row.chapter, chapter: row.chapter } });
+  const task = config.builds?.tasks?.[0];
+  const pick = config.builds?.picks?.[0];
+  const reveal = (chapter: number) => useProgress.setState({ data: { ...defaultState(), ceiling: chapter, chapter } });
 
-  it("keeps the pick under its key in the guide's order, drops what it doesn't name, and keeps a leaning a later build added", () => {
+  it("keeps the pick under its key in the guide's order, drops what it doesn't name, keeps a leaning a later build added, and is asked once it's set", () => {
     const ids = leanings.map((item) => item.id);
     act(() => useBuild.getState().setPicked([...ids].reverse()));
     expect(localStorage.getItem(BUILD_KEY)).toBe(ids.join(" "));
+    expect(localStorage.getItem(BUILD_ASKED_KEY)).not.toBeNull();
+    expect(useBuild.getState().asked).toBe(true);
     expect(normalizeBuild(`${ids[0]} not-a-leaning`)).toEqual([ids[0]]);
-    // A tab on an older build saving its settings doesn't erase a leaning only a newer build names.
+    // A tab on an older build saving its pick doesn't erase a leaning only a newer build names.
     localStorage.setItem(BUILD_KEY, `${ids[0]} added-later`);
     act(() => useBuild.getState().setPicked([ids[1]]));
     expect(localStorage.getItem(BUILD_KEY)).toBe(`${ids[1]} added-later`);
-    expect(useBuild.getState().picked).toEqual([ids[1]]);
     localStorage.removeItem(BUILD_KEY);
     act(() => useBuild.getState().setPicked([]));
+    // No build is no key, as before: only the asked key says the reader answered.
+    expect(localStorage.getItem(BUILD_KEY)).toBeNull();
+    expect(localStorage.getItem(BUILD_ASKED_KEY)).not.toBeNull();
+  });
+
+  it("names a pick: each named build by its leanings, add-ons on top, and a custom pick by its stats", () => {
+    for (const build of namedBuilds) expect(buildName(build.stats)).toBe(build.name);
+    for (const addon of addons) {
+      const base = namedBuilds.find((build) => !addon.stats.some((stat) => build.stats.includes(stat)));
+      if (base) expect(buildName(normalizeBuild([...base.stats, ...addon.stats].join(" ")))).toBe(`${base.name} + ${addon.name}`);
+    }
+    const custom = leanings.map((item) => item.id);
+    if (!buildOf(custom)) expect(buildName(custom)).toMatch(/ and /);
+  });
+
+  it("asks once, on the first tick: the welcome opens, any way out answers it, and the next tick asks nothing", async () => {
+    const row = chapters[0].groups[0].rows[0];
+    const user = userEvent.setup();
+    await open("/guide/1");
+    expect(within(screen.getByRole("region", { name: "Your build" })).getByText("Playing a build?")).toBeInTheDocument();
+    // Nothing on load: a visitor from search meets no dialog.
+    expect(useUi.getState().dialog).toBeNull();
+    const step = document.getElementById(`entry-${row.id}`)!;
+    await user.click(firstBox(step));
+    const welcome = await screen.findByRole("dialog", { name: "How are you playing?" });
+    expect(localStorage.getItem(BUILD_ASKED_KEY)).not.toBeNull();
+    await user.click(within(welcome).getByRole("button", { name: "Close dialog" }));
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+    await user.click(firstBox(step));
+    await user.click(firstBox(step));
+    await new Promise((resolve) => setTimeout(resolve, 10));
+    expect(useUi.getState().dialog).toBeNull();
+    expect(within(screen.getByRole("region", { name: "Your build" })).getByText("No build chosen: just the checklist.")).toBeInTheDocument();
+  });
+
+  it("asks on a first Check all too, once for ticks in quick succession, and gives the tick's Undo back when the welcome closes", async () => {
+    const user = userEvent.setup();
+    await open("/guide/1");
+    await user.click(screen.getAllByRole("button", { name: /^Check all \(/ })[0]);
+    const welcome = await screen.findByRole("dialog", { name: "How are you playing?" });
+    const first = useUi.getState().toast;
+    // The modal hides the toast; it comes back, Undo and all, as the welcome closes.
+    await user.click(within(welcome).getByRole("button", { name: "Just the checklist" }));
+    const again = useUi.getState().toast;
+    expect(again?.id).not.toBe(first?.id);
+    expect(again?.message).toBe(first?.message);
+    expect(again?.undo).toBe(first?.undo);
+    expect(useBuild.getState().picked).toEqual([]);
+  });
+
+  it("opens one welcome for two quick ticks", async () => {
+    const rows = chapters[0].groups[0].rows.slice(0, 2);
+    await open("/guide/1");
+    // Two ticks in the same moment, before the welcome's timer runs.
+    act(() => {
+      for (const row of rows) firstBox(document.getElementById(`entry-${row.id}`)!).click();
+    });
+    await screen.findByRole("dialog", { name: "How are you playing?" });
+    expect(useUi.getState().dialogKey).toBe(1);
+  });
+
+  it("follows another tab that asked", async () => {
+    await open("/guide/1");
+    localStorage.setItem(BUILD_ASKED_KEY, "1");
+    act(() => window.dispatchEvent(new StorageEvent("storage", { key: BUILD_ASKED_KEY, newValue: "1" })));
+    expect(useBuild.getState().asked).toBe(true);
+  });
+
+  it("keeps the add-ons off until a build is chosen, so one never picks a build by itself", async () => {
+    const addon = addons[0];
+    if (!addon) return;
+    const user = userEvent.setup();
+    await open("/guide/1");
+    await user.click(within(screen.getByRole("region", { name: "Your build" })).getByRole("button", { name: "Choose build" }));
+    const dialog = await screen.findByRole("dialog", { name: "Your build" });
+    expect(within(dialog).getByRole("switch", { name: addon.name })).toHaveAttribute("data-disabled");
+    const build = namedBuilds.find((item) => !addon.stats.some((stat) => item.stats.includes(stat)))!;
+    await user.click(within(dialog).getByRole("radio", { name: build.name }));
+    expect(within(dialog).getByRole("switch", { name: addon.name })).not.toHaveAttribute("data-disabled");
+  });
+
+  it("never asks a reader who already picked a build", async () => {
+    localStorage.setItem(BUILD_KEY, leanings[0].id);
+    useBuild.setState({ picked: [leanings[0].id], asked: false });
+    act(() => useBuild.getState().sync(localStorage.getItem(BUILD_KEY)));
+    expect(useBuild.getState().asked).toBe(true);
+    const user = userEvent.setup();
+    await open("/guide/1");
+    await user.click(firstBox(document.getElementById(`entry-${chapters[0].groups[0].rows[0].id}`)!));
+    await new Promise((resolve) => setTimeout(resolve, 10));
+    expect(useUi.getState().dialog).toBeNull();
+  });
+
+  it("saves a named build from its card, with an add-on, and Just the checklist keeps none", async () => {
+    const build = namedBuilds.find((item) => addons.some((addon) => !addon.stats.some((stat) => item.stats.includes(stat)))) ?? namedBuilds[0];
+    const addon = addons.find((item) => !item.stats.some((stat) => build.stats.includes(stat)));
+    const user = userEvent.setup();
+    await open("/guide/1");
+    await user.click(within(screen.getByRole("region", { name: "Your build" })).getByRole("button", { name: "Choose build" }));
+    const dialog = await screen.findByRole("dialog", { name: "Your build" });
+    await user.click(within(dialog).getByRole("radio", { name: build.name }));
+    if (addon) await user.click(within(dialog).getByRole("switch", { name: addon.name }));
+    // Nothing is kept until Save build.
+    expect(localStorage.getItem(BUILD_KEY)).toBeNull();
+    await user.click(within(dialog).getByRole("button", { name: "Save build" }));
+    const saved = normalizeBuild([...build.stats, ...(addon?.stats ?? [])].join(" "));
+    expect(useBuild.getState().picked).toEqual(saved);
+    expect(localStorage.getItem(BUILD_KEY)).toBe(saved.join(" "));
+    await waitFor(() => expect(within(screen.getByRole("region", { name: "Your build" })).getByText(buildName(saved))).toBeInTheDocument());
+    await user.click(within(screen.getByRole("region", { name: "Your build" })).getByRole("button", { name: "Change build" }));
+    await user.click(within(await screen.findByRole("dialog", { name: "Your build" })).getByRole("button", { name: "Just the checklist" }));
+    expect(useBuild.getState().picked).toEqual([]);
     expect(localStorage.getItem(BUILD_KEY)).toBeNull();
   });
 
-  it("tags a row that serves the pick with the leaning and shows its note under it, and nothing without a pick", async () => {
-    reveal();
+  it("shows a row's step, numbered, its picks with who recommends them, and its facts, for the pick only", async () => {
+    if (!task) return;
+    const row = byId.get(task.row)!;
+    reveal(row.chapter);
     await open(`/guide/${row.chapter}`);
     const step = document.getElementById(`entry-${row.id}`)!;
-    expect(within(step).queryByText(entry.note)).toBeNull();
-    act(() => useBuild.getState().setPicked([leaning]));
-    expect(await within(step).findByText(entry.note)).toBeInTheDocument();
-    // The tag reads "For your build: Dexterity" to a screen reader, the first words hidden from sight.
-    expect(within(step).getByText(leaningName(leaning))).toHaveTextContent(`For your build: ${leaningName(leaning)}`);
-    // Another leaning that no entry of this row serves leaves it bare.
-    const other = leanings.find((item) => forBuild(row.id, [item.id]).length === 0);
-    if (other) {
-      act(() => useBuild.getState().setPicked([other.id]));
-      await waitFor(() => expect(within(step).queryByText(entry.note)).toBeNull());
+    expect(within(step).queryByText(escape(task.text))).toBeNull();
+    act(() => useBuild.getState().setPicked([task.serves[0]]));
+    expect(await within(step).findByText(escape(task.text))).toBeInTheDocument();
+    expect(within(step).getByText(`${task.title}.`)).toBeInTheDocument();
+    expect(step).toHaveTextContent(`Step ${stepNumber(task, [task.serves[0]])} for your build:`);
+    // The tag names the build.
+    expect(step).toHaveTextContent(`For your build: ${buildName([task.serves[0]])}`);
+    for (const item of picksFor(row.id, [task.serves[0]])) expect(step).toHaveTextContent(item.item);
+    for (const entry of forBuild(row.id, [task.serves[0]])) expect(within(step).getByText(entry.note)).toBeInTheDocument();
+  });
+
+  it("names a pick's guides, never links them, and only for the named builds it's for", async () => {
+    if (!pick) return;
+    const row = byId.get(pick.row)!;
+    const build = namedBuilds.concat(addons).find((item) => pick.for.includes(item.id))!;
+    reveal(row.chapter);
+    act(() => useBuild.getState().setPicked(build.stats));
+    await open(`/guide/${row.chapter}`);
+    const step = document.getElementById(`entry-${row.id}`)!;
+    expect(step).toHaveTextContent(`Build guides use ${pick.item}`);
+    for (const [name, url] of pick.guides) {
+      expect(step).toHaveTextContent(name);
+      expect(step.querySelector(`a[href="${url}"]`)).toBeNull();
     }
   });
 
-  it("lists what serves the pick on the Progress page under its kind, and Change build opens Guide settings on the first box", async () => {
-    reveal();
-    act(() => useBuild.getState().setPicked([leaning]));
+  it("lays the build out chapter by chapter on the Progress page, revealed chapters only, ticked in place", async () => {
+    if (!task) return;
+    const row = byId.get(task.row)!;
+    reveal(row.chapter);
+    act(() => useBuild.getState().setPicked([task.serves[0]]));
     const user = userEvent.setup();
     await open("/dashboard", "Your progress");
-    const panel = screen.getByRole("region", { name: "Next for your build" });
-    const heading = buildKinds.find(([kind]) => kind === entry.kind)![1];
-    const group = within(panel).getByRole("region", { name: heading });
-    expect(within(group).getByText(row.title)).toBeInTheDocument();
-    expect(within(group).getByText(new RegExp(entry.note.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")))).toBeInTheDocument();
-    await user.click(within(panel).getByRole("button", { name: "Change build" }));
-    const dialog = await screen.findByRole("dialog", { name: "Guide settings" });
-    const yours = within(dialog).getByRole("group", { name: "Your build" });
-    await waitFor(() => expect(within(yours).getByRole("checkbox", { name: leanings[0].label })).toHaveFocus());
-  });
-
-  it("holds the list still when a row is ticked in it, a kind's only row included, until Show next ones", async () => {
-    // An entry that is its kind's only row for its leaning in the chapters up to its own: ticking it would empty that section.
-    const lone = (config.builds?.entries ?? []).find((item) => {
-      const at = byId.get(item.row)!.chapter;
-      const group = buildGroups({}, (n) => n <= at, [item.serves[0]]).find((candidate) => candidate.kind === item.kind);
-      return group?.rows.length === 1 && group.rows[0].id === item.row;
-    });
-    expect(lone, "a guide with builds has an entry alone in its kind somewhere").toBeDefined();
-    const step = byId.get(lone!.row)!;
-    useProgress.setState({ data: { ...defaultState(), ceiling: step.chapter, chapter: step.chapter } });
-    act(() => useBuild.getState().setPicked([lone!.serves[0]]));
-    const user = userEvent.setup();
-    await open("/dashboard", "Your progress");
-    const panel = screen.getByRole("region", { name: "Next for your build" });
-    const heading = buildKinds.find(([kind]) => kind === lone!.kind)![1];
-    const group = within(panel).getByRole("region", { name: heading });
-    const box = within(group).getByRole("checkbox", { name: new RegExp(step.title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")) });
+    const panel = screen.getByRole("region", { name: `Your build: ${buildName([task.serves[0]])}` });
+    expect(within(panel).getByRole("button", { name: new RegExp(`Chapter ${String(row.chapter).padStart(2, "0")}`) })).toBeInTheDocument();
+    for (const later of chapters.filter((chapter) => chapter.id > row.chapter)) expect(within(panel).queryByText(escape(later.title))).toBeNull();
+    const box = within(panel).getByRole("checkbox", { name: escape(row.title) });
+    expect(within(panel).getByText(escape(task.text))).toBeInTheDocument();
     await user.click(box);
-    expect(useProgress.getState().data.checks[step.id]).toBe(true);
-    // The section and its box stay, ticked and focused, and the panel offers to move on.
-    expect(within(panel).getByRole("region", { name: heading })).toContainElement(box);
+    expect(useProgress.getState().data.checks[row.id]).toBe(true);
     expect(box).toBeChecked();
     expect(box).toHaveFocus();
-    await user.click(within(panel).getByRole("button", { name: "Show next ones" }));
-    expect(within(panel).queryByRole("region", { name: heading })).toBeNull();
+    await user.click(within(panel).getByRole("button", { name: "Change build" }));
+    expect(await screen.findByRole("dialog", { name: "Your build" })).toBeInTheDocument();
   });
 
-  it("says how to make a pick while there is none, and saves Your build with Save settings", async () => {
-    const user = userEvent.setup();
+  it("says how to choose a build while there is none", async () => {
     await open("/dashboard", "Your progress");
-    const panel = screen.getByRole("region", { name: "Next for your build" });
-    expect(within(panel).getByText(/^Choose what you level in Guide settings/)).toBeInTheDocument();
-    await user.click(within(panel).getByRole("button", { name: "Choose your build" }));
-    const dialog = await screen.findByRole("dialog", { name: "Guide settings" });
-    await user.click(within(dialog).getByRole("checkbox", { name: leaningName(leaning) }));
-    // Nothing is kept until the settings are saved.
-    expect(localStorage.getItem(BUILD_KEY)).toBeNull();
-    await user.click(within(dialog).getByRole("button", { name: "Save settings" }));
-    expect(localStorage.getItem(BUILD_KEY)).toBe(leaning);
-    expect(useBuild.getState().picked).toEqual([leaning]);
+    const panel = screen.getByRole("region", { name: "Your build" });
+    expect(within(panel).getByText(/^Pick the build you play/)).toBeInTheDocument();
+    expect(within(panel).getByRole("button", { name: "Choose your build" })).toBeInTheDocument();
   });
 });

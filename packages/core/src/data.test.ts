@@ -1,11 +1,12 @@
 // @vitest-environment node
 import { panels } from "virtual:guide/panels";
-import { allRows, brand, byId, cats, chapterRows, chapters, CHAPTER_COUNT, completion, buildGroups, buildKinds, config, forBuild, guideAnchor, hasMissables, isCategory, leanings, missablesLeft, nextUp, readChapter, rowsByTag, tally, whatsLeft } from "./guide";
+import { allRows, brand, byId, cats, chapterRows, chapters, CHAPTER_COUNT, completion, addons, buildKinds, buildOf, buildPlan, config, guideAnchor, namedBuilds, picksFor, stepNumber, tasksFor, hasMissables, isCategory, leanings, missablesLeft, nextUp, readChapter, rowsByTag, tally, whatsLeft } from "./guide";
 import { readerText } from "./reader-text";
 import type { Row } from "./types";
 
 const everything = Object.fromEntries(allRows.map((row) => [row.id, true as const]));
-const hosts = (urls: string[]) => new Set(urls.map((url) => new URL(url).host));
+/** The sites behind some links: the same site with and without "www." is one. */
+const hosts = (urls: string[]) => new Set(urls.map((url) => new URL(url).host.replace(/^www\./, "")));
 /**
  * A scaling letter in any form the pages print one: a lone capital S or A–E soon after the verb "scales" in the same clause ("scales C",
  * "scales with C Strength", "scaling: B"), before "scal…" ("C scaling", "S-scaling"), before a stat that no lowercase word follows
@@ -109,18 +110,88 @@ describe("guide data", () => {
     // A leaning nothing serves would be a box that does nothing.
     for (const { id } of leanings) expect((config.builds?.entries ?? []).some((entry) => entry.serves.includes(id)), `nothing serves ${id}`).toBe(true);
     const seen = new Set<string>();
-    const kinds = buildKinds.map(([kind]) => kind);
     for (const { row, serves, kind, note, sources } of config.builds?.entries ?? []) {
       expect(byId.has(row), row).toBe(true);
       expect(serves.length, row).toBeGreaterThan(0);
       expect(new Set(serves).size, `${row}: a leaning once`).toBe(serves.length);
       for (const id of serves) expect(ids, `${row}: ${id}`).toContain(id);
       expect(note.trim().length, row).toBeGreaterThan(10);
-      expect(kinds, `${row}: ${kind}`).toContain(kind);
+      expect(buildKinds, `${row}: ${kind}`).toContain(kind);
       expect(sources.length, row).toBeGreaterThan(0);
       for (const url of sources) expect(new URL(url).protocol, `${row}: ${url}`).toBe("https:");
       expect(seen.has(`${row} ${note}`), `${row}: the same note twice`).toBe(false);
       seen.add(`${row} ${note}`);
+    }
+  });
+
+  it("makes each named build of leanings the guide names, no two of a kind the same, so a pick has one name", () => {
+    const ids = leanings.map((leaning) => leaning.id);
+    const named = config.builds?.named ?? [];
+    if (named.length) expect(namedBuilds.length, "named builds besides add-ons").toBeGreaterThan(0);
+    expect(new Set(named.map((build) => build.id)).size, "named build ids are unique").toBe(named.length);
+    for (const build of named) {
+      expect(build.id).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/);
+      expect(build.name.trim(), build.id).not.toBe("");
+      expect(build.blurb.trim().length, build.id).toBeGreaterThan(10);
+      expect(build.stats.length, build.id).toBeGreaterThan(0);
+      expect(new Set(build.stats).size, `${build.id}: a leaning once`).toBe(build.stats.length);
+      for (const id of build.stats) expect(ids, `${build.id}: ${id}`).toContain(id);
+    }
+    for (const group of [namedBuilds, addons]) {
+      const sets = group.map((build) => [...build.stats].sort().join(" "));
+      expect(new Set(sets).size, "no two share their leanings").toBe(sets.length);
+    }
+    // Every named build is what its own leanings are called.
+    for (const build of namedBuilds) expect(buildOf(build.stats)?.build.id, build.id).toBe(build.id);
+  });
+
+  it("backs each pick with a build guide and a second independent host, for named builds, on a real row", () => {
+    const named = new Set(namedBuilds.concat(addons).map((build) => build.id));
+    const seen = new Set<string>();
+    for (const pick of config.builds?.picks ?? []) {
+      const at = `${pick.row}: ${pick.item}`;
+      expect(byId.has(pick.row), at).toBe(true);
+      expect(pick.for.length, at).toBeGreaterThan(0);
+      for (const id of pick.for) expect(named.has(id), `${at}: ${id}`).toBe(true);
+      expect(buildKinds, at).toContain(pick.kind);
+      expect(pick.item.trim(), at).not.toBe("");
+      expect(pick.why.trim().length, at).toBeGreaterThan(5);
+      expect(pick.why, at).not.toMatch(/\bbest\b/i);
+      // A ranked list is a second voice, never the only one: at least one guide that lays a build out, on two hosts in all.
+      expect(pick.guides.length, `${at}: a build guide`).toBeGreaterThan(0);
+      const links = [...pick.guides, ...(pick.lists ?? [])];
+      for (const [name, url] of links) {
+        expect(name.trim(), at).not.toBe("");
+        expect(new URL(url).protocol, `${at}: ${url}`).toBe("https:");
+      }
+      expect(hosts(links.map(([, url]) => url)).size, `${at} needs two independent hosts`).toBeGreaterThanOrEqual(2);
+      for (const url of pick.sources ?? []) expect(new URL(url).protocol, `${at}: ${url}`).toBe("https:");
+      expect(seen.has(at), `${at} twice`).toBe(false);
+      seen.add(at);
+    }
+  });
+
+  it("puts each step on a real row, for leanings the guide names, with https sources, and a deadline only on two hosts and off a missable row", () => {
+    const ids = leanings.map((leaning) => leaning.id);
+    const missable = new Set(config.missables.map((item) => item.id));
+    const seen = new Set<string>();
+    for (const task of config.builds?.tasks ?? []) {
+      const at = `${task.row}: ${task.title}`;
+      expect(byId.has(task.row), at).toBe(true);
+      expect(task.serves.length, at).toBeGreaterThan(0);
+      expect(new Set(task.serves).size, `${at}: a leaning once`).toBe(task.serves.length);
+      for (const id of task.serves) expect(ids, `${at}: ${id}`).toContain(id);
+      expect(task.title.trim(), at).not.toBe("");
+      expect(task.title, `${at}: the row's line adds the full stop`).not.toMatch(/[.!?]$/);
+      expect(task.text.trim().length, at).toBeGreaterThan(10);
+      expect(task.sources.length, at).toBeGreaterThan(0);
+      for (const url of task.sources) expect(new URL(url).protocol, `${at}: ${url}`).toBe("https:");
+      if (task.before) {
+        expect(hosts(task.sources).size, `${at}: a deadline needs two independent hosts`).toBeGreaterThanOrEqual(2);
+        expect(missable.has(task.row), `${at}: the row's missable warning already says it`).toBe(false);
+      }
+      expect(seen.has(at), `${at} twice`).toBe(false);
+      seen.add(at);
     }
   });
 
@@ -144,6 +215,8 @@ describe("guide data", () => {
       expect(good, "should pass").not.toMatch(scalingLetter);
     }
     for (const { row, note } of config.builds?.entries ?? []) expect(note, row).not.toMatch(scalingLetter);
+    for (const { row, why } of config.builds?.picks ?? []) expect(why, row).not.toMatch(scalingLetter);
+    for (const { row, text } of config.builds?.tasks ?? []) expect(text, row).not.toMatch(scalingLetter);
   });
 
   it("keeps each one-way choice to real rows, its later ways in later chapters, backed by two independent https sources", () => {
@@ -228,6 +301,9 @@ describe("guide data", () => {
       ...panels.map((panel) => panel.title),
       ...leanings.map((leaning) => leaning.label),
       ...(config.builds?.entries ?? []).map((entry) => entry.note),
+      ...(config.builds?.named ?? []).flatMap((build) => [build.name, build.blurb]),
+      ...(config.builds?.picks ?? []).flatMap((pick) => [pick.item, pick.why, ...pick.guides.map(([name]) => name), ...(pick.lists ?? []).map(([name]) => name)]),
+      ...(config.builds?.tasks ?? []).flatMap((task) => [task.title, task.text, task.before]),
     ];
     for (const value of shown) {
       if (value !== undefined) expect(text.has(value), value).toBe(true);
@@ -289,29 +365,34 @@ describe("nextUp", () => {
   });
 });
 
-describe("buildGroups", () => {
+describe("the build plan", () => {
   const all = leanings.map((leaning) => leaning.id);
 
-  it("is empty without a pick, and once everything is ticked", () => {
-    expect(buildGroups({}, () => true, [])).toEqual([]);
-    expect(buildGroups(everything, () => true, all)).toEqual([]);
-  });
-
-  it("never reaches into hidden chapters, and gives each kind its first few serving the pick, missables first", () => {
+  it("is empty without a pick, and never reaches into hidden chapters", () => {
+    expect(buildPlan(() => true, [])).toEqual([]);
     for (const ceiling of [1, 2, CHAPTER_COUNT]) {
-      const groups = buildGroups({}, (n) => n <= ceiling, all, 3);
-      expect(groups.map((group) => group.kind)).toEqual(buildKinds.map(([kind]) => kind).filter((kind) => groups.some((group) => group.kind === kind)));
-      for (const { kind, rows } of groups) {
-        expect(rows.length, kind).toBeGreaterThan(0);
-        expect(rows.length, kind).toBeLessThanOrEqual(3);
-        for (const row of rows) {
-          expect(row.chapter, row.id).toBeLessThanOrEqual(ceiling);
-          expect(forBuild(row.id, all).some((entry) => entry.kind === kind), `${row.id} in ${kind}`).toBe(true);
+      for (const { chapter, rows } of buildPlan((n) => n <= ceiling, all)) {
+        expect(chapter.id).toBeLessThanOrEqual(ceiling);
+        expect(rows.length, `chapter ${chapter.id}`).toBeGreaterThan(0);
+        for (const { row, tasks, picks, entries } of rows) {
+          expect(row.chapter, row.id).toBe(chapter.id);
+          expect(tasks.length + picks.length + entries.length, row.id).toBeGreaterThan(0);
         }
-        const missable = rows.map((row) => row.tags.includes("missable"));
-        expect(missable, kind).toEqual([...missable].sort((a, b) => Number(b) - Number(a)));
       }
     }
+  });
+
+  it("numbers a pick's steps from 1 in route order, and a step serves the pick it's numbered for", () => {
+    for (const id of all) {
+      const steps = (config.builds?.tasks ?? []).filter((task) => task.serves.includes(id));
+      const numbers = allRows.flatMap((row) => tasksFor(row.id, [id]).map((task) => stepNumber(task, [id])));
+      expect(numbers, id).toEqual(steps.map((_, i) => i + 1));
+    }
+  });
+
+  it("gives a custom pick no picks, since guides recommend for named builds", () => {
+    const custom = all.length > 1 ? all : [];
+    if (custom.length && !buildOf(custom)) for (const row of allRows) expect(picksFor(row.id, custom), row.id).toEqual([]);
   });
 });
 

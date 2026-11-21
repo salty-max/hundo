@@ -7,7 +7,7 @@ import { PLACE_KEY } from "@hundo/core/store/place";
 import { SYNC_KEY } from "@hundo/core/sync/local";
 import { PERSIST_KEY } from "@hundo/core/persistence";
 import { COUNTS_KEY } from "@hundo/core/counts";
-import { BUILD_KEY } from "@hundo/core/store/build";
+import { BUILD_ASKED_KEY, BUILD_KEY } from "@hundo/core/store/build";
 import { SUMMARY_COOKIE } from "@hundo/core/summary";
 import { flatten, viewFrom } from "@hundo/core/sync/fields";
 import type { Entries } from "@hundo/core/sync/ledger";
@@ -109,6 +109,7 @@ describe("storage", () => {
     expect(PERSIST_KEY).toBe("koholint-field-guide.persist");
     expect(COUNTS_KEY).toBe("koholint-field-guide.counts");
     expect(BUILD_KEY).toBe("koholint-field-guide.build");
+    expect(BUILD_ASKED_KEY).toBe("koholint-field-guide.build-asked");
     // and the cookie hundo.quest reads this guide's progress from (core's summary.ts), set on every hundo.quest host
     expect(SUMMARY_COOKIE).toBe("hundo_p_links-awakening");
   });

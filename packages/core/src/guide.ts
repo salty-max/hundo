@@ -1,6 +1,6 @@
 import config from "virtual:guide/config";
 import { pct } from "./format";
-import type { BuildEntry, BuildKind, Chapter, Checks, Choice, LeftItem, Row } from "./types";
+import type { BuildEntry, BuildKind, BuildPick, BuildTask, Chapter, Checks, Choice, LeftItem, NamedBuild, Row } from "./types";
 
 export { config };
 export const { brand, categories: cats, completion, text } = config;
@@ -86,50 +86,110 @@ export function nextUp(checks: Checks, isChapterOpen: (chapter: number) => boole
 export const missablesLeft = (chapter: Chapter, checks: Checks) =>
   chapterRows(chapter).filter((row) => (missableIds.has(row.id) || choiceByRow.has(row.id)) && checks[row.id] !== true);
 
-/** The leanings a reader can tick under Your build, in the guide's order. Empty for a guide without builds, which shows nothing of them. */
+/** The leanings a reader's build is made of, in the guide's order. Empty for a guide without builds, which shows nothing of them. */
 export const leanings = config.builds?.leanings ?? [];
 export const hasBuilds = leanings.length > 0;
 const leaningLabel = new Map(leanings.map((leaning) => [leaning.id, leaning.label]));
-/** Each kind of build entry's heading in Next for your build, in the order a build page lays gear out, the upgrade path last. */
-export const buildKinds: readonly [kind: BuildKind, heading: string][] = [
-  ["weapon", "Weapons"],
-  ["catalyst", "Catalysts and talismans"],
-  ["spell", "Spells"],
-  ["ring", "Rings"],
-  ["armor", "Armor"],
-  ["path", "Upgrade path"],
-];
+/** The kinds of item a build entry or pick names. */
+export const buildKinds: readonly BuildKind[] = ["weapon", "catalyst", "spell", "ring", "armor", "path"];
 /** A leaning's word ("Faith"). */
 export const leaningName = (id: string) => leaningLabel.get(id) ?? id;
-const buildsByRow = new Map<string, BuildEntry[]>();
-for (const entry of config.builds?.entries ?? []) buildsByRow.set(entry.row, [...(buildsByRow.get(entry.row) ?? []), entry]);
-/** Whether a row has any build entry at all, whatever the pick: a row without one never reads the pick. */
-export const hasBuildEntry = (rowId: string) => buildsByRow.has(rowId);
+/** "Dexterity and Faith", "Strength, Dexterity and Faith". */
+export const inWords = (words: readonly string[]) =>
+  words.length < 2 ? (words[0] ?? "") : `${words.slice(0, -1).join(", ")} and ${words[words.length - 1]}`;
 
-/** A row's build entries that serve any of the picked leanings, in the guide's order. None without a pick. */
-export const forBuild = (rowId: string, picked: readonly string[]): BuildEntry[] =>
-  picked.length ? (buildsByRow.get(rowId) ?? []).filter((entry) => entry.serves.some((id) => picked.includes(id))) : [];
-
-/** The picked leanings an entry serves, as words, in the guide's order ("Dexterity · Faith"). */
-export const servedBy = (entry: BuildEntry, picked: readonly string[]) =>
-  leanings.filter((leaning) => entry.serves.includes(leaning.id) && picked.includes(leaning.id)).map((leaning) => leaning.label);
-
-/** Whether anything in the revealed chapters serves the pick, ticked or not: what Next for your build says when its groups are empty. */
-export const buildServed = (isChapterOpen: (chapter: number) => boolean, picked: readonly string[]) =>
-  chapters.some((chapter) => isChapterOpen(chapter.id) && chapterRows(chapter).some((row) => forBuild(row.id, picked).length > 0));
+/** The builds readers know by name, in the guide's order, and the add-ons a pick may hold on top of one. */
+export const namedBuilds = (config.builds?.named ?? []).filter((build) => !build.addon);
+export const addons = (config.builds?.named ?? []).filter((build) => build.addon);
 
 /**
- * Next for your build: the unticked rows with an entry that serves the pick, in revealed chapters only (the guide's spoiler rules), by
- * kind in `buildKinds`' order, up to `each` of a kind, the missables first and then in route order. A row with entries of two kinds is
- * in both. Unlike Next up it doesn't hold `defer` rows back: it isn't the route's pace, it's what the build wants from the chapters open.
+ * The named build a pick is, and the add-ons it holds on top: the largest named build whose leanings are all in the pick, the rest of the
+ * pick being add-ons exactly ("str dex pyro" is Quality with Pyromancy, "pyro hum" Pyromancer with Chaos weapons). Null for no pick, or
+ * for a pick that is no named build (a custom one: "int fth").
  */
-export function buildGroups(checks: Checks, isChapterOpen: (chapter: number) => boolean, picked: readonly string[], each = 3) {
+export function buildOf(picked: readonly string[]): { build: NamedBuild; addons: NamedBuild[] } | null {
+  let best: { build: NamedBuild; addons: NamedBuild[] } | null = null;
+  for (const build of namedBuilds) {
+    if (!build.stats.every((id) => picked.includes(id))) continue;
+    const rest = picked.filter((id) => !build.stats.includes(id));
+    const on = addons.filter((addon) => addon.stats.every((id) => rest.includes(id)));
+    if (!rest.every((id) => on.some((addon) => addon.stats.includes(id)))) continue;
+    if (!best || build.stats.length > best.build.stats.length) best = { build, addons: on };
+  }
+  return best;
+}
+
+/** What a pick is called: "Pyromancer", "Quality + Pyromancy", or its leanings' words for a custom one ("Intelligence and Faith"). */
+export function buildName(picked: readonly string[]) {
+  const of = buildOf(picked);
+  if (!of) return inWords(leanings.filter((leaning) => picked.includes(leaning.id)).map((leaning) => leaning.label));
+  return [of.build, ...of.addons].map((build) => build.name).join(" + ");
+}
+
+const byRow = <T extends { row: string }>(items: readonly T[]) => {
+  const map = new Map<string, T[]>();
+  for (const item of items) map.set(item.row, [...(map.get(item.row) ?? []), item]);
+  return map;
+};
+const entriesByRow = byRow(config.builds?.entries ?? []);
+const picksByRow = byRow(config.builds?.picks ?? []);
+const tasksByRow = byRow(config.builds?.tasks ?? []);
+/** Whether a row has anything for any build, whatever the pick: a row without never reads the pick. */
+export const hasBuildEntry = (rowId: string) => entriesByRow.has(rowId) || picksByRow.has(rowId) || tasksByRow.has(rowId);
+
+/** A row's facts that serve any of the picked leanings, in the guide's order. None without a pick. */
+export const forBuild = (rowId: string, picked: readonly string[]): BuildEntry[] =>
+  picked.length ? (entriesByRow.get(rowId) ?? []).filter((entry) => entry.serves.some((id) => picked.includes(id))) : [];
+
+/** A row's picks for the named build the pick is, or for an add-on it holds. None for a custom pick: guides recommend for named builds. */
+export function picksFor(rowId: string, picked: readonly string[]): BuildPick[] {
+  const of = buildOf(picked);
+  if (!of) return [];
+  const ids = [of.build.id, ...of.addons.map((addon) => addon.id)];
+  return (picksByRow.get(rowId) ?? []).filter((pick) => pick.for.some((id) => ids.includes(id)));
+}
+
+/** The sites that recommend a pick, by name, build guides first: "Fextralife, TheGamer". Never their links. */
+export const recommendedBy = (pick: BuildPick) => [...new Set([...pick.guides, ...(pick.lists ?? [])].map(([name]) => name))].join(", ");
+
+/** A row's steps that serve any of the picked leanings. */
+export const tasksFor = (rowId: string, picked: readonly string[]): BuildTask[] =>
+  picked.length ? (tasksByRow.get(rowId) ?? []).filter((task) => task.serves.some((id) => picked.includes(id))) : [];
+
+const routeIndex = new Map(allRows.map((row, i) => [row.id, i]));
+/** Every step in route order, the data's order within a row. */
+const tasksInRoute = [...(config.builds?.tasks ?? [])].sort((a, b) => routeIndex.get(a.row)! - routeIndex.get(b.row)!);
+/**
+ * A step's number in the pick's steps, in route order across every chapter. Hidden chapters come later in the route, so a revealed step's
+ * number never moves when one is revealed.
+ */
+export const stepNumber = (task: BuildTask, picked: readonly string[]) =>
+  tasksInRoute.filter((other) => other.serves.some((id) => picked.includes(id))).indexOf(task) + 1;
+
+/** A row and what it holds for the pick. */
+export interface PlanRow {
+  row: Row;
+  tasks: BuildTask[];
+  picks: BuildPick[];
+  entries: BuildEntry[];
+}
+
+/** What a chapter holds for the pick, row by row in route order. */
+export const chapterPlan = (chapter: Chapter, picked: readonly string[]): PlanRow[] =>
+  chapterRows(chapter)
+    .map((row) => ({ row, tasks: tasksFor(row.id, picked), picks: picksFor(row.id, picked), entries: forBuild(row.id, picked) }))
+    .filter((item) => item.tasks.length + item.picks.length + item.entries.length > 0);
+
+/**
+ * The build's plan, chapter by chapter: the revealed chapters only (the guide's spoiler rules), each with its rows that hold a step, a pick
+ * or a fact for the pick. A chapter with nothing for it is left out.
+ */
+export function buildPlan(isChapterOpen: (chapter: number) => boolean, picked: readonly string[]) {
   if (!picked.length) return [];
-  const left = chapters.filter((chapter) => isChapterOpen(chapter.id)).flatMap(chapterRows).filter((row) => checks[row.id] !== true);
-  const serving = [...left.filter((row) => missableIds.has(row.id)), ...left.filter((row) => !missableIds.has(row.id))];
-  return buildKinds
-    .map(([kind, heading]) => ({ kind, heading, rows: serving.filter((row) => forBuild(row.id, picked).some((entry) => entry.kind === kind)).slice(0, each) }))
-    .filter((group) => group.rows.length > 0);
+  return chapters
+    .filter((chapter) => isChapterOpen(chapter.id))
+    .map((chapter) => ({ chapter, rows: chapterPlan(chapter, picked) }))
+    .filter((part) => part.rows.length > 0);
 }
 
 /** How much one entry adds toward a category: the configured quantity category by amount, everything else by one. */

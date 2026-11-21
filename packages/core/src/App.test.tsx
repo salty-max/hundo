@@ -150,6 +150,8 @@ describe("App", () => {
     for (const missable of config.missables) for (const url of missable.sources) cited.add(url);
     for (const choice of config.choices ?? []) for (const url of choice.sources) cited.add(url);
     for (const entry of config.builds?.entries ?? []) for (const url of entry.sources) cited.add(url);
+    for (const pick of config.builds?.picks ?? []) for (const url of [...pick.guides, ...(pick.lists ?? [])].map(([, link]) => link).concat(pick.sources ?? [])) cited.add(url);
+    for (const task of config.builds?.tasks ?? []) for (const url of task.sources) cited.add(url);
     for (const group of chapter.groups) for (const map of [group.map, ...group.rows.map((row) => row.map)]) if (map) cited.delete(map[1]);
     const hrefs = [...document.querySelectorAll("a[href]")].map((link) => link.getAttribute("href"));
     expect(hrefs.filter((href) => href && cited.has(href))).toEqual([]);
