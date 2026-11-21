@@ -1,7 +1,7 @@
 import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { App } from "./App";
-import { addons, allRows, buildName, buildOf, byId, chapters, config, forBuild, hasBuilds, leanings, namedBuilds, picksFor, stepNumber, tasksFor } from "./guide";
+import { addons, allRows, buildName, buildOf, byId, chapters, config, hasBuilds, leanings, namedBuilds, needsText, pickRoles, picksFor, stepNumber, tasksFor } from "./guide";
 import { defaultState } from "./progress-state";
 import { BUILD_ASKED_KEY, BUILD_KEY, normalizeBuild, useBuild } from "./store/build";
 import { forgetPlaces } from "./store/place";
@@ -41,7 +41,7 @@ describe.runIf(!hasBuilds)("a guide without builds", () => {
     await new Promise((resolve) => setTimeout(resolve, 10));
     expect(useUi.getState().dialog).toBeNull();
     expect(localStorage.getItem(BUILD_ASKED_KEY)).toBeNull();
-    expect(allRows.some((item) => forBuild(item.id, ["dex", "fth"]).length + tasksFor(item.id, ["dex", "fth"]).length > 0)).toBe(false);
+    expect(allRows.some((item) => picksFor(item.id, ["dex", "fth"]).length + tasksFor(item.id, ["dex", "fth"]).length > 0)).toBe(false);
   });
 });
 
@@ -191,7 +191,7 @@ describe.runIf(hasBuilds)("a guide with builds", () => {
     expect(within(dialog).queryByRole("button", { name: "Clear build" })).toBeNull();
   });
 
-  it("shows a row's step, numbered, its picks with who recommends them, and its facts, for the pick only", async () => {
+  it("shows a row's step, numbered, and its picks with who recommends them, for the pick only", async () => {
     if (!task) return;
     const row = byId.get(task.row)!;
     reveal(row.chapter);
@@ -205,7 +205,6 @@ describe.runIf(hasBuilds)("a guide with builds", () => {
     // The tag names the build.
     expect(step).toHaveTextContent(`For your build: ${buildName([task.serves[0]])}`);
     for (const item of picksFor(row.id, [task.serves[0]])) expect(step).toHaveTextContent(item.item);
-    for (const entry of forBuild(row.id, [task.serves[0]])) expect(within(step).getByText(entry.note)).toBeInTheDocument();
   });
 
   it("names a pick's guides, never links them, and only for the named builds it's for", async () => {
@@ -216,11 +215,49 @@ describe.runIf(hasBuilds)("a guide with builds", () => {
     act(() => useBuild.getState().setPicked(build.stats));
     await open(`/guide/${row.chapter}`);
     const step = document.getElementById(`entry-${row.id}`)!;
-    expect(step).toHaveTextContent(`Build guides use ${pick.item}`);
+    expect(step).toHaveTextContent(`build guides use ${pick.item}`);
     for (const [name, url] of pick.guides) {
       expect(step).toHaveTextContent(name);
       expect(step.querySelector(`a[href="${url}"]`)).toBeNull();
     }
+  });
+
+  it("says each pick's role, Core where guides keep it, and what it needs", async () => {
+    const shown = (config.builds?.picks ?? []).find((item) => item.core && item.needs) ?? pick;
+    if (!shown) return;
+    const row = byId.get(shown.row)!;
+    const build = namedBuilds.concat(addons).find((item) => shown.for.includes(item.id))!;
+    reveal(row.chapter);
+    act(() => useBuild.getState().setPicked(build.stats));
+    await open(`/guide/${row.chapter}`);
+    const step = document.getElementById(`entry-${row.id}`)!;
+    expect(step).toHaveTextContent(`${pickRoles[shown.role]}, ${shown.core ? "Core, " : ""}build guides use ${shown.item}`);
+    if (needsText(shown)) expect(step).toHaveTextContent(needsText(shown));
+  });
+
+  it("says on each build's card how guides start it", async () => {
+    const started = namedBuilds.filter((build) => build.start);
+    if (!started.length) return;
+    const user = userEvent.setup();
+    await open("/guide/1");
+    await user.click(within(screen.getByRole("region", { name: "Your build" })).getByRole("button", { name: "Choose build" }));
+    const dialog = await screen.findByRole("dialog", { name: "Your build" });
+    for (const build of started) {
+      const radio = within(dialog).getByRole("radio", { name: build.name });
+      expect(radio).toHaveAccessibleDescription(new RegExp(`Starts as ${escape(build.start!.class).source}`));
+    }
+  });
+
+  it("draws the build's weapon track on the Progress page: its start, then stages from the revealed chapters only", async () => {
+    const build = namedBuilds.find((item) => item.start?.weapon);
+    if (!build) return;
+    reveal(1);
+    act(() => useBuild.getState().setPicked(build.stats));
+    await open("/dashboard", "Your progress");
+    const track = screen.getByRole("region", { name: "Main weapon" });
+    expect(within(track).getByText(build.start!.weapon!)).toBeInTheDocument();
+    for (const link of within(track).queryAllByRole("link")) expect(link.getAttribute("href")).toMatch(/^\/guide\/1\//);
+    expect(within(track).getByText("More shows as you reveal chapters.")).toBeInTheDocument();
   });
 
   it("lays the build out chapter by chapter on the Progress page, revealed chapters only, ticked in place", async () => {

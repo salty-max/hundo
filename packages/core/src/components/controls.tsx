@@ -144,7 +144,8 @@ export function RadioGroup({ label, choices, value, onChange }: RadioGroupProps)
 
 interface CardRadioGroupProps {
   label: string;
-  choices: { value: string; title: string; text: string; chips: string[] }[];
+  /** Each card: its title, its line (hidden on a phone), an optional note under it (kept on a phone), and its chips. */
+  choices: { value: string; title: string; text: string; note?: string; chips: string[] }[];
   /** "" for none chosen. */
   value: string;
   onChange: (value: string) => void;
@@ -173,11 +174,11 @@ export function CardRadioGroup({ label, choices, value, onChange }: CardRadioGro
             className={`${pressClasses} grid cursor-pointer content-start gap-1 rounded-control border border-control-line bg-surface px-3 py-2.5 text-left select-none not-has-data-checked:hover:bg-raised has-focus-visible:outline-3 has-focus-visible:outline-offset-3 has-focus-visible:outline-focus has-data-checked:border-primary has-data-checked:bg-soft has-data-checked:inset-ring has-data-checked:inset-ring-primary`}
           >
             <span className="flex items-center gap-2">
-              {/* Named by its title alone, and described by its line and chips, so a screen reader hears "Quality" first, not the whole card. */}
+              {/* Named by its title alone, and described by its line, note and chips, so a screen reader hears "Quality" first, not the whole card. */}
               <Radio.Root
                 value={choice.value}
                 aria-labelledby={`${labelId}-${choice.value}`}
-                aria-describedby={`${labelId}-${choice.value}-text ${labelId}-${choice.value}-chips`}
+                aria-describedby={[`${labelId}-${choice.value}-text`, choice.note && `${labelId}-${choice.value}-note`, `${labelId}-${choice.value}-chips`].filter(Boolean).join(" ")}
                 className="grid size-4.5 shrink-0 place-items-center rounded-full border-2 border-edge bg-surface data-checked:border-5 data-checked:border-primary"
               />
               <strong id={`${labelId}-${choice.value}`} className="text-14/sm font-extrabold">
@@ -187,6 +188,11 @@ export function CardRadioGroup({ label, choices, value, onChange }: CardRadioGro
             <span id={`${labelId}-${choice.value}-text`} className="text-13/normal text-muted phone:hidden">
               {choice.text}
             </span>
+            {choice.note && (
+              <span id={`${labelId}-${choice.value}-note`} className="text-12 font-bold text-muted">
+                {choice.note}
+              </span>
+            )}
             <span id={`${labelId}-${choice.value}-chips`} className="flex flex-wrap gap-1">
               {choice.chips.map((chip) => (
                 <span key={chip} className="rounded-tag border border-soft-line px-1.5 py-0.5 text-11 font-extrabold text-soft-ink">

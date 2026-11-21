@@ -127,29 +127,32 @@ export interface Leaning {
 }
 
 /**
- * What a build entry's or pick's item is, as a build page lays gear out by slot: "catalyst" holds catalysts, talismans and the pyromancy
- * flame, and "path" an upgrade path (an ember, a flame's reinforcement, a smith who opens a path).
+ * What a pick's item is, as a build page lays gear out by slot: "catalyst" holds catalysts, talismans and the pyromancy flame, and "path"
+ * an upgrade path (an ember, a weapon made Magic or Divine at a smith).
  */
 export type BuildKind = "weapon" | "catalyst" | "spell" | "ring" | "armor" | "path";
 
 /**
- * One item in a row that a build wants, by a fact its sources state: what it needs, which stats it scales with, what only one seller
- * has. A lens over the checklist: it points, it never counts. One entry per item, so a row can have several.
+ * When a pick serves its build, as build guides time it: "starter", what the build can use in its opening hours with its starting class's
+ * stats; "upgrade", what it moves to once its stats or its upgrades allow; "endgame", what it ends on.
  */
-export interface BuildEntry {
-  /** A row id from the guide data. */
-  row: string;
-  /** The leanings it serves, by id, each once. */
-  serves: string[];
-  kind: BuildKind;
-  /**
-   * Names the item first ("Winged Spear: needs 15 Dexterity…"), then the facts, never "best". Which stats it scales with, never a letter:
-   * the wikis' letter ranges differ, and a letter at +0 doesn't survive upgrades (data.test.ts). It shows beside the row and in the build
-   * plan, so it names no place, boss or character the row's chapter hasn't reached, and no fate, as a questline's name doesn't. The
-   * item's own facts (what it needs, how far it goes) are what it's for.
-   */
-  note: string;
-  /** One or more https pages that state the note's facts. */
+export type PickRole = "starter" | "upgrade" | "endgame";
+
+/**
+ * How build guides start a named build: the class, and the weapon that class starts with, the first stage of the build's weapon track. It
+ * shows in the build dialog from the reader's first tick, so it names nothing past the first chapter.
+ */
+export interface BuildStart {
+  /** The class, as the game names it, with its article: "a Cleric", "a Bandit or a Warrior". */
+  class: string;
+  /** The weapon that class starts with, as the game names it ("Hand Axe"), where the track starts from it: starting gear has no row. */
+  weapon?: string;
+  /** What guides say the start is for, where they say it ("carries the early game while your casts are few"). Needs `weapon`. */
+  why?: string;
+  /** Build guides that start it so, under a pick's rule: a guide for this build and two independent hosts in all. */
+  guides: BuildGuide[];
+  lists?: BuildGuide[];
+  /** https pages for the class's gear and any fact in `why`. */
   sources: string[];
 }
 
@@ -167,8 +170,10 @@ export interface NamedBuild {
   stats: string[];
   /** One line on how it plays, for the build dialog's card: a play style, never a later item, place or boss. */
   blurb: string;
-  /** On top of another build: Pyromancy, Chaos weapons. */
+  /** On top of another build: Pyromancy. */
   addon?: true;
+  /** How guides start it, where two hosts agree on it: never on an add-on (data.test.ts). */
+  start?: BuildStart;
 }
 
 /**
@@ -181,7 +186,8 @@ export type BuildGuide = [name: string, url: string, builds?: string[]];
  * What build guides use for a named build, on the row where the reader comes by it: a recommendation, which says who makes it and never
  * "best". For each build it's for, it needs two independent hosts, at least one of them a guide that lays that build out (`guides`); a
  * ranked "best builds" list (`lists`) can only be a second voice. A pick standing on lists alone, or on a guide for another build, goes to
- * the guide's facts-to-verify instead.
+ * the guide's facts-to-verify instead. Its role is the same for every build in `for`: a pick whose timing differs by build is two picks,
+ * and no two picks for one item on one row share a build.
  */
 export interface BuildPick {
   /** A row id from the guide data. */
@@ -191,9 +197,17 @@ export interface BuildPick {
   kind: BuildKind;
   /** The item, as the game names it: "Great Combustion". */
   item: string;
+  /** When it serves the build. A starter's `needs` are met by its builds' starting classes (the guide's own test holds that). */
+  role: PickRole;
+  /** What the build is built around, kept once it's had: the flame, a ring that raises every spell. */
+  core?: true;
+  /** It doesn't come every time (a random drop). Only a core pick may be one: anything less isn't worth the farming (data.test.ts). */
+  rare?: true;
+  /** What it needs to use, one-handed, by leaning id ({ fth: 14 }), as its wiki page gives it: shown under the pick as context. */
+  needs?: Record<string, number>;
   /**
-   * What the guides use it for, in a few words ("close-range burst"), with the item's facts where they help. The note's rules hold: which
-   * stats it scales with, never a letter, and nothing the row's chapter hasn't reached.
+   * What guides use it for, as a build guide says it ("a first weapon you can use now; it grows with Faith"), with the item's facts where
+   * they help. Which stats it scales with, never a letter, and nothing the row's chapter hasn't reached.
    */
   why: string;
   /**
@@ -203,7 +217,7 @@ export interface BuildPick {
   guides: BuildGuide[];
   /** Ranked lists that name it ("best builds" articles): a second voice for a build, never its only one. */
   lists?: BuildGuide[];
-  /** https pages for any fact in `why`. */
+  /** https pages for any fact in `why` or `needs`. */
   sources?: string[];
 }
 
@@ -226,6 +240,8 @@ export interface BuildTask {
    * on a missable row, whose own warning says it.
    */
   before?: string;
+  /** A step on the weapon's path (a smith, an ember, a reinforcement): it's a stage of the build's weapon track as well as a step. */
+  path?: true;
   /** https pages for its facts. */
   sources: string[];
 }
@@ -398,15 +414,13 @@ export interface GuideConfig {
   /** Chained side quests, on the Questlines page. */
   questlines: Questlines;
   /**
-   * The builds the guide can point toward: the leanings a reader ticks under Your build, and the entries that name what serves each.
-   * A lens over the checklist, never a count. A guide without it shows nothing of builds.
+   * The builds the guide can point toward: the leanings a reader picks under Your build, the builds readers know by name, what build guides
+   * use for each and the steps each takes. A lens over the checklist, never a count. A guide without it shows nothing of builds.
    */
   builds?: {
     leanings: Leaning[];
     /** The builds readers know by name, each a set of leanings: what the build dialog offers and what a pick is called. */
     named?: NamedBuild[];
-    /** Facts by stat: what serves a leaning. Shown under picks and steps, the quieter lines. */
-    entries: BuildEntry[];
     /** What build guides use for a named build. */
     picks?: BuildPick[];
     /** The steps a build takes: trainers, covenants, smiths, the flame. */

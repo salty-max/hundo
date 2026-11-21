@@ -1,6 +1,6 @@
 import config from "virtual:guide/config";
 import { pct } from "./format";
-import type { BuildEntry, BuildGuide, BuildKind, BuildPick, BuildTask, Chapter, Checks, Choice, LeftItem, NamedBuild, Row } from "./types";
+import type { BuildGuide, BuildKind, BuildPick, BuildStart, BuildTask, Chapter, Checks, Choice, LeftItem, NamedBuild, PickRole, Row } from "./types";
 
 export { config };
 export const { brand, categories: cats, completion, text } = config;
@@ -90,8 +90,10 @@ export const missablesLeft = (chapter: Chapter, checks: Checks) =>
 export const leanings = config.builds?.leanings ?? [];
 export const hasBuilds = leanings.length > 0;
 const leaningLabel = new Map(leanings.map((leaning) => [leaning.id, leaning.label]));
-/** The kinds of item a build entry or pick names. */
+/** The kinds of item a pick names. */
 export const buildKinds: readonly BuildKind[] = ["weapon", "catalyst", "spell", "ring", "armor", "path"];
+/** A pick's roles, in the order a build meets them, and the word each shows as. */
+export const pickRoles: Readonly<Record<PickRole, string>> = { starter: "Starter", upgrade: "Upgrade", endgame: "Endgame" };
 /** A leaning's word ("Faith"). */
 export const leaningName = (id: string) => leaningLabel.get(id) ?? id;
 /** "Dexterity and Faith", "Strength, Dexterity and Faith". */
@@ -104,7 +106,7 @@ export const addons = (config.builds?.named ?? []).filter((build) => build.addon
 
 /**
  * The named build a pick is, and the add-ons it holds on top: the largest named build whose leanings are all in the pick, the rest of the
- * pick being add-ons exactly ("str dex pyro" is Quality with Pyromancy, "pyro hum" Pyromancer with Chaos weapons). Null for no pick, or
+ * pick being add-ons exactly ("str dex pyro" is Quality with Pyromancy, "dex int pyro" Magic Knight with Pyromancy). Null for no pick, or
  * for a pick that is no named build (a custom one: "int fth").
  */
 export function buildOf(picked: readonly string[]): { build: NamedBuild; addons: NamedBuild[] } | null {
@@ -131,15 +133,17 @@ const byRow = <T extends { row: string }>(items: readonly T[]) => {
   for (const item of items) map.set(item.row, [...(map.get(item.row) ?? []), item]);
   return map;
 };
-const entriesByRow = byRow(config.builds?.entries ?? []);
 const picksByRow = byRow(config.builds?.picks ?? []);
 const tasksByRow = byRow(config.builds?.tasks ?? []);
-/** Whether a row has anything for any build, whatever the pick: a row without never reads the pick. */
-export const hasBuildEntry = (rowId: string) => entriesByRow.has(rowId) || picksByRow.has(rowId) || tasksByRow.has(rowId);
+/** Whether a row has a step or a pick for any build, whatever the pick: a row without never reads the pick. */
+export const hasBuildLines = (rowId: string) => picksByRow.has(rowId) || tasksByRow.has(rowId);
 
-/** A row's facts that serve any of the picked leanings, in the guide's order. None without a pick. */
-export const forBuild = (rowId: string, picked: readonly string[]): BuildEntry[] =>
-  picked.length ? (entriesByRow.get(rowId) ?? []).filter((entry) => entry.serves.some((id) => picked.includes(id))) : [];
+/** What a pick needs, in the guide's leaning order and words: "needs 16 Strength and 10 Dexterity". Empty when it says nothing. */
+export function needsText(pick: BuildPick) {
+  const needs = pick.needs ?? {};
+  const parts = leanings.filter((leaning) => needs[leaning.id] !== undefined).map((leaning) => `${needs[leaning.id]} ${leaning.label}`);
+  return parts.length ? `needs ${inWords(parts)}` : "";
+}
 
 /** A row's picks for the named build the pick is, or for an add-on it holds. None for a custom pick: guides recommend for named builds. */
 export function picksFor(rowId: string, picked: readonly string[]): BuildPick[] {
@@ -179,18 +183,17 @@ export interface PlanRow {
   row: Row;
   tasks: BuildTask[];
   picks: BuildPick[];
-  entries: BuildEntry[];
 }
 
 /** What a chapter holds for the pick, row by row in route order. */
 export const chapterPlan = (chapter: Chapter, picked: readonly string[]): PlanRow[] =>
   chapterRows(chapter)
-    .map((row) => ({ row, tasks: tasksFor(row.id, picked), picks: picksFor(row.id, picked), entries: forBuild(row.id, picked) }))
-    .filter((item) => item.tasks.length + item.picks.length + item.entries.length > 0);
+    .map((row) => ({ row, tasks: tasksFor(row.id, picked), picks: picksFor(row.id, picked) }))
+    .filter((item) => item.tasks.length + item.picks.length > 0);
 
 /**
- * The build's plan, chapter by chapter: the revealed chapters only (the guide's spoiler rules), each with its rows that hold a step, a pick
- * or a fact for the pick. A chapter with nothing for it is left out.
+ * The build's plan, chapter by chapter: the revealed chapters only (the guide's spoiler rules), each with its rows that hold a step or a
+ * pick for it. A chapter with nothing for it is left out.
  */
 export function buildPlan(isChapterOpen: (chapter: number) => boolean, picked: readonly string[]) {
   if (!picked.length) return [];
@@ -198,6 +201,27 @@ export function buildPlan(isChapterOpen: (chapter: number) => boolean, picked: r
     .filter((chapter) => isChapterOpen(chapter.id))
     .map((chapter) => ({ chapter, rows: chapterPlan(chapter, picked) }))
     .filter((part) => part.rows.length > 0);
+}
+
+/** A stage of a build's weapon track: how guides start it, a step on the weapon's path, or a weapon or path pick, with its row. */
+export type TrackStage = { start: BuildStart } | { row: Row; task: BuildTask } | { row: Row; pick: BuildPick };
+
+/**
+ * The build's weapon track: the weapon its start names, then the steps on the weapon's path and the weapon and path picks for it, in route
+ * order, from the revealed chapters only. Nothing is said of what hidden chapters hold, not even how much. The steps are the named build's
+ * own, never an add-on's: Pyromancy beside a Quality build doesn't put the Fire path in its weapon's track (its steps still show in the plan).
+ * Empty for a custom pick, which no guide starts, and for a build whose start names no weapon and whose revealed chapters hold no stage yet.
+ */
+export function weaponTrack(isChapterOpen: (chapter: number) => boolean, picked: readonly string[]): TrackStage[] {
+  const of = buildOf(picked);
+  if (!of) return [];
+  const stages: TrackStage[] = of.build.start?.weapon ? [{ start: of.build.start }] : [];
+  for (const row of allRows) {
+    if (!isChapterOpen(row.chapter)) continue;
+    for (const task of tasksFor(row.id, of.build.stats)) if (task.path) stages.push({ row, task });
+    for (const pick of picksFor(row.id, picked)) if (pick.kind === "weapon" || pick.kind === "path") stages.push({ row, pick });
+  }
+  return stages;
 }
 
 /** How much one entry adds toward a category: the configured quantity category by amount, everything else by one. */

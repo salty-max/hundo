@@ -7,15 +7,12 @@ import type { Chapter } from "../types";
 
 const count = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
 
-/** "2 steps and 1 pick from build guides", "3 facts for your stats", or nothing. */
+/** "2 steps and 1 pick from build guides", or nothing. */
 function inThisChapter(chapter: Chapter, picked: readonly string[]) {
   const rows = chapterPlan(chapter, picked);
   const steps = rows.reduce((sum, row) => sum + row.tasks.length, 0);
   const picks = rows.reduce((sum, row) => sum + row.picks.length, 0);
-  const facts = rows.reduce((sum, row) => sum + row.entries.length, 0);
-  const parts = [steps && count(steps, "step", "steps"), picks && count(picks, "pick from build guides", "picks from build guides")].filter(Boolean);
-  if (parts.length) return parts.join(" and ");
-  return facts ? count(facts, "fact for your stats", "facts for your stats") : "";
+  return [steps && count(steps, "step", "steps"), picks && count(picks, "pick from build guides", "picks from build guides")].filter(Boolean).join(" and ");
 }
 
 /**

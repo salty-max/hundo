@@ -8,11 +8,15 @@ import { Button } from "./ui";
 import { addons, buildName, buildOf, leaningName, leanings, namedBuilds } from "../guide";
 import { normalizeBuild, useBuild } from "../store/build";
 import { useUi, type DialogState } from "../store/ui";
+import type { NamedBuild } from "../types";
 
 type Build = Extract<NonNullable<DialogState>, { kind: "build" }>;
 
+/** How guides start a build, for its card: "Starts as a Pyromancer, with the Hand Axe". */
+const startNote = ({ start }: NamedBuild) => start && `Starts as ${start.class}${start.weapon ? `, with the ${start.weapon}` : ""}`;
+
 /**
- * The reader's build: the builds readers know by name as cards, the add-ons that go on top of one (Pyromancy beside a melee build), and
+ * The reader's build: the builds readers know by name as cards, each saying how guides start it, the add-ons that go on top of one (Pyromancy beside a melee build), and
  * the stats themselves for a pick that is no named build. Nothing is kept until Save build; Clear build drops a saved one. Opened from the
  * strip under each chapter's banner and from the Progress page, and once as the welcome, on the first tick (actions.ts), whose Just the
  * checklist keeps no build.
@@ -57,7 +61,7 @@ export function BuildScreen({ dialog }: { dialog: Build }) {
       <div className="grid gap-4">
         <CardRadioGroup
           label="Builds"
-          choices={namedBuilds.map((build) => ({ value: build.id, title: build.name, text: build.blurb, chips: build.stats.map(leaningName) }))}
+          choices={namedBuilds.map((build) => ({ value: build.id, title: build.name, text: build.blurb, note: startNote(build), chips: build.stats.map(leaningName) }))}
           value={of?.build.id ?? ""}
           onChange={choose}
         />
@@ -91,7 +95,7 @@ export function BuildScreen({ dialog }: { dialog: Build }) {
         </Collapsible.Root>
         {pick.length > 0 && !of && (
           <DialogText small>
-            {buildName(pick)} is no named build. Its steps and facts still show; build guides’ picks are made for named builds.
+            {buildName(pick)} is no named build. Its steps still show; build guides’ picks are made for named builds.
           </DialogText>
         )}
       </div>
