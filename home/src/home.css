@@ -11,7 +11,7 @@
   --line: #e0dcd4;
   --focus: #1d5fbf;
   --sans: "Hundo Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-  /* The top bar's height, which the hero's wall reaches up behind: its padding and a 44px button. */
+  /* The top bar's height, which the hero's backdrop reaches up behind: its padding and a 44px button. */
   --top-pad: max(1.25rem, env(safe-area-inset-top));
   --top-h: calc(var(--top-pad) + 2.75rem + 1.25rem);
 }
@@ -96,7 +96,7 @@ ul {
   background: var(--ring, var(--ink));
   mask: radial-gradient(farthest-side, transparent calc(100% - 0.155em), #000 calc(100% - 0.155em + 0.5px));
 }
-/* Above the hero's wall, which reaches up behind it. */
+/* Above the hero's backdrop, which reaches up behind it. */
 .top {
   position: relative;
   z-index: 1;
@@ -159,34 +159,41 @@ ul {
   }
 }
 
-/* The hero's wall: six chapter 1 banners (page.tsx's Wall), muted, from the top of the page (behind the top bar) to the hero's foot, where
-   it has faded out. Each tile overlaps its neighbours by twice --bleed and fades across that, so the seams blend. A glow of the paper
-   behind the words keeps them as legible as on the bare page. */
+/* The hero's backdrop: one guide's chapter 1 banner at a time (page.tsx's Backdrop), muted, from the top of the page (behind the top bar)
+   to the hero's foot, where it has faded out. backdrop.ts crossfades to the next: the next banner comes in on top while the one it covers
+   stays whole beneath, so the fade never dips to the paper. A glow of the paper behind the words keeps them as legible as on the bare
+   page. */
 .sky {
   position: relative;
   isolation: isolate;
 }
-.wall {
-  --bleed: 2.5rem;
+.backdrop {
   position: absolute;
   inset: calc(-1 * var(--top-h)) 0 0;
   z-index: -1;
-  display: grid;
-  grid-template: repeat(2, 1fr) / repeat(3, 1fr);
   overflow: clip;
   opacity: 0.42;
   mask: linear-gradient(to bottom, #000 35%, transparent);
 }
-.wall img {
-  width: calc(100% + 2 * var(--bleed));
-  height: calc(100% + 2 * var(--bleed));
-  margin: calc(-1 * var(--bleed));
+.backdrop img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: 72% center;
-  mask:
-    linear-gradient(to right, transparent, #000 calc(2 * var(--bleed)) calc(100% - 2 * var(--bleed)), transparent),
-    linear-gradient(to bottom, transparent, #000 calc(2 * var(--bleed)) calc(100% - 2 * var(--bleed)), transparent);
-  mask-composite: intersect;
+  opacity: 0;
+}
+/* Only coming in is a fade: losing .on is instant, under the banner that covered it. */
+.backdrop img.on {
+  opacity: 1;
+  transition: opacity 1.5s ease-in-out;
+}
+/* backdrop.ts starts nothing then; this stops a fade already under way when the setting changes. */
+@media (prefers-reduced-motion: reduce) {
+  .backdrop img.on {
+    transition: none;
+  }
 }
 .sky::after {
   content: "";
@@ -195,26 +202,22 @@ ul {
   z-index: -1;
   background: radial-gradient(48% 46% at 50% 58%, color-mix(in srgb, var(--paper) 88%, transparent), color-mix(in srgb, var(--paper) 30%, transparent) 70%, transparent);
 }
-:root[data-theme="dark"] .wall {
+:root[data-theme="dark"] .backdrop {
   opacity: 0.5;
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .wall {
+  :root:not([data-theme="light"]) .backdrop {
     opacity: 0.5;
   }
 }
 @media (max-width: 36rem) {
-  .wall {
-    --bleed: 1.5rem;
-    grid-template: repeat(3, 1fr) / repeat(2, 1fr);
-  }
   .sky::after {
     background: radial-gradient(75% 42% at 50% 60%, color-mix(in srgb, var(--paper) 88%, transparent), color-mix(in srgb, var(--paper) 30%, transparent) 75%, transparent);
   }
 }
 /* Asked for more contrast: the bare page. */
 @media (prefers-contrast: more) {
-  .wall,
+  .backdrop,
   .sky::after {
     display: none;
   }

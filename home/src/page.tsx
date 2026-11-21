@@ -3,14 +3,13 @@
 // game is the band's title, the name a reader looks for; the guide's own name goes above it, beside its icon, unless it is the game's.
 import { findTerms } from "./find";
 import type { Guide } from "./guides";
-import { wallTiles } from "./wall";
 
 /** Where the build put each guide's pictures. */
 export type GuideArt = {
   /** The banner's copies, narrowest first. */
   banner: { url: string; width: number }[];
-  /** The banner's small copy for the hero's wall (plugin.ts's WALL_WIDTH). */
-  wall: { url: string; width: number };
+  /** The banner's small copy for the hero's backdrop (plugin.ts's BACKDROP_WIDTH). */
+  backdrop: { url: string; width: number };
   /** The icon tile at 40, 80 and 120px. */
   tile: { url: string; width: number }[];
 };
@@ -146,18 +145,19 @@ const Band = ({ guide, art, eager }: { guide: Guide; art: GuideArt; eager: boole
 };
 
 /**
- * Behind the headline, and up behind the top bar: the link preview's six chapter 1 banners (wall.ts), muted and fading out at the foot, each
- * the small copy made for it (plugin.ts's WALL_WIDTH), at a low fetch priority, and never preloaded (React preloads an eager image
- * otherwise). Decoration, so hidden from assistive technology.
+ * Behind the headline, and up behind the top bar: one guide's chapter 1 banner at a time, muted and fading out at the foot, A to Z as the
+ * bands are, each the small copy made for it (plugin.ts's BACKDROP_WIDTH). The markup holds the first, at a low fetch priority and never
+ * preloaded (React preloads an eager image otherwise), and lists every guide's for backdrop.ts, which crossfades to the next on a timer.
+ * Decoration, so hidden from assistive technology.
  */
-const Wall = ({ guides, art }: { guides: Guide[]; art: Record<string, GuideArt> }) => (
-  <div className="wall" aria-hidden="true">
-    {wallTiles(guides).map((guide, i) => {
-      const { url, width } = art[guide.folder].wall;
-      return <img key={i} src={url} width={width} height={Math.round(width / 3)} alt="" fetchPriority="low" decoding="async" />;
-    })}
-  </div>
-);
+const Backdrop = ({ guides, art }: { guides: Guide[]; art: Record<string, GuideArt> }) => {
+  const first = art[guides[0].folder].backdrop;
+  return (
+    <div className="backdrop" aria-hidden="true" data-backdrop={guides.map((guide) => art[guide.folder].backdrop.url).join(" ")}>
+      <img className="on" src={first.url} width={first.width} height={Math.round(first.width / 3)} alt="" fetchPriority="low" decoding="async" />
+    </div>
+  );
+};
 
 /** The page: what hundo is, then every guide. */
 export const Home = ({ guides, art }: { guides: Guide[]; art: Record<string, GuideArt> }) => (
@@ -165,7 +165,7 @@ export const Home = ({ guides, art }: { guides: Guide[]; art: Record<string, Gui
     <TopBar />
     <main>
       <div className="sky">
-        <Wall guides={guides} art={art} />
+        <Backdrop guides={guides} art={art} />
         <section className="hero wrap">
           <h1>Every last check, one chapter at a time.</h1>
           <p>Spoiler-aware walkthroughs and completion checklists for single-player games, one guide per game.</p>

@@ -17,12 +17,13 @@ export const HOME = "https://hundo.quest";
 /** The banner's copies: a phone's short band, a desktop's band at 1x, and up to the original for 2x and 3x screens. */
 export const BANNER_WIDTHS = [480, 960, 1800];
 /**
- * The hero's wall copy. Chrome counts an image drawn larger than its own size as only part of its area for the largest contentful paint,
- * so a tile this small, stretched, stays smaller than the headline, which is the paint that matters. Measured in Chrome on 21 Nov 2026:
- * with this copy the headline was the largest paint at every width tried from 320 to 1440px, where it counted 33,300px² at least and a tile
- * (measured from 360px) 25,600 at most; the 480 copy's tile outranked the headline from 412 to 900px wide, Lighthouse's phone among them.
+ * The hero's backdrop copy, every guide's cut to 288×96 whatever its banner's shape. Chrome counts an image drawn larger than its own
+ * size as at most its own area for the largest contentful paint, and the backdrop's crop (object-fit: cover) doesn't lower that, so each
+ * banner counts 27,648px² at any width, under the headline's smallest, 33,304 (two lines, from 400 to 600px wide): the backdrop never
+ * outranks the headline. Measured in Chrome on 21 Nov 2026: a 320px copy counted its whole 34,240 and outranked the headline from 400
+ * to 600px wide, Lighthouse's phone among them, and Koholint's, 320×119 from a 1700×630 banner, 38,080, outranking it from 320 to 600.
  */
-export const WALL_WIDTH = 320;
+export const BACKDROP_WIDTH = 288;
 const TILE_WIDTHS = [40, 80, 120];
 const HUNDO_FONT_FILE = join(import.meta.dirname, "fonts", "manrope.woff2");
 
@@ -67,6 +68,10 @@ export const make = async (apps = APPS): Promise<Made> => {
     if (!existsSync(banner)) throw new Error(`${guide.folder}: no src/guide/banners/chapter-1.webp, which its band on the landing page shows`);
     const { width = 0 } = await sharp(banner).metadata();
     const widths = BANNER_WIDTHS.map((w) => Math.min(w, width)).filter((w, i, all) => all.indexOf(w) === i);
+    const backdrop = await sharp(banner)
+      .resize({ width: BACKDROP_WIDTH, height: BACKDROP_WIDTH / 3, fit: "cover" })
+      .webp({ quality: 78 })
+      .toBuffer();
     art[guide.folder] = {
       banner: await Promise.all(
         widths.map(async (w) => {
@@ -74,11 +79,7 @@ export const make = async (apps = APPS): Promise<Made> => {
           return { url: add(hashed(`${guide.folder}-banner-${w}`, "webp", source), source), width: w };
         }),
       ),
-      wall: await (async () => {
-        const w = Math.min(WALL_WIDTH, width);
-        const source = await sharp(banner).resize({ width: w }).webp({ quality: 78 }).toBuffer();
-        return { url: add(hashed(`${guide.folder}-wall-${w}`, "webp", source), source), width: w };
-      })(),
+      backdrop: { url: add(hashed(`${guide.folder}-backdrop-${BACKDROP_WIDTH}`, "webp", backdrop), backdrop), width: BACKDROP_WIDTH },
       tile: TILE_WIDTHS.map((w) => {
         const source = readFileSync(join(root, "public", "icons", `tile-${w}.png`));
         return { url: add(hashed(`${guide.folder}-tile-${w}`, "png", source), source), width: w };
