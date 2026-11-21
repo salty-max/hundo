@@ -62,6 +62,13 @@ describe.runIf(hasBuilds)("a guide with builds", () => {
     localStorage.setItem(BUILD_KEY, `${ids[0]} added-later`);
     act(() => useBuild.getState().setPicked([ids[1]]));
     expect(localStorage.getItem(BUILD_KEY)).toBe(`${ids[1]} added-later`);
+    // A leaning this build retired goes on the next save, so a tab on the older build doesn't read a cleared pick as a build of it alone.
+    const retired = config.builds?.retired?.[0];
+    if (retired) {
+      localStorage.setItem(BUILD_KEY, `${ids[0]} ${retired} added-later`);
+      act(() => useBuild.getState().setPicked([]));
+      expect(localStorage.getItem(BUILD_KEY)).toBe("added-later");
+    }
     localStorage.removeItem(BUILD_KEY);
     act(() => useBuild.getState().setPicked([]));
     // No build is no key, as before: only the asked key says the reader answered.

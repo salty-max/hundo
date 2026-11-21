@@ -20,6 +20,7 @@ const hidden = new Set([
   "for",
   "kind",
   "role",
+  "retired",
   "cover",
   "badges",
   "quantity",

@@ -166,7 +166,7 @@ function Stage({ stage, picked, done, last }: { stage: TrackStage; picked: strin
     "start" in stage ? (
       <strong className="text-14/sm">{stage.start.weapon}</strong>
     ) : (
-      <Link to={`/guide/${stage.row.chapter}/${stage.row.id}`} className="text-14/sm font-bold text-ink underline decoration-line underline-offset-3 hover:text-primary">
+      <Link to={`/guide/${stage.row.chapter}/${stage.row.id}`} className="text-14/sm font-bold text-ink underline decoration-line underline-offset-3 hover:decoration-primary">
         {"task" in stage ? stage.task.title : stage.pick.item}
       </Link>
     );

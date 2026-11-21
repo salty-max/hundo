@@ -42,7 +42,7 @@ function Badge({ row, at }: { row: Row; at: At }) {
   );
 }
 
-/** Each role's tint, from the tones the categories use, which axe checks in every guide's look (`Tag.stories`, AllTones). */
+/** Each role's tint, from the tones the categories use. `Tag.stories`' AllTones draws every one, so axe checks them in every guide's look. */
 const roleTone: Record<PickRole, Tone> = { starter: "mint", upgrade: "sky", endgame: "violet" };
 
 /**

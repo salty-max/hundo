@@ -107,6 +107,11 @@ describe("guide data", () => {
       expect(label.trim(), id).not.toBe("");
     }
     if (config.builds) expect(leanings.length, "a guide with builds names its leanings").toBeGreaterThan(0);
+    // A retired id is never a leaning again: every old pick that holds it would come back with a new meaning.
+    for (const id of config.builds?.retired ?? []) {
+      expect(id).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/);
+      expect(ids, `${id} is retired`).not.toContain(id);
+    }
     // A leaning no build is made of and no step serves would be a box that does nothing.
     const used = new Set([...(config.builds?.named ?? []).flatMap((build) => build.stats), ...(config.builds?.tasks ?? []).flatMap((task) => task.serves)]);
     for (const id of ids) expect(used.has(id), `nothing uses ${id}`).toBe(true);
@@ -441,6 +446,13 @@ describe("the build plan", () => {
     }
     const custom = leanings.flatMap((a) => leanings.map((b) => [a.id, b.id])).find(([a, b]) => a !== b && !buildOf([a, b]));
     if (custom) expect(weaponTrack(() => true, custom)).toEqual([]);
+    // Every step on the weapon's path that a build's leanings serve is a stage of its track, every chapter revealed.
+    for (const build of namedBuilds) {
+      const shown = new Set(weaponTrack(() => true, build.stats).flatMap((stage) => ("task" in stage ? [stage.task] : [])));
+      for (const task of config.builds?.tasks ?? []) {
+        if (task.path && task.serves.some((id) => build.stats.includes(id))) expect(shown.has(task), `${build.id}: ${task.title}`).toBe(true);
+      }
+    }
     // An add-on changes no build's weapon: the track is the named build's alone.
     for (const addon of addons) {
       for (const build of namedBuilds.filter((item) => !addon.stats.some((stat) => item.stats.includes(stat)))) {

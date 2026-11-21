@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { brand, leanings } from "../guide";
+import { brand, leanings, retiredLeanings } from "../guide";
 
 /**
  * The leanings of this device's reader's build: what the guide points toward. A key of its own, beside the progress, like the theme: it
@@ -45,9 +45,12 @@ interface BuildStore {
   syncAsked: () => void;
 }
 
-/** The ids already saved that this build doesn't name: a pick saved here keeps a leaning a newer build added in another tab. */
+/**
+ * The ids already saved that this build doesn't name: a pick saved here keeps a leaning a newer build added in another tab. A leaning this
+ * build retired goes instead, so a tab still on the older build doesn't read a cleared pick ("pyro hum" cleared to "hum") as a build.
+ */
 function unknownSaved() {
-  const known = new Set(leanings.map((leaning) => leaning.id));
+  const known = new Set([...leanings.map((leaning) => leaning.id), ...retiredLeanings]);
   return (get(BUILD_KEY) ?? "").split(" ").filter((id) => id && !known.has(id));
 }
 

@@ -114,10 +114,11 @@ describe("Lordran builds", () => {
   });
 
   // Humanity left with the Chaos weapons add-on (21 Nov 2026), when Chaos became the Fire path's next step. Readers' saved picks still
-  // hold "hum": they read as the build without it, and a tab on an older bundle gets it back. Reusing the id would bring it back into all
-  // of them with a new meaning.
+  // hold "hum": they read as the build without it, and the next save drops it. Reusing the id would bring it back into every pick not yet
+  // saved again, with a new meaning.
   it("never brings the retired hum back, and reads an old pick that holds it as the build without it", () => {
     expect(config.builds?.leanings.map(({ id }) => id)).not.toContain("hum");
+    expect(config.builds?.retired).toContain("hum");
     expect(normalizeBuild("str dex hum")).toEqual(["str", "dex"]);
     expect(buildName(normalizeBuild("str dex hum"))).toBe("Quality");
     expect(buildName(normalizeBuild("pyro hum"))).toBe("Pyromancer");

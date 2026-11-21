@@ -112,9 +112,10 @@ const config: GuideConfig = {
       { id: "int", label: "Intelligence" },
       { id: "fth", label: "Faith" },
       { id: "pyro", label: "Pyromancy" },
-      // "hum" (Humanity) was retired with the Chaos weapons add-on: a saved pick that holds it reads without it (core's normalizeBuild),
-      // and guide.test.ts holds that the id never comes back.
     ],
+    // Humanity went with the Chaos weapons add-on (21 Nov 2026): a saved pick that holds it reads without it, the next save drops it, and
+    // guide.test.ts holds that the id never comes back.
+    retired: ["hum"],
     named,
     picks,
     tasks,
