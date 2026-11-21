@@ -26,11 +26,12 @@ const hidden = new Set([
   "layout",
   "corners",
 ]);
-/** Tuples whose leading or trailing places hold identifiers: a row's id and tags, a category's icon and tone, a chip's id. */
+/** Tuples whose leading or trailing places hold identifiers: a row's id and tags, a category's icon and tone, a chip's id, the builds a pick's guide is for. */
 const tuples: [path: RegExp, places: number[]][] = [
   [/^chapters\[\d+\]\.groups\[\d+\]\.rows\[\d+\]$/, [0, 1]],
   [/^categories\.[^.[\]]+$/, [2, 3]],
   [/^chips\.\w+\[\d+\]$/, [0]],
+  [/^builds\.picks\[\d+\]\.(guides|lists)\[\d+\]$/, [2]],
 ];
 
 /**

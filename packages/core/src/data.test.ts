@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { panels } from "virtual:guide/panels";
-import { allRows, brand, byId, cats, chapterRows, chapters, CHAPTER_COUNT, completion, addons, buildKinds, buildOf, buildPlan, config, guideAnchor, namedBuilds, picksFor, stepNumber, tasksFor, hasMissables, isCategory, leanings, missablesLeft, nextUp, readChapter, rowsByTag, tally, whatsLeft } from "./guide";
+import { allRows, brand, byId, cats, chapterRows, chapters, CHAPTER_COUNT, completion, addons, backs, buildKinds, buildOf, buildPlan, config, guideAnchor, namedBuilds, picksFor, stepNumber, tasksFor, hasMissables, isCategory, leanings, missablesLeft, nextUp, readChapter, rowsByTag, tally, whatsLeft } from "./guide";
 import { readerText } from "./reader-text";
 import type { Row } from "./types";
 
@@ -145,7 +145,7 @@ describe("guide data", () => {
     for (const build of namedBuilds) expect(buildOf(build.stats)?.build.id, build.id).toBe(build.id);
   });
 
-  it("backs each pick with a build guide and a second independent host, for named builds, on a real row", () => {
+  it("backs each pick, for each named build it is for, with a guide for that build and a second independent host, on a real row", () => {
     const named = new Set(namedBuilds.concat(addons).map((build) => build.id));
     const seen = new Set<string>();
     for (const pick of config.builds?.picks ?? []) {
@@ -156,19 +156,32 @@ describe("guide data", () => {
       expect(buildKinds, at).toContain(pick.kind);
       expect(pick.item.trim(), at).not.toBe("");
       expect(pick.why.trim().length, at).toBeGreaterThan(5);
-      expect(pick.why, at).not.toMatch(/\bbest\b/i);
-      // A ranked list is a second voice, never the only one: at least one guide that lays a build out, on two hosts in all.
-      expect(pick.guides.length, `${at}: a build guide`).toBeGreaterThan(0);
       const links = [...pick.guides, ...(pick.lists ?? [])];
-      for (const [name, url] of links) {
+      for (const [name, url, only] of links) {
         expect(name.trim(), at).not.toBe("");
         expect(new URL(url).protocol, `${at}: ${url}`).toBe("https:");
+        for (const id of only ?? []) expect(pick.for, `${at}: ${name} backs ${id}, which the pick isn't for`).toContain(id);
+        // On a pick for several builds every link says which it backs: an untagged one would back them all unseen.
+        if (pick.for.length > 1) expect(only, `${at}: ${name} names the builds it backs`).toBeDefined();
       }
-      expect(hosts(links.map(([, url]) => url)).size, `${at} needs two independent hosts`).toBeGreaterThanOrEqual(2);
+      // For each build it's for: a guide that lays that build out, and two independent hosts in all. A ranked list is a second voice only.
+      for (const build of pick.for) {
+        const guides = pick.guides.filter((link) => backs(link, pick).includes(build));
+        const voices = links.filter((link) => backs(link, pick).includes(build));
+        expect(guides.length, `${at}: a build guide for ${build}`).toBeGreaterThan(0);
+        expect(hosts(voices.map(([, url]) => url)).size, `${at}: two independent hosts for ${build}`).toBeGreaterThanOrEqual(2);
+      }
       for (const url of pick.sources ?? []) expect(new URL(url).protocol, `${at}: ${url}`).toBe("https:");
       expect(seen.has(at), `${at} twice`).toBe(false);
       seen.add(at);
     }
+  });
+
+  // A build's words say who recommends what; none of them ranks.
+  it("never says best in anything a build shows", () => {
+    // Every reader string under builds, as the reader-text walk finds them: a field added later is checked too.
+    const words = readerText(config).filter(([path]) => path.startsWith("builds."));
+    expect(words.filter(([, word]) => /\bbest\b/i.test(word))).toEqual([]);
   });
 
   it("puts each step on a real row, for leanings the guide names, with https sources, and a deadline only on two hosts and off a missable row", () => {

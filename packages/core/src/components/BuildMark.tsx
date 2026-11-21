@@ -76,7 +76,7 @@ function Note({ row, at }: { row: Row; at: At }) {
           </span>
           <span>
             <span className="sr-only">Build guides use </span>
-            <strong>{pick.item}</strong>: {pick.why} <span className="text-muted">· {recommendedBy(pick)}</span>
+            <strong>{pick.item}</strong>: {pick.why} <span className="text-muted">· {recommendedBy(pick, picked)}</span>
           </span>
         </span>
       ))}

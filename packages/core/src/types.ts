@@ -172,9 +172,16 @@ export interface NamedBuild {
 }
 
 /**
+ * A page that recommends a pick, named as a reader knows the site: ["Fextralife", "https://…"], and the named builds (ids) it recommends
+ * the pick for, where that is fewer than the pick's own `for`: a sorcerer's guide and a pyromancer's both naming one ring.
+ */
+export type BuildGuide = [name: string, url: string, builds?: string[]];
+
+/**
  * What build guides use for a named build, on the row where the reader comes by it: a recommendation, which says who makes it and never
- * "best". It needs two independent hosts, at least one of them a guide that lays a build out (`guides`); a ranked "best builds" list
- * (`lists`) can only be a second voice. A pick standing on lists alone goes to the guide's facts-to-verify instead.
+ * "best". For each build it's for, it needs two independent hosts, at least one of them a guide that lays that build out (`guides`); a
+ * ranked "best builds" list (`lists`) can only be a second voice. A pick standing on lists alone, or on a guide for another build, goes to
+ * the guide's facts-to-verify instead.
  */
 export interface BuildPick {
   /** A row id from the guide data. */
@@ -189,10 +196,13 @@ export interface BuildPick {
    * stats it scales with, never a letter, and nothing the row's chapter hasn't reached.
    */
   why: string;
-  /** Build guides that use it, named as a reader knows the site: ["Fextralife", "https://…"]. Shown by name only, never as links. */
-  guides: SourceLink[];
-  /** Ranked lists that name it ("best builds" articles): a second voice, never the only one. */
-  lists?: SourceLink[];
+  /**
+   * Build guides that use it, each for the builds it lays out. Each build in `for` needs one guide of its own and two independent hosts in
+   * all, guides and lists together (data.test.ts). Shown by name only, never as links, and only those for the reader's build.
+   */
+  guides: BuildGuide[];
+  /** Ranked lists that name it ("best builds" articles): a second voice for a build, never its only one. */
+  lists?: BuildGuide[];
   /** https pages for any fact in `why`. */
   sources?: string[];
 }

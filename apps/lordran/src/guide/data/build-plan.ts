@@ -1,31 +1,36 @@
-import type { BuildPick, BuildTask, NamedBuild, SourceLink } from "@hundo/core/types";
+import type { BuildGuide, BuildPick, BuildTask, NamedBuild } from "@hundo/core/types";
 
 /**
  * Lordran's named builds, what build guides use for them, and the steps each takes (core's Builds, docs/chapter-data.md#builds). Research
  * notes for every pick and step, with the guides read and what they disagree on, are in the builds research of 21 Nov 2026.
  *
- * A pick needs two independent hosts, at least one a guide that lays a build out (`guides`: Fextralife's build pages, which count as one
- * host however many, gamevoyagers' class guides, magicgameworld's build pages); a ranked "best builds" list (`lists`: TheGamer, Gameranx,
- * GamersDecide, High Ground Gaming, fandomspot) is a second voice only. Forum threads and machine-written pages don't count. Quality,
- * Pure Faith, Paladin and Dex/Faith have no picks yet: their guides' picks stand on lists, or on a guide for another build, so they show
- * their steps and facts. facts-to-verify.md holds what stands on less.
+ * A pick needs, for each named build it's for, two independent hosts, at least one a guide that lays that build out (`guides`:
+ * Fextralife's build pages, one host however many; gamevoyagers' class guides; magicgameworld's build pages). A ranked "best builds"
+ * list (`lists`: TheGamer, Gameranx, GamersDecide, High Ground Gaming, FandomSpot) is a second voice only. On a pick for several builds,
+ * each link's third place names the builds it backs (`only`). An add-on's picks need a guide for that kind of build: Pyromancy's
+ * stand on Fextralife's Dex build with pyromancy beside it, not on a pyromancer's guide. Forum threads and machine-written pages don't
+ * count. Quality, Pure Faith, Paladin and Dex/Faith have no picks yet: their guides' picks stand on lists, or on guides for other builds,
+ * so they show their steps and facts. facts-to-verify.md holds what stands on less.
  *
  * A step sits on the row whose tick means it's done, and says nothing its chapter hasn't reached.
  */
 
-const F = (page: string): SourceLink => ["Fextralife", `https://darksouls.wiki.fextralife.com/${page}`];
-const gamevoyagersPyro: SourceLink = ["gamevoyagers", "https://gamevoyagers.com/?p=2011999"];
-const gamevoyagersSorcerer: SourceLink = ["gamevoyagers", "https://gamevoyagers.com/?p=2012286"];
-const magicgameworldSorcery: SourceLink = ["magicgameworld", "https://www.magicgameworld.com/dark-souls-remastered-pure-sorcery-magic-pvp-character-build/"];
-const magicgameworldStrength: SourceLink = ["magicgameworld", "https://magicgameworld.com/?p=19514"];
-const magicgameworldDexterity: SourceLink = ["magicgameworld", "https://www.magicgameworld.com/?p=19512"];
-const theGamer: SourceLink = ["TheGamer", "https://www.thegamer.com/dark-souls-best-builds/"];
-const gameranx: SourceLink = ["Gameranx", "https://gameranx.com/features/id/232570/article/20-best-dark-souls-builds-that-will-make-you-wanna-replay/"];
-const gamersDecide: SourceLink = ["GamersDecide", "https://www.gamersdecide.com/articles/dark-souls-remastered-best-builds"];
-const gamersDecideDex: SourceLink = ["GamersDecide", "https://www.gamersdecide.com/articles/dark-souls-remastered-best-dex-weapons"];
-const gamersDecideInt: SourceLink = ["GamersDecide", "https://www.gamersdecide.com/articles/dark-souls-remastered-best-intelligence-weapons"];
-const highGround: SourceLink = ["High Ground Gaming", "https://www.highgroundgaming.com/dark-souls-remastered-best-beginner-class-build/"];
-const fandomspot: SourceLink = ["FandomSpot", "https://www.fandomspot.com/ds1-dex-weapons/"];
+const F = (page: string): BuildGuide => ["Fextralife", `https://darksouls.wiki.fextralife.com/${page}`];
+const gamevoyagersPyro: BuildGuide = ["gamevoyagers", "https://gamevoyagers.com/?p=2011999"];
+const gamevoyagersSorcerer: BuildGuide = ["gamevoyagers", "https://gamevoyagers.com/?p=2012286"];
+const magicgameworldSorcery: BuildGuide = ["magicgameworld", "https://www.magicgameworld.com/dark-souls-remastered-pure-sorcery-magic-pvp-character-build/"];
+const magicgameworldStrength: BuildGuide = ["magicgameworld", "https://magicgameworld.com/?p=19514"];
+const magicgameworldDexterity: BuildGuide = ["magicgameworld", "https://www.magicgameworld.com/?p=19512"];
+const theGamer: BuildGuide = ["TheGamer", "https://www.thegamer.com/dark-souls-best-builds/"];
+const gameranx: BuildGuide = ["Gameranx", "https://gameranx.com/features/id/232570/article/20-best-dark-souls-builds-that-will-make-you-wanna-replay/"];
+const gamersDecide: BuildGuide = ["GamersDecide", "https://www.gamersdecide.com/articles/dark-souls-remastered-best-builds"];
+const gamersDecideDex: BuildGuide = ["GamersDecide", "https://www.gamersdecide.com/articles/dark-souls-remastered-best-dex-weapons"];
+const gamersDecideInt: BuildGuide = ["GamersDecide", "https://www.gamersdecide.com/articles/dark-souls-remastered-best-intelligence-weapons"];
+const highGround: BuildGuide = ["High Ground Gaming", "https://www.highgroundgaming.com/dark-souls-remastered-best-beginner-class-build/"];
+const fandomspot: BuildGuide = ["FandomSpot", "https://www.fandomspot.com/ds1-dex-weapons/"];
+
+/** A guide or list that backs only some of a pick's builds: a sorcerer's guide and a pyromancer's naming one ring. */
+const only = ([name, url]: BuildGuide, ...ids: string[]): BuildGuide => [name, url, ids];
 
 const W = (page: string) => `https://darksouls.wikidot.com/${page}`;
 const FX = (page: string) => `https://darksouls.wiki.fextralife.com/${page}`;
@@ -53,18 +58,17 @@ export const picks: BuildPick[] = [
     item: "Zweihander",
     why: "an ultra greatsword that grows with Strength, found in the first chapter",
     guides: [F("Throned's+CMW+Strength+Build")],
-    lists: [gamersDecide, highGround],
+    lists: [highGround],
     sources: [W("zweihander")],
   },
   // Chapter 2
   {
     row: "quest-laurentius",
-    for: ["pyromancer", "pyromancy"],
+    for: ["pyromancer"],
     kind: "catalyst",
     item: "Pyromancy Flame",
     why: "taken to +15, then ascended: only its upgrades raise a pyromancy’s damage",
     guides: [F("Pyromaniac+Build"), gamevoyagersPyro],
-    lists: [gameranx],
     sources: [W("pyromancy-flame")],
   },
   {
@@ -82,8 +86,8 @@ export const picks: BuildPick[] = [
     kind: "ring",
     item: "Bellowing Dragoncrest Ring",
     why: "raises sorcery and pyromancy damage; Griggs sells it for 20,000 souls",
-    guides: [F("Magic+User+Guide"), gamevoyagersSorcerer, magicgameworldSorcery, F("Pyromaniac+Build")],
-    lists: [theGamer],
+    guides: [only(F("Magic+User+Guide"), "sorcerer"), only(gamevoyagersSorcerer, "sorcerer"), only(magicgameworldSorcery, "sorcerer"), only(F("Pyromaniac+Build"), "pyromancer")],
+    lists: [only(theGamer, "pyromancer")],
     sources: [W("bellowing-dragoncrest-ring")],
   },
   // Chapter 3
@@ -103,8 +107,8 @@ export const picks: BuildPick[] = [
     kind: "spell",
     item: "Great Chaos Fireball",
     why: "a ranged burst, the covenant’s gift on joining",
-    guides: [F("Pyromaniac+Build")],
-    lists: [theGamer],
+    guides: [only(F("Pyromaniac+Build"), "pyromancer"), only(F("Dex+Pyro+SL+100"), "pyromancy")],
+    lists: [only(theGamer, "pyromancer", "pyromancy")],
     sources: [W("chaos-servant")],
   },
   {
@@ -113,19 +117,9 @@ export const picks: BuildPick[] = [
     kind: "spell",
     item: "Great Combustion",
     why: "a close-range burst, from Quelana for 5,000 souls",
-    guides: [F("Pyromaniac+Build")],
-    lists: [theGamer, gameranx],
+    guides: [only(F("Pyromaniac+Build"), "pyromancer"), only(F("Dex+Pyro+SL+100"), "pyromancy")],
+    lists: [only(theGamer, "pyromancer", "pyromancy"), only(gameranx, "pyromancy")],
     sources: [W("quelaana-of-izalith"), FX("Pyromancies")],
-  },
-  {
-    row: "pyromancy-power-within",
-    for: ["pyromancer"],
-    kind: "spell",
-    item: "Power Within",
-    why: "raises your damage while it drains your HP",
-    guides: [F("Chaos+Build")],
-    lists: [theGamer],
-    sources: [FX("Pyromancies")],
   },
   // Chapter 4
   {
@@ -153,8 +147,8 @@ export const picks: BuildPick[] = [
     kind: "ring",
     item: "Havel’s Ring",
     why: "half again as much equip load, for heavier armor",
-    guides: [magicgameworldStrength, F("Magic+User+Guide"), magicgameworldSorcery],
-    lists: [gamersDecide],
+    guides: [only(magicgameworldStrength, "strength"), only(F("Magic+User+Guide"), "sorcerer"), only(magicgameworldSorcery, "sorcerer")],
+    lists: [only(gamersDecide, "strength")],
     sources: [W("havel-s-ring")],
   },
   // Chapter 5
@@ -164,7 +158,7 @@ export const picks: BuildPick[] = [
     kind: "weapon",
     item: "Velka’s Rapier",
     why: "a rapier that grows with Dexterity and Intelligence",
-    guides: [F("VelkaKnight")],
+    guides: [F("Darkmoon+Battlemage")],
     lists: [gamersDecideInt],
     sources: [W("velka-s-rapier")],
   },
@@ -175,8 +169,8 @@ export const picks: BuildPick[] = [
     kind: "weapon",
     item: "Moonlight Greatsword",
     why: "the caster’s greatsword: it grows with Intelligence",
-    guides: [gamevoyagersSorcerer, magicgameworldSorcery, F("Moonlight+Warrior")],
-    lists: [gamersDecideInt],
+    guides: [only(gamevoyagersSorcerer, "sorcerer", "magic-knight"), only(magicgameworldSorcery, "sorcerer"), only(F("Moonlight+Warrior"), "magic-knight")],
+    lists: [only(gamersDecideInt, "sorcerer", "magic-knight")],
     sources: [W("moonlight-greatsword")],
   },
   {
@@ -193,7 +187,7 @@ export const picks: BuildPick[] = [
     for: ["magic-knight"],
     kind: "spell",
     item: "Crystal Magic Weapon",
-    why: "a buff for a fast sword with no magic of its own, such as a Longsword",
+    why: "a buff for a fast sword with no magic of its own, such as a Longsword or Balder Side Sword",
     guides: [gamevoyagersSorcerer, F("Darkmoon+Battlemage")],
     sources: [W("crystal-magic-weapon")],
   },
@@ -210,7 +204,7 @@ export const picks: BuildPick[] = [
   // Chapter 9
   {
     row: "pyromancy-fire-tempest",
-    for: ["pyromancer", "pyromancy"],
+    for: ["pyromancer"],
     kind: "spell",
     item: "Fire Tempest",
     why: "pillars of fire all around you",
@@ -235,8 +229,8 @@ export const picks: BuildPick[] = [
     kind: "ring",
     item: "Ring of Favor and Protection",
     why: "more HP, stamina and equip load; taking it off breaks it",
-    guides: [F("Strength+GMW"), F("Samurai+(build)")],
-    lists: [gamersDecide],
+    guides: [only(F("Strength+GMW"), "strength"), only(F("Samurai+(build)"), "dexterity")],
+    lists: [only(gamersDecide, "strength", "dexterity")],
     sources: [W("ring-of-favor-and-protection")],
   },
   {
