@@ -89,6 +89,8 @@ export const missablesLeft = (chapter: Chapter, checks: Checks) =>
 /** The leanings a reader's build is made of, in the guide's order. Empty for a guide without builds, which shows nothing of them. */
 export const leanings = config.builds?.leanings ?? [];
 export const hasBuilds = leanings.length > 0;
+/** Leaning ids an earlier build of the guide named and this one retired: a saved pick drops them on its next save. */
+export const retiredLeanings = config.builds?.retired ?? [];
 const leaningLabel = new Map(leanings.map((leaning) => [leaning.id, leaning.label]));
 /** The kinds of item a pick names. */
 export const buildKinds: readonly BuildKind[] = ["weapon", "catalyst", "spell", "ring", "armor", "path"];

@@ -419,6 +419,12 @@ export interface GuideConfig {
    */
   builds?: {
     leanings: Leaning[];
+    /**
+     * Leaning ids an earlier build of the guide named and this one doesn't: a reader's saved pick may still hold one. It reads without
+     * them, and the next save drops them, so a tab still on that earlier build doesn't read a pick the reader has since changed or cleared
+     * as a build of the retired leaning alone. Never a leaning again (data.test.ts), since every old pick would come back with it.
+     */
+    retired?: string[];
     /** The builds readers know by name, each a set of leanings: what the build dialog offers and what a pick is called. */
     named?: NamedBuild[];
     /** What build guides use for a named build. */
