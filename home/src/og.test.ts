@@ -3,9 +3,8 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import sharp from "sharp";
 import { APPS, readGuides, type Guide } from "./guides";
-import { OG_HEIGHT, OG_WIDTH, ogImage, ogTags, ringArcs, WORD, WORD_ADVANCE, WORD_HEIGHT } from "./og";
+import { OG_HEIGHT, OG_WIDTH, ogImage, ogTags, ringArcs, wallGuides, wallTiles, WORD, WORD_ADVANCE, WORD_HEIGHT } from "./og";
 import { fillPage, HOME, make, type Made } from "./plugin";
-import { wallGuides, wallTiles } from "./wall";
 
 const index = readFileSync(join(import.meta.dirname, "..", "index.html"), "utf8");
 const range = (n: number) => Array.from({ length: n }, (_, i) => i);

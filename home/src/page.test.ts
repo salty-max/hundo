@@ -2,12 +2,12 @@
 // The page as the build makes it, from every guide's own files: a guide in apps/ that doesn't show here fails.
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
+import sharp from "sharp";
 import { wireFind } from "./find";
 import { wireGroup, wireProgress } from "./progress";
 import { APPS, readGuides, type Guide } from "./guides";
 import { GITHUB } from "./page";
-import { make, WALL_WIDTH, type Made } from "./plugin";
-import { wallTiles } from "./wall";
+import { BACKDROP_WIDTH, make, type Made } from "./plugin";
 
 const deployed = readdirSync(APPS).filter((name) => existsSync(join(APPS, name, "vercel.json")));
 
@@ -135,21 +135,31 @@ describe("the landing page", () => {
     document.body.innerHTML = made.home;
   });
 
-  it("puts the link preview's six banners behind the hero, their small wall copies, at low priority, hidden from assistive technology", () => {
-    const wall = document.querySelector("main > .sky > .wall")!;
-    expect(wall.nextElementSibling!.matches("section.hero")).toBe(true);
-    expect(wall.getAttribute("aria-hidden")).toBe("true");
-    const tiles = [...wall.querySelectorAll("img")];
-    expect(tiles.map((tile) => tile.getAttribute("src")!.replace(/-wall-.*/, ""))).toEqual(wallTiles(guides).map((guide) => `/assets/${guide.folder}`));
-    for (const tile of tiles) {
-      expect(tile.getAttribute("src")).toMatch(new RegExp(`-wall-${WALL_WIDTH}-\\w+\\.webp$`));
-      expect(tile.getAttribute("width")).toBe(String(WALL_WIDTH));
-      expect(made.files.has(tile.getAttribute("src")!.slice(1))).toBe(true);
-      expect(tile.getAttribute("alt")).toBe("");
-      expect(tile.getAttribute("fetchpriority")).toBe("low");
+  it("puts every guide's banner behind the hero, A to Z, the first in the markup at low priority, small copies, hidden from assistive technology", async () => {
+    const backdrop = document.querySelector<HTMLElement>("main > .sky > .backdrop")!;
+    expect(backdrop.nextElementSibling!.matches("section.hero")).toBe(true);
+    expect(backdrop.getAttribute("aria-hidden")).toBe("true");
+    const urls = backdrop.dataset.backdrop!.split(" ");
+    expect(urls.map((url) => url.replace(/-backdrop-.*/, ""))).toEqual(guides.map((guide) => `/assets/${guide.folder}`));
+    expect(guides.map((guide) => guide.folder)).toEqual(bands().map((band) => band.className.match(/\bg-(\w+)/)![1]));
+    for (const url of urls) {
+      expect(url).toMatch(new RegExp(`^/assets/\\w+-backdrop-${BACKDROP_WIDTH}-\\w+\\.webp$`));
+      // every one cut to the same small size, whatever its banner's shape: the most it can count for the largest paint (plugin.ts)
+      const { width, height } = await sharp(made.files.get(url.slice(1)) as Buffer).metadata();
+      expect([width, height], url).toEqual([BACKDROP_WIDTH, BACKDROP_WIDTH / 3]);
     }
-    // and nothing asks the browser for them ahead of the page's own pictures
-    expect(made.home).not.toMatch(/rel="preload"[^>]*-wall-/);
+    // only the first is in the markup: the script fetches each next one before it's due
+    const images = [...backdrop.querySelectorAll("img")];
+    expect(images.length).toBe(1);
+    const [first] = images;
+    expect(first.getAttribute("src")).toBe(urls[0]);
+    expect(first.classList.contains("on")).toBe(true);
+    expect(first.getAttribute("width")).toBe(String(BACKDROP_WIDTH));
+    expect(first.getAttribute("height")).toBe(String(Math.round(BACKDROP_WIDTH / 3)));
+    expect(first.getAttribute("alt")).toBe("");
+    expect(first.getAttribute("fetchpriority")).toBe("low");
+    // and nothing asks the browser for any of them ahead of the page's own pictures
+    expect(made.head + made.home).not.toMatch(/rel="preload"[^>]*-backdrop-/);
   });
 
   it("has the repository and the theme button in its top bar, the button shown only by the script that runs it", () => {

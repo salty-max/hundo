@@ -1,6 +1,6 @@
 # hundo.quest
 
-The landing page: what hundo is, over a wall of six guides' chapter 1 banners, then every guide, each drawn as its own chapter hero (its palette in light and dark, its display font,
+The landing page: what hundo is, over one guide's chapter 1 banner at a time, crossfading to the next, then every guide, each drawn as its own chapter hero (its palette in light and dark, its display font,
 its corners, its icon tile and its chapter 1 banner), A to Z by game. Each band's title is its game, the guide's own name above it beside
 the icon (left out where it is the game's, as with Echoes of Wisdom), then an Open button and the guide's chapters and checks. Every row
 of bands is as tall as the tallest band, so they are all one height. The top bar holds the theme button and a link to the repository on
@@ -18,27 +18,40 @@ file). From each guide it takes:
 
 `src/plugin.ts` then:
 
-- makes three copies of each chapter 1 banner for its band (480, 960 and up to 1,800px wide), and a 320px one for the hero's wall;
+- makes three copies of each chapter 1 banner for its band (480, 960 and up to 1,800px wide), and a 288×96 one for the hero's backdrop;
 - copies the icon tiles and the display font, with the font's licence into `fonts/`;
 - writes one stylesheet of the guides' palettes, fonts and corners (each dark palette written twice, as home.css writes its own: below),
   and the tab's icon (the logo's ring, one arc per guide);
 - makes the link preview's picture (`src/og.ts`), a 1200×630 JPEG named by its content: six chapter 1 banners, two across and three
   down, under the logo on a light card, its ring one arc per guide. Past six guides the wall shows six spread evenly across A to Z (the
-  middle of each sixth of the list, `src/wall.ts`), and the ring gains an arc with each guide, so a new guide changes the picture. The word "hund" is drawn from outlines kept in `og.ts`, since sharp can't set text in the page's woff2;
+  middle of each sixth of the list, `wallGuides`), and the ring gains an arc with each guide, so a new guide changes the picture. The word "hund" is drawn from outlines kept in `og.ts`, since sharp can't set text in the page's woff2;
   the comment above them says how to make them again. Its tags go in `index.html`'s head alone, at `<!--home:og-->`;
 - renders `src/page.tsx` to static HTML in `index.html` and `404.html`.
 
 React runs only at build. The browser gets the HTML, two stylesheets, `public/theme-init.js` and `src/main.ts`, a couple of kB, which
-shows the theme button (`src/theme.ts`) and the Find field, narrows the guides as a reader types (`src/find.ts`), and draws a returning
-reader's progress (`src/progress.ts`). Without it the button and the field stay hidden and every guide shows as it does for a first visit.
+shows the theme button (`src/theme.ts`) and the Find field, narrows the guides as a reader types (`src/find.ts`), draws a returning
+reader's progress (`src/progress.ts`) and runs the hero's backdrop (`src/backdrop.ts`). Without it the button and the field stay hidden,
+every guide shows as it does for a first visit, and the backdrop keeps its first banner.
 
-The hero's wall is the link preview's: the same six guides (`wallTiles`), three across and two down (two across and three down on a
-phone), muted, from the top of the page, behind the top bar, to the hero's foot, where it has faded out. Each tile overlaps its neighbours
-and fades across the overlap, so the seams blend, and a glow of the paper behind the words keeps them legible. A reader who asks for more
-contrast (`prefers-contrast: more`) gets the bare page. The tiles are a 320px copy of each banner, at a low fetch priority and never
-preloaded: Chrome counts an image stretched past its own size as only part of its area for the largest contentful paint, so a tile that
-small stays smaller than the headline, which stays the page's largest paint at every width (`WALL_WIDTH` in `src/plugin.ts` has the
-measurements; a 480px copy's tile outranked the headline on Lighthouse's phone).
+The hero's backdrop shows one guide's chapter 1 banner at a time, in the bands' order, A to Z: muted, from the top of the page, behind
+the top bar, to the hero's foot, where it has faded out, with a glow of the paper behind the words. Every 7 seconds the next guide's
+banner comes in over 1.5 seconds (`HOLD` in `src/backdrop.ts`, the fade in `home.css`), on top of the one before, which stays whole
+beneath until it is covered, so the fade never dips to the paper. The markup holds the first banner and lists every guide's in
+`data-backdrop`; the script fetches each next one 2 seconds before it's due (`AHEAD`), brings it in once it's decoded, and skips one that
+won't load. It runs only while the backdrop can be seen: not while the tab is hidden or the hero is scrolled away, coming back to a full
+hold, and never for a reader who asks for reduced motion, who keeps the first banner and fetches no other. A reader who asks for more
+contrast (`prefers-contrast: more`) gets the bare page, and nothing past the first banner is fetched. Nothing is kept. The link preview
+keeps its still wall of six.
+
+Each banner is a 288×96 copy (`BACKDROP_WIDTH` in `src/plugin.ts`), 3.5 to 8 kB, at a low fetch priority and never preloaded. Chrome
+counts an image drawn larger than its own size as at most its own area for the largest contentful paint, and the backdrop's crop
+(`object-fit: cover`) doesn't lower that, so each banner counts 27,648px² at any width, under the headline's smallest, 33,304px² (two
+lines, from 400 to 600px wide). Measured in Chrome on 21 Nov 2026, with every banner shown in turn at widths from 320 to 1920px: no
+banner was ever the largest paint. The headline was, except where a tall window shows the first band's banner below it, which is larger
+(at 600×900, 768×1024 and 900×900, not at 600×700, 768×800 or 900×700); the page before the backdrop measured the same at those sizes. A
+320px copy, 34,240px², outranked the headline from 400 to 600px wide. The same day, over every banner in light and dark, on a desktop
+and a phone, each kept its contrast against the least contrasting pixel behind it: at least 5.7:1 for the headline, 4.79:1 for the line
+under it, 3.31:1 for the logo and 3.48:1 for the top bar's icons.
 
 Light and dark follow the device, in CSS alone, until the reader presses the theme button for the scheme the device isn't using. Only then
 is a choice kept, in localStorage under `hundo.theme` (`THEME_KEY`), and the root gets `data-theme`; pressing it back to the device's scheme
@@ -88,10 +101,14 @@ production build as CI's `lighthouse-home` job does.
 
 - `page.test.ts`: the page as the build makes it. Every guide with a `vercel.json` in `apps/` is on it, linking to its `brand.home`, its
   game the band's title and its own name above it, unless it is the game's, with no publisher. Its pictures and fonts are among the files
-  the build writes, and each guide's dark palette is written for both ways into dark. The hero's wall shows the link preview's six, their 320px
-  copies at low priority, never preloaded, hidden from assistive technology. The top bar links to the repository in a new tab and holds
+  the build writes, and each guide's dark palette is written for both ways into dark. The hero's backdrop lists every guide's banner A to Z, their
+  288px copies, and holds only the first, at low priority, never preloaded, hidden from assistive technology. The top bar links to the repository in a new tab and holds
   the theme button, hidden until its script runs. Find narrows the guides. A guide's cookie fills in its band and no other, and
   a linked browser's group draws over them.
+- `backdrop.test.ts`: the hero's backdrop crossfades A to Z, fetching each next banner shortly before it's due and laying it over the one
+  before; it shows none before it's decoded and skips one that won't load; it keeps the first and fetches nothing under reduced motion,
+  and stops when that's asked for mid-way; it waits while the tab is hidden or the hero is out of view or not drawn; and it does nothing
+  with one banner.
 - `guides.test.ts`: what's read from each guide.
 - `find.test.ts`: how Find matches.
 - `og.test.ts`: the link preview. Its tags name a picture the build writes, on `https://hundo.quest`, at the size they declare; which
