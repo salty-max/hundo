@@ -16,6 +16,8 @@ const hidden = new Set([
   "opens",
   "steps",
   "serves",
+  "stats",
+  "for",
   "kind",
   "cover",
   "badges",

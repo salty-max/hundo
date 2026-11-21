@@ -75,7 +75,7 @@ Core's suites run against each guide:
 - **`icon-versions.test.ts`**: a changed icon file gets a new URL and the same bytes the same one, and the page, the manifest (icons, shortcuts' icons, screenshots) and the top bar's tile name only versioned URLs, each with its file's hash ([core.md](core.md#the-installed-app)).
 - **`sync/*.test.ts`, `SyncScreen.test.tsx`**: sync, from the ledger's merge to the screen ([core.md](core.md#syncing-devices)). `cycle.test.ts` runs two simulated browsers against the real API handler on an in-memory store, so the guide and the API are tested against each other. `ledger.test.ts` holds core's ledger equal to the API's.
 
-Each guide's own `guide.test.ts` adds its totals, its legacy saves, its extra state (and how that syncs), its eight storage keys and, in a guide with builds, its leaning ids.
+Each guide's own `guide.test.ts` adds its totals, its legacy saves, its extra state (and how that syncs), its nine storage keys and, in a guide with builds, its leaning ids.
 
 ## Stories
 

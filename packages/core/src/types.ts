@@ -122,13 +122,13 @@ export interface Choice {
 export interface Leaning {
   /** Lowercase letters, digits and hyphens: "str", "fth" (data.test.ts). */
   id: string;
-  /** The word Your build and a row's badge show: "Dexterity". */
+  /** The word the build dialog's stats and a row's tag show: "Dexterity". */
   label: string;
 }
 
 /**
- * What a build entry's item is, as a build page lays gear out by slot: "catalyst" holds catalysts, talismans and the pyromancy flame, and
- * "path" an upgrade path (an ember, a flame's reinforcement, a smith who opens a path). Next for your build groups by it.
+ * What a build entry's or pick's item is, as a build page lays gear out by slot: "catalyst" holds catalysts, talismans and the pyromancy
+ * flame, and "path" an upgrade path (an ember, a flame's reinforcement, a smith who opens a path).
  */
 export type BuildKind = "weapon" | "catalyst" | "spell" | "ring" | "armor" | "path";
 
@@ -144,12 +144,79 @@ export interface BuildEntry {
   kind: BuildKind;
   /**
    * Names the item first ("Winged Spear: needs 15 Dexterity…"), then the facts, never "best". Which stats it scales with, never a letter:
-   * the wikis' letter ranges differ, and a letter at +0 doesn't survive upgrades (data.test.ts). It shows beside the row and in Next for
-   * your build, so it names no place, boss or character the row's chapter hasn't reached, and no fate, as a questline's name doesn't. The
+   * the wikis' letter ranges differ, and a letter at +0 doesn't survive upgrades (data.test.ts). It shows beside the row and in the build
+   * plan, so it names no place, boss or character the row's chapter hasn't reached, and no fate, as a questline's name doesn't. The
    * item's own facts (what it needs, how far it goes) are what it's for.
    */
   note: string;
   /** One or more https pages that state the note's facts. */
+  sources: string[];
+}
+
+/**
+ * A build readers know by name ("Pyromancer", "Quality"), as build guides name it: a set of leanings, so a reader's pick (saved as leaning
+ * ids) is this build when it holds exactly these. An add-on ("Pyromancy" beside a melee build) is a set the pick may hold on top of a
+ * named build. Data only: its id is never saved, so it may change.
+ */
+export interface NamedBuild {
+  /** Lowercase letters, digits and hyphens, what a pick's `for` names: "dex-faith". */
+  id: string;
+  /** "Dex/Faith". */
+  name: string;
+  /** The leanings it is, by id, each once. No two named builds (or two add-ons) share a set (data.test.ts). */
+  stats: string[];
+  /** One line on how it plays, for the build dialog's card: a play style, never a later item, place or boss. */
+  blurb: string;
+  /** On top of another build: Pyromancy, Chaos weapons. */
+  addon?: true;
+}
+
+/**
+ * What build guides use for a named build, on the row where the reader comes by it: a recommendation, which says who makes it and never
+ * "best". It needs two independent hosts, at least one of them a guide that lays a build out (`guides`); a ranked "best builds" list
+ * (`lists`) can only be a second voice. A pick standing on lists alone goes to the guide's facts-to-verify instead.
+ */
+export interface BuildPick {
+  /** A row id from the guide data. */
+  row: string;
+  /** The named builds (ids) the guides recommend it for. A pick that is no named build (a custom one) gets no picks. */
+  for: string[];
+  kind: BuildKind;
+  /** The item, as the game names it: "Great Combustion". */
+  item: string;
+  /**
+   * What the guides use it for, in a few words ("close-range burst"), with the item's facts where they help. The note's rules hold: which
+   * stats it scales with, never a letter, and nothing the row's chapter hasn't reached.
+   */
+  why: string;
+  /** Build guides that use it, named as a reader knows the site: ["Fextralife", "https://…"]. Shown by name only, never as links. */
+  guides: SourceLink[];
+  /** Ranked lists that name it ("best builds" articles): a second voice, never the only one. */
+  lists?: SourceLink[];
+  /** https pages for any fact in `why`. */
+  sources?: string[];
+}
+
+/**
+ * A step a build takes at a row: buying from a trainer, joining a covenant, reinforcing, ascending, taking an ember to a smith. It is done
+ * when its row is ticked (no progress of its own), so it sits only on a row whose tick means the step is done; an upgrade no row stands for
+ * is part of the step it leads to. Steps are numbered per pick, in route order.
+ */
+export interface BuildTask {
+  /** A row id from the guide data. */
+  row: string;
+  /** The leanings it serves, by id, each once: any of them in the pick shows it. */
+  serves: string[];
+  /** What to do, as a short imperative: "Buy his pyromancies and start on the flame". */
+  title: string;
+  /** How: who, where, what it costs, what it opens. Nothing the row's chapter hasn't reached. */
+  text: string;
+  /**
+   * What is lost if it waits, in the row's own chapter terms ("Answer No when…"). Two independent hosts in `sources`, as a missable. Never
+   * on a missable row, whose own warning says it.
+   */
+  before?: string;
+  /** https pages for its facts. */
   sources: string[];
 }
 
@@ -214,7 +281,7 @@ export interface Brand {
   /** Document and social title. */
   title: string;
   description: string;
-  /** Storage keys are `<prefix>.v1` (progress), `<prefix>.theme`, `<prefix>.sync` (a synced device's ledger), `<prefix>.awake` (Keep screen on), `<prefix>.place` (the last place read), `<prefix>.persist` (when the guide last asked to keep its storage), `<prefix>.counts` (Count my visits turned off) and `<prefix>.build` (the leanings ticked under Your build). */
+  /** Storage keys are `<prefix>.v1` (progress), `<prefix>.theme`, `<prefix>.sync` (a synced device's ledger), `<prefix>.awake` (Keep screen on), `<prefix>.place` (the last place read), `<prefix>.persist` (when the guide last asked to keep its storage), `<prefix>.counts` (Count my visits turned off), `<prefix>.build` (the leanings of the reader's build) and `<prefix>.build-asked` (whether the guide has asked for a build). */
   storagePrefix: string;
   backupFile: string;
   /** The word in the header brand, above "HUNDO". */
@@ -324,7 +391,17 @@ export interface GuideConfig {
    * The builds the guide can point toward: the leanings a reader ticks under Your build, and the entries that name what serves each.
    * A lens over the checklist, never a count. A guide without it shows nothing of builds.
    */
-  builds?: { leanings: Leaning[]; entries: BuildEntry[] };
+  builds?: {
+    leanings: Leaning[];
+    /** The builds readers know by name, each a set of leanings: what the build dialog offers and what a pick is called. */
+    named?: NamedBuild[];
+    /** Facts by stat: what serves a leaning. Shown under picks and steps, the quieter lines. */
+    entries: BuildEntry[];
+    /** What build guides use for a named build. */
+    picks?: BuildPick[];
+    /** The steps a build takes: trainers, covenants, smiths, the flame. */
+    tasks?: BuildTask[];
+  };
   /** Shown while nothing is flagged as missable: why that is safe. Its sources back the claim and aren't shown. */
   reassurance?: { text: string; sources: SourceLink[] };
   /** Chapter id → banner, imported with `?banner` (core's banners.ts). */

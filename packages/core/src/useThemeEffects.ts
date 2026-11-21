@@ -3,7 +3,7 @@ import { THEME_KEY, useTheme } from "./store/theme";
 import { STORAGE_KEY } from "./progress-state";
 import { askAfterFirstTick, checkPersistence, reloadFromAnotherTab } from "./persistence";
 import { AWAKE_KEY, useAwake } from "./store/awake";
-import { BUILD_KEY, useBuild } from "./store/build";
+import { BUILD_ASKED_KEY, BUILD_KEY, useBuild } from "./store/build";
 import { useKeepAwake } from "./useKeepAwake";
 import { COUNTS_KEY, startCounting, useCounts } from "./counts";
 
@@ -93,6 +93,7 @@ export function useGlobalEffects() {
       if (event.key === AWAKE_KEY || event.key === null) useAwake.getState().sync(event.newValue);
       if (event.key === COUNTS_KEY || event.key === null) useCounts.getState().sync(event.newValue);
       if (event.key === BUILD_KEY || event.key === null) useBuild.getState().sync(event.newValue);
+      if (event.key === BUILD_ASKED_KEY) useBuild.getState().syncAsked();
       if (event.key === STORAGE_KEY) reloadFromAnotherTab();
     };
     window.addEventListener("storage", onStorage);

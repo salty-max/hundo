@@ -41,7 +41,7 @@ describe("the Progress page", () => {
     const [hero, ...rest] = parts();
     expect(within(hero).getByRole("progressbar", { name: "Overall completion" })).toBeInTheDocument();
     expect(rest.map((part) => part.id)).toEqual(ids);
-    expect(rest.map(titleOf)).toEqual(["Chapter progress", ...(hasBuilds ? ["Next for your build"] : []), "Progress backup", ...panels.map((panel) => panel.title), "What’s left", text.boardTitle]);
+    expect(rest.map(titleOf)).toEqual(["Chapter progress", ...(hasBuilds ? ["Your build"] : []), "Progress backup", ...panels.map((panel) => panel.title), "What’s left", text.boardTitle]);
     // All of them in the one column the list stands beside, none in a column of its own.
     const column = rest[0].parentElement!;
     for (const part of rest) expect(part.parentElement).toBe(column);

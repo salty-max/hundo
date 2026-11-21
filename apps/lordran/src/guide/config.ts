@@ -14,6 +14,7 @@ import chapter10 from "./data/chapter-10";
 import chapter11 from "./data/chapter-11";
 import chapter12 from "./data/chapter-12";
 import chapter13 from "./data/chapter-13";
+import { named, picks, tasks } from "./data/build-plan";
 import { builds } from "./data/builds";
 import { choices } from "./data/choices";
 import { missables } from "./data/missables";
@@ -114,7 +115,10 @@ const config: GuideConfig = {
       { id: "pyro", label: "Pyromancy" },
       { id: "hum", label: "Humanity" },
     ],
+    named,
     entries: builds,
+    picks,
+    tasks,
   },
   banners,
   completion: { board: targets, directions: ["route"] },

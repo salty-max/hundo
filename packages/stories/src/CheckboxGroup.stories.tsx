@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState, type ComponentProps } from "react";
 import { expect, userEvent } from "storybook/test";
 
-// Lordran's leanings, as Your build in Guide settings shows them (the stories' guide has no builds of its own).
+// Lordran's leanings, as the build dialog's Pick stats yourself shows them (the stories' guide has no builds of its own).
 const leanings: [string, string][] = [
   ["str", "Strength"],
   ["dex", "Dexterity"],

@@ -1,8 +1,9 @@
 import { create } from "zustand";
 
 export type DialogState =
-  /** `at: "build"` opens on Your build, its first box focused (Next for your build's Change build). */
-  | { kind: "settings"; at?: "build" }
+  | { kind: "settings" }
+  /** The reader's build. `welcome`: asked once, on the first tick in a guide with builds (actions.ts). */
+  | { kind: "build"; welcome?: boolean }
   | { kind: "sync" }
   | { kind: "confirm"; title: string; explanation: string; label: string; danger?: boolean; onConfirm: () => void }
   | null;

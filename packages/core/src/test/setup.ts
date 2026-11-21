@@ -24,4 +24,12 @@ if (typeof window !== "undefined") {
     const { chunks } = await import("../components/chunks");
     await Promise.all(Object.values(chunks).map((chunk) => chunk.load()));
   }, 30_000);
+
+  // In a guide with builds the first tick asks how the reader plays (actions.ts), and its dialog hides the page behind it. A test that
+  // ticks for its own reasons starts already asked, as Lighthouse and the screenshots meet no welcome because they never tick;
+  // builds.test.tsx clears it to test the welcome itself. (Imported here, not above, for the reason the chunks are.)
+  beforeEach(async () => {
+    const { useBuild } = await import("../store/build");
+    useBuild.setState({ asked: true });
+  });
 }
