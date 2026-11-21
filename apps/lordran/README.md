@@ -15,7 +15,7 @@ pnpm lint
 pnpm icons      # regenerate public/icons and public/favicon.ico from scripts/icon-master.webp and scripts/favicon.svg
 ```
 
-`src/guide` is what makes this guide Dark Souls: `brand.ts` (names, storage keys, fonts, corner style), `config.ts` (article layout, categories, completion targets), the chapter data in `src/guide/data` (one module per chapter, plus `missables.ts`, `builds.ts` for the builds it points toward, and the guide-wide `sources.ts`), the banners and `theme.css`, which sets only the palette.
+`src/guide` is what makes this guide Dark Souls: `brand.ts` (names, storage keys, fonts, corner style), `config.ts` (article layout, categories, completion targets), the chapter data in `src/guide/data` (one module per chapter, plus `missables.ts`, `build-plan.ts` for the builds it points toward, and the guide-wide `sources.ts`), the banners and `theme.css`, which sets only the palette.
 
 ## Deploy
 

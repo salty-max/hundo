@@ -15,7 +15,6 @@ import chapter11 from "./data/chapter-11";
 import chapter12 from "./data/chapter-12";
 import chapter13 from "./data/chapter-13";
 import { named, picks, tasks } from "./data/build-plan";
-import { builds } from "./data/builds";
 import { choices } from "./data/choices";
 import { missables } from "./data/missables";
 import { questlines } from "./data/questlines";
@@ -113,10 +112,10 @@ const config: GuideConfig = {
       { id: "int", label: "Intelligence" },
       { id: "fth", label: "Faith" },
       { id: "pyro", label: "Pyromancy" },
-      { id: "hum", label: "Humanity" },
+      // "hum" (Humanity) was retired with the Chaos weapons add-on: a saved pick that holds it reads without it (core's normalizeBuild),
+      // and guide.test.ts holds that the id never comes back.
     ],
     named,
-    entries: builds,
     picks,
     tasks,
   },

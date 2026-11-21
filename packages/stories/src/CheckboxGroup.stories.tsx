@@ -10,7 +10,6 @@ const leanings: [string, string][] = [
   ["int", "Intelligence"],
   ["fth", "Faith"],
   ["pyro", "Pyromancy"],
-  ["hum", "Humanity"],
 ];
 
 /** Holds the value, as a form does. */
@@ -38,7 +37,7 @@ export const Named: Story = {
   play: async ({ canvas }) => {
     const group = canvas.getByRole("group", { name: "Your build" });
     await expect(group).toBeVisible();
-    await expect(canvas.getAllByRole("checkbox")).toHaveLength(6);
+    await expect(canvas.getAllByRole("checkbox")).toHaveLength(leanings.length);
     await expect(canvas.getByRole("checkbox", { name: "Dexterity" })).toBeChecked();
     await expect(canvas.getByRole("checkbox", { name: "Strength" })).not.toBeChecked();
   },

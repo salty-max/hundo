@@ -1,4 +1,4 @@
-import { allRows, chapters, rowsByTag } from "@hundo/core/guide";
+import { allRows, buildName, chapters, rowsByTag } from "@hundo/core/guide";
 import { STORAGE_KEY, validateState } from "@hundo/core/progress-state";
 import config, { targets } from "./config";
 import { readerText } from "@hundo/core/reader-text";
@@ -10,7 +10,7 @@ import { PLACE_KEY } from "@hundo/core/store/place";
 import { SYNC_KEY } from "@hundo/core/sync/local";
 import { PERSIST_KEY } from "@hundo/core/persistence";
 import { COUNTS_KEY } from "@hundo/core/counts";
-import { BUILD_ASKED_KEY, BUILD_KEY } from "@hundo/core/store/build";
+import { BUILD_ASKED_KEY, BUILD_KEY, normalizeBuild } from "@hundo/core/store/build";
 import { SUMMARY_COOKIE } from "@hundo/core/summary";
 import { flatten } from "@hundo/core/sync/fields";
 
@@ -110,7 +110,54 @@ describe("storage", () => {
 describe("Lordran builds", () => {
   // A reader's pick saves these ids (core's store/build.ts): a changed id drops it from every pick.
   it("keeps its leaning ids", () => {
-    expect(config.builds?.leanings.map(({ id, label }) => `${id} ${label}`)).toEqual(["str Strength", "dex Dexterity", "int Intelligence", "fth Faith", "pyro Pyromancy", "hum Humanity"]);
+    expect(config.builds?.leanings.map(({ id, label }) => `${id} ${label}`)).toEqual(["str Strength", "dex Dexterity", "int Intelligence", "fth Faith", "pyro Pyromancy"]);
+  });
+
+  // Humanity left with the Chaos weapons add-on (21 Nov 2026), when Chaos became the Fire path's next step. Readers' saved picks still
+  // hold "hum": they read as the build without it, and a tab on an older bundle gets it back. Reusing the id would bring it back into all
+  // of them with a new meaning.
+  it("never brings the retired hum back, and reads an old pick that holds it as the build without it", () => {
+    expect(config.builds?.leanings.map(({ id }) => id)).not.toContain("hum");
+    expect(normalizeBuild("str dex hum")).toEqual(["str", "dex"]);
+    expect(buildName(normalizeBuild("str dex hum"))).toBe("Quality");
+    expect(buildName(normalizeBuild("pyro hum"))).toBe("Pyromancer");
+    expect(normalizeBuild("hum")).toEqual([]);
+  });
+
+  // A starter is usable in the opening hours with the build's starting class's stats, within a few levels; two hands count Strength one
+  // and a half times. The classes' starting stats, from https://darksouls.wikidot.com/classes.
+  const classes: Record<string, Record<string, number>> = {
+    Warrior: { str: 13, dex: 13 },
+    Bandit: { str: 14, dex: 9 },
+    Wanderer: { str: 10, dex: 14, int: 11 },
+    Sorcerer: { str: 9, dex: 11, int: 15 },
+    Cleric: { str: 12, dex: 8, int: 8, fth: 14 },
+    Pyromancer: { str: 12, dex: 9, int: 10, fth: 8 },
+  };
+  // Levels a class is short of an item's needs; a stat the table doesn't hold for it rules that class out.
+  const short = (stats: Record<string, number>, needs: Record<string, number>) =>
+    Object.entries(needs).reduce((sum, [id, need]) => sum + (stats[id] === undefined ? Infinity : Math.max(0, (id === "str" ? Math.ceil(need / 1.5) : need) - stats[id])), 0);
+
+  it("names each build's start as a class the table knows", () => {
+    for (const build of config.builds?.named ?? []) {
+      if (!build.start) continue;
+      const names = Object.keys(classes).filter((name) => build.start!.class.includes(name));
+      expect(names.length, `${build.id}: ${build.start.class}`).toBeGreaterThan(0);
+    }
+  });
+
+  it("holds every starter to a starting class that can use it within three levels", () => {
+    const starters = (config.builds?.picks ?? []).filter((pick) => pick.role === "starter" && pick.needs);
+    expect(starters.length).toBeGreaterThan(3);
+    for (const pick of starters) {
+      for (const id of pick.for) {
+        const start = config.builds?.named?.find((build) => build.id === id)?.start;
+        // A build with no start (guides don't agree on its class) is held to any class the table knows.
+        const names = Object.keys(classes).filter((name) => !start || start.class.includes(name));
+        const best = Math.min(...names.map((name) => short(classes[name], pick.needs!)));
+        expect(best, `${pick.item} for ${id}, starting as ${start?.class ?? "any class"}`).toBeLessThanOrEqual(3);
+      }
+    }
   });
 });
 

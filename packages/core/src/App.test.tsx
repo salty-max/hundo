@@ -149,7 +149,7 @@ describe("App", () => {
     for (const row of chapterRows(chapter)) if (row.reference) cited.add(row.reference);
     for (const missable of config.missables) for (const url of missable.sources) cited.add(url);
     for (const choice of config.choices ?? []) for (const url of choice.sources) cited.add(url);
-    for (const entry of config.builds?.entries ?? []) for (const url of entry.sources) cited.add(url);
+    for (const { start } of config.builds?.named ?? []) if (start) for (const url of [...start.guides, ...(start.lists ?? [])].map(([, link]) => link).concat(start.sources)) cited.add(url);
     for (const pick of config.builds?.picks ?? []) for (const url of [...pick.guides, ...(pick.lists ?? [])].map(([, link]) => link).concat(pick.sources ?? [])) cited.add(url);
     for (const task of config.builds?.tasks ?? []) for (const url of task.sources) cited.add(url);
     for (const group of chapter.groups) for (const map of [group.map, ...group.rows.map((row) => row.map)]) if (map) cited.delete(map[1]);

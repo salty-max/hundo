@@ -1,6 +1,6 @@
 # Writing and sourcing chapter data
 
-A guide's content is plain TypeScript in `apps/<name>/src/guide/data`: one module per chapter, plus `missables.ts`, `questlines.ts`, `sources.ts` where the guide has guide-wide references, and `builds.ts` where the game is played by build. The types are in `packages/core/src/types.ts`. The rules below that core's tests enforce are marked **(tested)**. The rest is how the three guides are written.
+A guide's content is plain TypeScript in `apps/<name>/src/guide/data`: one module per chapter, plus `missables.ts`, `questlines.ts`, `sources.ts` where the guide has guide-wide references, and `build-plan.ts` where the game is played by build. The types are in `packages/core/src/types.ts`. The rules below that core's tests enforce are marked **(tested)**. The rest is how the three guides are written.
 
 ## A chapter
 
@@ -138,27 +138,17 @@ export const questlines: Questlines = {
 
 ## Builds
 
-A guide whose game is played by build can point a reader toward theirs: `config.ts` passes `builds: { leanings, named, entries, picks, tasks }`, the facts from `data/builds.ts` and the rest from `data/build-plan.ts` (Lordran's). Only Lordran has builds (decided 21 Nov 2026, after research on how Dark Souls builds work and what build guides recommend). A build never counts: everything in it points at a row that already exists and changes nothing about it ([core.md](core.md#builds) has what the reader sees).
+A guide whose game is played by build can point a reader toward theirs: `config.ts` passes `builds: { leanings, named, picks, tasks }`, all from `data/build-plan.ts` (Lordran's). Only Lordran has builds (decided 21 Nov 2026, after research on how Dark Souls builds work and what build guides recommend). A build never counts: everything in it points at a row that already exists and changes nothing about it ([core.md](core.md#builds) has what the reader sees). A row shows build lines only for a step or a pick: what a weapon scales with or needs is no hint on its own (the stat-index facts of the first version went on 21 Nov 2026, the user's call), and survives only as a pick's `needs`.
 
-- **Leanings** (`builds.leanings`): `{ id, label }`, the ways a reader levels. Lordran's are Strength, Dexterity, Intelligence and Faith (the stats behind every requirement and scaling), Pyromancy (which grows with the flame, not a stat) and Humanity (which the Chaos path and a few weapons scale with). Attunement isn't a leaning, since every caster needs it. Ids are lowercase and unique **(tested)**, and **never change once live**: a reader's pick saves them, so the guide's `guide.test.ts` pins them.
-- **Named builds** (`builds.named`): `{ id, name, stats, blurb, addon? }`, the builds readers know by name, as build guides name them, each a set of leanings: Quality is `["str", "dex"]`, Pyromancer `["pyro"]`. An add-on (Pyromancy, Chaos weapons) goes on top of another build. No two named builds, and no two add-ons, share their leanings **(tested)**, so a pick has one name. The blurb is a play style, never a later item. Ids are data only, never saved.
-
-### Facts (`entries`)
-
-```ts
-{ row: "pickup-claymore", serves: ["str", "dex"], kind: "weapon", note: "Claymore: needs 16 Strength and 10 Dexterity, and scales with both.", sources: ["https://darksouls.wikidot.com/claymore"] }
-```
-
-- **One entry per item**, on the row that holds it; a row that holds two has two.
-- **`serves`**: the leanings it serves, each one the guide names, each once **(tested)**: a weapon serves the stats it scales with, a spell the stat it needs.
-- **`kind`**: `weapon`, `catalyst` (catalysts, talismans, the pyromancy flame), `spell`, `ring`, `armor`, or `path` (an ember, a smith who opens a path) **(tested)**.
-- **`note`**: the item's name first, then facts its sources state: what it needs (one-handed), which stats it scales with, casts and slots, what only one seller has. **Never a scaling letter** **(tested)**: the wikis' letter ranges differ and a letter at +0 rises with each upgrade, so say "scales mostly with Dexterity". Never "best", a stat target or a class tip. It shows beside the row and in the plan, so it names no place, boss or character the row's chapter hasn't reached, and no fate (no test can catch that). Missable-ness is never repeated in it.
-- **`sources`**: https pages that state the note **(tested)**. Like every source, never shown.
+- **Leanings** (`builds.leanings`): `{ id, label }`, the ways a reader levels. Lordran's are Strength, Dexterity, Intelligence and Faith (the stats behind every requirement and scaling) and Pyromancy (which grows with the flame, not a stat). Attunement isn't a leaning, since every caster needs it. Ids are lowercase and unique **(tested)**, each in a named build or served by a step **(tested)**, and **never change once live**: a reader's pick saves them, so the guide's `guide.test.ts` pins them. A leaning can be retired, never renamed or reused: Humanity (`hum`) went with the Chaos weapons add-on on 21 Nov 2026, a saved pick that holds it reads without it (`normalizeBuild`), and Lordran's test holds that the id never comes back.
+- **Named builds** (`builds.named`): `{ id, name, stats, blurb, addon?, start? }`, the builds readers know by name, as build guides name them, each a set of leanings: Quality is `["str", "dex"]`, Pyromancer `["pyro"]`. An add-on (Pyromancy) goes on top of another build. No two named builds, and no two add-ons, share their leanings **(tested)**, so a pick has one name. The blurb is a play style, never a later item. Ids are data only, never saved.
+- **`start`**: how build guides start a named build, `{ class, weapon?, why?, guides, lists?, sources }`: the class with its article ("a Cleric", "a Bandit or a Warrior"), the weapon that class starts with where guides fight with it early (the first stage of the build's weapon track: starting gear has no row), and what they say it's for. It shows on the build's card in the dialog, from the reader's first tick, so it names nothing past chapter 1. Its links follow a pick's rule for that one build: a guide for it and two independent hosts **(tested)**, none tagged with builds. A `why` needs a `weapon` **(tested)**. Where guides start a build as different classes, one host each, or only one names a class, it has no start (Lordran's Magic Knight and Quality). Lordran's `guide.test.ts` knows the classes' starting stats, and every class a start names must be one it knows **(tested)**.
+- **Every named build has a weapon** on its track (a start's weapon, or a weapon or path pick) **and a step** its leanings serve **(tested)**: the reader's ask, that no build lives on its spells alone.
 
 ### Picks (`picks`): what build guides use
 
 ```ts
-{ row: "quest-quelaana", for: ["pyromancer", "pyromancy"], kind: "spell", item: "Great Combustion", why: "a close-range burst, from Quelana for 5,000 souls",
+{ row: "quest-quelaana", for: ["pyromancer", "pyromancy"], kind: "spell", item: "Great Combustion", role: "upgrade", core: true, why: "a close-range burst",
   guides: [["Fextralife", "https://darksouls.wiki.fextralife.com/Pyromaniac+Build"]], lists: [["TheGamer", "https://www.thegamer.com/dark-souls-best-builds/"]], sources: ["https://darksouls.wikidot.com/quelaana-of-izalith"] }
 ```
 
@@ -166,7 +156,10 @@ A guide whose game is played by build can point a reader toward theirs: `config.
 - **A link** is `[name, url]` on a pick for one build, and `[name, url, builds]` on a pick for several, naming the builds it backs (a sorcerer's guide and a pyromancer's naming one ring) **(tested)**. The builds place is an id list, hidden from the reader-text walk; the name is reader text. A reader sees only the names that back their build.
 - **`row`**: where the reader comes by it, as early as the guide offers it (Great Combustion on Quelana's row in chapter 3, not the spell's own row in chapter 9).
 - **`for`**: the named builds (ids) the guides recommend it for. Each build in it meets the rule on its own **(tested)**.
-- **`item`** as the game names it; **`why`**: what guides use it for, in a few words, with a fact where it helps (a price, what it can't do), under the note's rules: no scaling letter **(tested)**, nothing past the row's chapter. No string a build shows says "best": names, blurbs, notes, picks and steps **(tested)**.
+- **`item`** as the game names it; **`why`**: what guides use it for, as a build guide says it ("a first weapon you can use now"), with a fact where it helps (a price, what it can't do): which stats it scales with, never a scaling letter **(tested)**: the wikis' letter ranges differ and a +0 letter rises with each upgrade. Nothing past the row's chapter, and no string a build shows says "best": names, blurbs, starts, picks and steps **(tested)**.
+- **`role`**: when it serves the build **(tested)**: `starter`, usable in the opening hours with the build's starting class's stats (Lordran's test holds every starter's `needs` to a class its build starts as, within three levels, two hands counting Strength 1.5 times); `upgrade`, what the build moves to once its stats or upgrades allow; `endgame`, what it ends on. A pick whose role differs by build is two picks: no two picks for one item on one row share a build **(tested)**. **`core`**: what the build is built around and keeps (the flame, a ring that raises every spell). **`rare`**: it doesn't come every time (a random drop), and only a core pick may be one **(tested)**: anything less isn't worth the farming. A big weapon found early is a pick only if guides use it, and its role and `needs` say when (the Demon's Great Hammer, no class can wield early and one stub guide names, isn't).
+- **`needs`**: what it takes to use, one-handed, by leaning id (`{ str: 16, dex: 10 }`), from its wiki page, keys the guide's leanings **(tested)**. The row shows it as "needs 16 Strength and 10 Dexterity"; a two-handed figure, where it matters, goes in `why`.
+- **The weapon track** is a named build's `start` weapon, then its path steps (`path: true`) and its `weapon` and `path` picks in route order, revealed chapters only. A path pick ("A Divine weapon") names the path a weapon takes at a smith.
 - **The guides' names** are shown ("· Fextralife, TheGamer"), never their links. **`sources`**: wiki pages for any fact in `why`.
 
 ### Steps (`tasks`): what a build does
@@ -178,6 +171,7 @@ A guide whose game is played by build can point a reader toward theirs: `config.
 - **A step is done when its row is ticked**, so it sits only on a row whose tick means it's done: a trainer's row that includes buying, a covenant joined, an ember taken, a milestone the row names (Quelana's row needs a +10 flame, so it carries the +10). An upgrade no row stands for is part of the step it leads to; never a numbered step on a row ticked for something else ("Find Andre" isn't "reinforce to +5"). Don't add rows for steps: they'd show for every reader.
 - **`serves`**: leanings, any of them **(tested)**. **`title`**: a short imperative, no full stop **(tested)**. **`text`**: who, where, what it costs, what it opens, from the wikis, nothing past the row's chapter.
 - **`before`**: what's lost if it waits, in the row's own terms, on **two independent hosts** **(tested)**, and **never on a missable row** **(tested)**, whose warning already says it.
+- **`path`**: a step on the weapon's path (a smith, an ember, a reinforcement), shown in the build's weapon track too **(tested)**. Chaos sits here, as the Fire path's next step at Vamos for the pyromancy leaning: no build's guides on two hosts take a weapon Chaos, so it's an option a step names, never a pick.
 - Steps are numbered per pick in route order; where the wikis disagree on a price or a condition, the text says what both agree on and `facts-to-verify.md` keeps both readings.
 - Picks and steps go through the `source-checker` helper before they're committed, as rows do.
 

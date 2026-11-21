@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { panels } from "virtual:guide/panels";
-import { allRows, brand, byId, cats, chapterRows, chapters, CHAPTER_COUNT, completion, addons, backs, buildKinds, buildOf, buildPlan, config, guideAnchor, namedBuilds, picksFor, stepNumber, tasksFor, hasMissables, isCategory, leanings, missablesLeft, nextUp, readChapter, rowsByTag, tally, whatsLeft } from "./guide";
+import { allRows, brand, byId, cats, chapterRows, chapters, CHAPTER_COUNT, completion, addons, backs, buildKinds, buildOf, buildPlan, config, guideAnchor, namedBuilds, pickRoles, picksFor, stepNumber, tasksFor, hasMissables, isCategory, leanings, missablesLeft, nextUp, readChapter, rowsByTag, tally, weaponTrack, whatsLeft } from "./guide";
 import { readerText } from "./reader-text";
 import type { Row } from "./types";
 
@@ -99,7 +99,7 @@ describe("guide data", () => {
     if (!hasMissables && config.reassurance) expect(hosts(config.reassurance.sources.map(([, url]) => url)).size).toBeGreaterThanOrEqual(2);
   });
 
-  it("points each build entry at a real row, for leanings the guide names, with a note and an https source", () => {
+  it("names each leaning once, and each in a named build or served by a step", () => {
     const ids = leanings.map((leaning) => leaning.id);
     expect(new Set(ids).size, "leaning ids are unique").toBe(ids.length);
     for (const { id, label } of leanings) {
@@ -107,21 +107,9 @@ describe("guide data", () => {
       expect(label.trim(), id).not.toBe("");
     }
     if (config.builds) expect(leanings.length, "a guide with builds names its leanings").toBeGreaterThan(0);
-    // A leaning nothing serves would be a box that does nothing.
-    for (const { id } of leanings) expect((config.builds?.entries ?? []).some((entry) => entry.serves.includes(id)), `nothing serves ${id}`).toBe(true);
-    const seen = new Set<string>();
-    for (const { row, serves, kind, note, sources } of config.builds?.entries ?? []) {
-      expect(byId.has(row), row).toBe(true);
-      expect(serves.length, row).toBeGreaterThan(0);
-      expect(new Set(serves).size, `${row}: a leaning once`).toBe(serves.length);
-      for (const id of serves) expect(ids, `${row}: ${id}`).toContain(id);
-      expect(note.trim().length, row).toBeGreaterThan(10);
-      expect(buildKinds, `${row}: ${kind}`).toContain(kind);
-      expect(sources.length, row).toBeGreaterThan(0);
-      for (const url of sources) expect(new URL(url).protocol, `${row}: ${url}`).toBe("https:");
-      expect(seen.has(`${row} ${note}`), `${row}: the same note twice`).toBe(false);
-      seen.add(`${row} ${note}`);
-    }
+    // A leaning no build is made of and no step serves would be a box that does nothing.
+    const used = new Set([...(config.builds?.named ?? []).flatMap((build) => build.stats), ...(config.builds?.tasks ?? []).flatMap((task) => task.serves)]);
+    for (const id of ids) expect(used.has(id), `nothing uses ${id}`).toBe(true);
   });
 
   it("makes each named build of leanings the guide names, no two of a kind the same, so a pick has one name", () => {
@@ -145,6 +133,35 @@ describe("guide data", () => {
     for (const build of namedBuilds) expect(buildOf(build.stats)?.build.id, build.id).toBe(build.id);
   });
 
+  it("starts a named build as build guides do: a class, the weapon it carries where they say so, on a guide for it and two hosts", () => {
+    for (const build of config.builds?.named ?? []) {
+      const { start } = build;
+      if (!start) continue;
+      expect(build.addon, `${build.id}: an add-on goes on top of a build, which has the start`).toBeUndefined();
+      expect(start.class.trim(), build.id).not.toBe("");
+      if (start.why) expect(start.weapon, `${build.id}: a why says what the weapon is for`).toBeDefined();
+      expect(start.guides.length, `${build.id}: a build guide`).toBeGreaterThan(0);
+      const links = [...start.guides, ...(start.lists ?? [])];
+      for (const [name, url, only] of links) {
+        expect(name.trim(), build.id).not.toBe("");
+        expect(new URL(url).protocol, `${build.id}: ${url}`).toBe("https:");
+        expect(only, `${build.id}: ${name} backs this build alone`).toBeUndefined();
+      }
+      expect(hosts(links.map(([, url]) => url)).size, `${build.id}: two independent hosts`).toBeGreaterThanOrEqual(2);
+      expect(start.sources.length, build.id).toBeGreaterThan(0);
+      for (const url of start.sources) expect(new URL(url).protocol, `${build.id}: ${url}`).toBe("https:");
+    }
+  });
+
+  // What the reader asked of a build: a weapon to fight with, and steps to take, whatever spells it casts.
+  it("gives every named build a weapon on its track and a step its leanings serve", () => {
+    for (const build of namedBuilds) {
+      const weapons = weaponTrack(() => true, build.stats).filter((stage) => "start" in stage || "pick" in stage);
+      expect(weapons.length, `${build.id}: a weapon on its track, not only a smith`).toBeGreaterThan(0);
+      expect((config.builds?.tasks ?? []).some((task) => task.serves.some((id) => build.stats.includes(id))), `${build.id}: a step`).toBe(true);
+    }
+  });
+
   it("backs each pick, for each named build it is for, with a guide for that build and a second independent host, on a real row", () => {
     const named = new Set(namedBuilds.concat(addons).map((build) => build.id));
     const seen = new Set<string>();
@@ -154,6 +171,13 @@ describe("guide data", () => {
       expect(pick.for.length, at).toBeGreaterThan(0);
       for (const id of pick.for) expect(named.has(id), `${at}: ${id}`).toBe(true);
       expect(buildKinds, at).toContain(pick.kind);
+      expect(Object.keys(pickRoles), at).toContain(pick.role);
+      // Farming for a random drop is worth it only for what the build is built around.
+      if (pick.rare) expect(pick.core, `${at}: a rare drop is a pick only if it's core`).toBe(true);
+      for (const [id, need] of Object.entries(pick.needs ?? {})) {
+        expect(leanings.map((leaning) => leaning.id), `${at}: needs ${id}`).toContain(id);
+        expect(Number.isInteger(need) && need > 0, `${at}: needs ${need} ${id}`).toBe(true);
+      }
       expect(pick.item.trim(), at).not.toBe("");
       expect(pick.why.trim().length, at).toBeGreaterThan(5);
       const links = [...pick.guides, ...(pick.lists ?? [])];
@@ -172,8 +196,11 @@ describe("guide data", () => {
         expect(hosts(voices.map(([, url]) => url)).size, `${at}: two independent hosts for ${build}`).toBeGreaterThanOrEqual(2);
       }
       for (const url of pick.sources ?? []) expect(new URL(url).protocol, `${at}: ${url}`).toBe("https:");
-      expect(seen.has(at), `${at} twice`).toBe(false);
-      seen.add(at);
+      // A pick whose role differs by build is two picks, but no build gets the same item twice on one row.
+      for (const build of pick.for) {
+        expect(seen.has(`${at} ${build}`), `${at} twice for ${build}`).toBe(false);
+        seen.add(`${at} ${build}`);
+      }
     }
   });
 
@@ -227,7 +254,7 @@ describe("guide data", () => {
     ]) {
       expect(good, "should pass").not.toMatch(scalingLetter);
     }
-    for (const { row, note } of config.builds?.entries ?? []) expect(note, row).not.toMatch(scalingLetter);
+    for (const { id, start } of config.builds?.named ?? []) if (start?.why) expect(start.why, id).not.toMatch(scalingLetter);
     for (const { row, why } of config.builds?.picks ?? []) expect(why, row).not.toMatch(scalingLetter);
     for (const { row, text } of config.builds?.tasks ?? []) expect(text, row).not.toMatch(scalingLetter);
   });
@@ -313,15 +340,17 @@ describe("guide data", () => {
       ...config.questlines.lines.map((line) => line.name),
       ...panels.map((panel) => panel.title),
       ...leanings.map((leaning) => leaning.label),
-      ...(config.builds?.entries ?? []).map((entry) => entry.note),
       ...(config.builds?.named ?? []).flatMap((build) => [build.name, build.blurb]),
+      ...(config.builds?.named ?? []).flatMap(({ start }) => (start ? [start.class, start.weapon, start.why, ...start.guides.map(([name]) => name), ...(start.lists ?? []).map(([name]) => name)] : [])),
       ...(config.builds?.picks ?? []).flatMap((pick) => [pick.item, pick.why, ...pick.guides.map(([name]) => name), ...(pick.lists ?? []).map(([name]) => name)]),
       ...(config.builds?.tasks ?? []).flatMap((task) => [task.title, task.text, task.before]),
     ];
     for (const value of shown) {
       if (value !== undefined) expect(text.has(value), value).toBe(true);
     }
-    expect(found.filter(([path, value]) => /sources|reference/.test(path) || /^https?:/.test(value) || byId.has(value))).toEqual([]);
+    // Nor a build's id, which names a build in the data and never to a reader.
+    const buildIds = new Set((config.builds?.named ?? []).map((build) => build.id));
+    expect(found.filter(([path, value]) => /sources|reference/.test(path) || /^https?:/.test(value) || byId.has(value) || buildIds.has(value))).toEqual([]);
   });
 
   it("names every category it shows", () => {
@@ -387,10 +416,35 @@ describe("the build plan", () => {
       for (const { chapter, rows } of buildPlan((n) => n <= ceiling, all)) {
         expect(chapter.id).toBeLessThanOrEqual(ceiling);
         expect(rows.length, `chapter ${chapter.id}`).toBeGreaterThan(0);
-        for (const { row, tasks, picks, entries } of rows) {
+        for (const { row, tasks, picks } of rows) {
           expect(row.chapter, row.id).toBe(chapter.id);
-          expect(tasks.length + picks.length + entries.length, row.id).toBeGreaterThan(0);
+          expect(tasks.length + picks.length, row.id).toBeGreaterThan(0);
         }
+      }
+    }
+  });
+
+  it("draws each named build's weapon track from its start and the revealed chapters, in route order, and nothing for a custom pick", () => {
+    for (const build of namedBuilds) {
+      for (const ceiling of [1, 3, CHAPTER_COUNT]) {
+        const track = weaponTrack((n) => n <= ceiling, build.stats);
+        if (build.start?.weapon) expect(track[0], build.id).toEqual({ start: build.start });
+        const rows = track.flatMap((stage) => ("row" in stage ? [stage.row] : []));
+        for (const row of rows) expect(row.chapter, `${build.id}: ${row.id}`).toBeLessThanOrEqual(ceiling);
+        const order = rows.map((row) => allRows.indexOf(row));
+        expect(order, build.id).toEqual([...order].sort((a, b) => a - b));
+        for (const stage of track) {
+          if ("task" in stage) expect(stage.task.path, `${build.id}: ${stage.task.title}`).toBe(true);
+          if ("pick" in stage) expect(["weapon", "path"], `${build.id}: ${stage.pick.item}`).toContain(stage.pick.kind);
+        }
+      }
+    }
+    const custom = leanings.flatMap((a) => leanings.map((b) => [a.id, b.id])).find(([a, b]) => a !== b && !buildOf([a, b]));
+    if (custom) expect(weaponTrack(() => true, custom)).toEqual([]);
+    // An add-on changes no build's weapon: the track is the named build's alone.
+    for (const addon of addons) {
+      for (const build of namedBuilds.filter((item) => !addon.stats.some((stat) => item.stats.includes(stat)))) {
+        expect(weaponTrack(() => true, [...build.stats, ...addon.stats]), `${build.id} + ${addon.id}`).toEqual(weaponTrack(() => true, build.stats));
       }
     }
   });

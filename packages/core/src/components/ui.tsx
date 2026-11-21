@@ -11,7 +11,7 @@ import { Icon, type IconName } from "./Icon";
 import { toneClasses } from "./tone";
 import { tooltip as tooltipHandle } from "./tooltip-handle";
 import { cats, config, tagName } from "../guide";
-import type { Row } from "../types";
+import type { Row, Tone } from "../types";
 import { pct } from "../format";
 import { pressClasses } from "./press-style";
 
@@ -254,10 +254,10 @@ const tag = cva("rounded-tag px-2 py-1 text-11 font-extrabold tracking-[0.02em] 
 
 type TagAt = "line" | "prose" | "column";
 
-/** A category label, coloured by the category's tone. */
-export function Tag({ tag: name, at, children }: { tag: string; at?: TagAt; children?: ReactNode }) {
+/** A category label, coloured by the category's tone, or by `tone` for a label that is no category (a build pick's role). */
+export function Tag({ tag: name, at, tone, children }: { tag: string; at?: TagAt; tone?: Tone | "none"; children?: ReactNode }) {
   return (
-    <span className={tag({ tone: name === "missable" ? "rose" : name === "one-way" ? "amber" : (cats[name]?.[3] ?? "none"), at })}>
+    <span className={tag({ tone: tone ?? (name === "missable" ? "rose" : name === "one-way" ? "amber" : (cats[name]?.[3] ?? "none")), at })}>
       {children ?? cats[name]?.[1] ?? (name === "missable" ? "Missable" : name === "one-way" ? "One-way" : name)}
     </span>
   );
