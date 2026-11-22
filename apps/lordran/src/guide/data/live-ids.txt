@@ -157,11 +157,16 @@ pickup-gold-pine-resin
 pickup-grass-crest-shield
 pickup-great-club
 pickup-great-scythe
+pickup-halberd
 pickup-havel-set
 pickup-havel-trove
 pickup-heavy-crossbow
 pickup-iaito
+pickup-knight-shield
+pickup-light-crossbow
 pickup-lightning-spear
+pickup-morning-star
+pickup-mystery-key
 pickup-occult-club
 pickup-painted-annex
 pickup-painted-tower
@@ -171,8 +176,10 @@ pickup-sens-scavenger
 pickup-shadow-set
 pickup-shotel
 pickup-spider-shield
+pickup-talisman
 pickup-thief-gear
 pickup-winged-spear
+pickup-wooden-shield
 pickup-zweihander
 pyromancy-acid-surge
 pyromancy-black-flame
@@ -364,7 +371,9 @@ route-ash-lake-fire
 route-asylum-leave
 route-asylum-return
 route-asylum-start
+route-burg-barrels
 route-burg-bonfire
+route-burg-rooftop
 route-catacomb-bridges
 route-catacomb-necromancers
 route-chasm-spells
@@ -390,6 +399,7 @@ route-ng-ready
 route-painted-well
 route-painting
 route-parish-entry
+route-parish-walkway
 route-portal
 route-reach-anor-londo
 route-reach-lordran
