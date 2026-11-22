@@ -136,7 +136,7 @@ export const named: NamedBuild[] = [
 export const picks: BuildPick[] = [
   // Chapter 1
   {
-    row: "pickup-firelink-graveyard",
+    row: "pickup-zweihander",
     for: ["strength"],
     kind: "weapon",
     item: "Zweihander",
@@ -220,7 +220,7 @@ export const picks: BuildPick[] = [
   },
   // Chapter 3
   {
-    row: "pickup-iaito",
+    row: "pickup-blighttown-iaito",
     for: ["dexterity", "dex-faith"],
     kind: "weapon",
     item: "Iaito",
@@ -413,6 +413,25 @@ export const picks: BuildPick[] = [
     lists: [only(gamersDecide, "strength")],
     sources: [W("havel-s-ring")],
   },
+  {
+    row: "ring-red-tearstone",
+    for: ["strength"],
+    kind: "ring",
+    item: "Red Tearstone Ring",
+    role: "endgame",
+    guides: [magicgameworldStrength, F("Black+knight+Marauders")],
+    sources: [W("red-tearstone-ring")],
+  },
+  {
+    row: "extra-ricard",
+    for: ["dex-faith"],
+    kind: "weapon",
+    item: "Ricard’s Rapier",
+    role: "endgame",
+    needs: { str: 8, dex: 20 },
+    guides: [F("Faith+-+Dex+Hybrid"), steamDexFaith],
+    sources: [W("ricard-s-rapier")],
+  },
   // Chapter 5
   {
     row: "miracle-emit-force",
@@ -435,7 +454,7 @@ export const picks: BuildPick[] = [
     sources: [W("occult")],
   },
   {
-    row: "pickup-painted-annex",
+    row: "rare-weapon-velkas-rapier",
     for: ["magic-knight"],
     kind: "weapon",
     item: "Velka’s Rapier",
@@ -455,6 +474,34 @@ export const picks: BuildPick[] = [
     guides: [only(F("Highland_Cleric"), "faith"), only(F("Paladin+Build"), "paladin"), only(steamPaladin, "paladin")],
     lists: [only(gamersDecide, "faith"), only(theGamer, "faith")],
     sources: [W("great-magic-barrier")],
+  },
+  {
+    row: "ring-favor-protection",
+    for: ["strength", "dexterity", "faith", "paladin", "dex-faith"],
+    kind: "ring",
+    item: "Ring of Favor and Protection",
+    role: "endgame",
+    guides: [
+      only(F("Fast+Rolling+Greatsword"), "strength"),
+      only(F("Samurai+(build)"), "dexterity"),
+      only(F("Highland_Cleric"), "faith"),
+      only(F("Faith+-+Strength+Hybrid"), "paladin"),
+      only(steamPaladin, "paladin"),
+      only(F("Faith+-+Dex+Hybrid"), "dex-faith"),
+      only(steamDexFaith, "dex-faith"),
+    ],
+    lists: [only(gamersDecide, "strength", "dexterity", "faith", "paladin"), only(theGamer, "faith")],
+    sources: [W("ring-of-favor-and-protection")],
+  },
+  {
+    row: "ring-sun-firstborn",
+    for: ["faith", "paladin"],
+    kind: "ring",
+    item: "Ring of the Sun’s Firstborn",
+    role: "endgame",
+    guides: [only(F("Faith+Caster+PvP"), "faith"), only(F("Paladin+Build"), "paladin")],
+    lists: [only(gamersDecide, "faith", "paladin")],
+    sources: [W("ring-of-the-sun-s-firstborn")],
   },
   // Chapter 7
   {
@@ -678,53 +725,6 @@ export const picks: BuildPick[] = [
     guides: [F("Pyromaniac+Build")],
     lists: [theGamer],
     sources: [W("dark-wood-grain-ring")],
-  },
-  {
-    row: "ring-red-tearstone",
-    for: ["strength"],
-    kind: "ring",
-    item: "Red Tearstone Ring",
-    role: "endgame",
-    guides: [magicgameworldStrength, F("Black+knight+Marauders")],
-    sources: [W("red-tearstone-ring")],
-  },
-  {
-    row: "ring-favor-protection",
-    for: ["strength", "dexterity", "faith", "paladin", "dex-faith"],
-    kind: "ring",
-    item: "Ring of Favor and Protection",
-    role: "endgame",
-    guides: [
-      only(F("Fast+Rolling+Greatsword"), "strength"),
-      only(F("Samurai+(build)"), "dexterity"),
-      only(F("Highland_Cleric"), "faith"),
-      only(F("Faith+-+Strength+Hybrid"), "paladin"),
-      only(steamPaladin, "paladin"),
-      only(F("Faith+-+Dex+Hybrid"), "dex-faith"),
-      only(steamDexFaith, "dex-faith"),
-    ],
-    lists: [only(gamersDecide, "strength", "dexterity", "faith", "paladin"), only(theGamer, "faith")],
-    sources: [W("ring-of-favor-and-protection")],
-  },
-  {
-    row: "ring-sun-firstborn",
-    for: ["faith", "paladin"],
-    kind: "ring",
-    item: "Ring of the Sun’s Firstborn",
-    role: "endgame",
-    guides: [only(F("Faith+Caster+PvP"), "faith"), only(F("Paladin+Build"), "paladin")],
-    lists: [only(gamersDecide, "faith", "paladin")],
-    sources: [W("ring-of-the-sun-s-firstborn")],
-  },
-  {
-    row: "extra-ricard",
-    for: ["dex-faith"],
-    kind: "weapon",
-    item: "Ricard’s Rapier",
-    role: "endgame",
-    needs: { str: 8, dex: 20 },
-    guides: [F("Faith+-+Dex+Hybrid"), steamDexFaith],
-    sources: [W("ricard-s-rapier")],
   },
   {
     row: "quest-domhnall-firelink",
@@ -1090,7 +1090,7 @@ export const notes: BuildNote[] = [
   quality("ember-very-large", "Your Claymore goes to +15 with this, as far as any weapon goes; that last level takes a Titanite Slab.", { stage: "Claymore +15" }),
 
   // Pure Strength
-  strength("pickup-firelink-graveyard", "The Zweihander is an early weapon Strength guides fight with. In both hands it needs 16 Strength and 10 Dexterity, three levels from where a Warrior or a Bandit starts.", {
+  strength("pickup-zweihander", "The Zweihander is an early weapon Strength guides fight with. In both hands it needs 16 Strength and 10 Dexterity, three levels from where a Warrior or a Bandit starts.", {
     stage: "Zweihander",
   }),
   strength("route-andre", "Take the Zweihander to +5 here, with Titanite Shards at 800 souls each, and keep it Normal: each Normal level adds to what it gets from your Strength.", {
@@ -1115,7 +1115,7 @@ export const notes: BuildNote[] = [
     stage: "Scimitar +5",
   }),
   dexterity("ember-large", "This takes your Scimitar on to +10. Raw would stop at +5 and cut what it gets from your Dexterity, the stat you level.", { stage: "Scimitar +10" }),
-  dexterity("pickup-iaito", "The Iaito is a katana Dexterity guides take up once their Dexterity reaches 20.", { stage: "Iaito, at 20 Dexterity" }),
+  dexterity("pickup-blighttown-iaito", "The Iaito is a katana Dexterity guides take up once their Dexterity reaches 20.", { stage: "Iaito, at 20 Dexterity" }),
   dexterity("pickup-estoc", "The Estoc is a thrusting sword Dexterity guides carry, and a Wanderer can use it now: it needs 10 Strength and 12 Dexterity.", {
     stage: "Estoc, if you take it",
   }),
@@ -1185,7 +1185,7 @@ export const notes: BuildNote[] = [
     "The fork for your weapon. Made Magic, it grows with Intelligence but gets less from your Dexterity, and it can’t take a buff; kept Normal, it can take a sorcery’s buff later.",
     { stage: "Magic weapon, if you take it" },
   ),
-  magicKnight("pickup-painted-annex", "Velka’s Rapier, behind those planks, grows with both your Dexterity and your Intelligence and needs 16 of each: a Magic Knight guide keeps it beside its main blade.", {
+  magicKnight("rare-weapon-velkas-rapier", "Velka’s Rapier, behind those planks, grows with both your Dexterity and your Intelligence and needs 16 of each: a Magic Knight guide keeps it beside its main blade.", {
     stage: "Velka’s Rapier",
   }),
   magicKnight("ember-very-large", "If your weapon stayed Normal, this takes it on to +15, as far as any weapon goes.", { stage: "Your weapon +15, on the Normal path" }),
@@ -1268,7 +1268,7 @@ export const notes: BuildNote[] = [
     stage: "Your weapon +5",
   }),
   dexFaith("ember-large", "This takes your weapon on to +10, to carry you while your Dexterity climbs toward a katana’s needs; Raw would stop at +5.", { stage: "Your weapon +10" }),
-  dexFaith("pickup-iaito", "The Iaito is one of the katanas Dex/Faith guides take to +15 and buff, once their Dexterity reaches 20.", { stage: "Iaito, at 20 Dexterity" }),
+  dexFaith("pickup-blighttown-iaito", "The Iaito is one of the katanas Dex/Faith guides take to +15 and buff, once their Dexterity reaches 20.", { stage: "Iaito, at 20 Dexterity" }),
   dexFaith(
     "quest-shiva-shop",
     "Of his stock, the Uchigatana is the katana Dex/Faith guides keep Normal to +15 and buff, since a Divine weapon can’t take a buff: 5,000 souls, and it needs 14 Dexterity.",
