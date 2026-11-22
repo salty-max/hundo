@@ -10,6 +10,7 @@ export type Entry = readonly [stamp: number, value: Value];
 /**
  * What a guide's progress is, flattened to keys:
  *   c:<rowId>  1 ticked, 0 unticked (the 0 stays, so an untick can win over a tick)
+ *   l:<rowId>  set aside for later: the row id the reader had reached then (a row id), 0 once back on the route
  *   ceiling, chapter  whole numbers; spoilers  a boolean
  *   x:<path>   one leaf of the guide's own extra state (the theme is never synced)
  */
@@ -29,10 +30,13 @@ export const LIMITS = {
 };
 
 const ROW = /^c:[a-z0-9][a-z0-9_-]{0,79}$/;
+const LATER = /^l:[a-z0-9][a-z0-9_-]{0,79}$/;
+/** A row id as a value: where an `l:` row was set aside from. */
+const ROW_ID = /^[a-z0-9][a-z0-9_-]{0,79}$/;
 const LEAF = /^x:[A-Za-z0-9_.-]{1,60}$/;
 const WHOLE = new Set(["ceiling", "chapter"]);
 
-export const isKey = (key: string) => ROW.test(key) || LEAF.test(key) || WHOLE.has(key) || key === "spoilers";
+export const isKey = (key: string) => ROW.test(key) || LATER.test(key) || LEAF.test(key) || WHOLE.has(key) || key === "spoilers";
 
 const isJson = (value: unknown, depth = 0): value is Value => {
   if (value === null || typeof value === "boolean" || typeof value === "string") return true;
@@ -46,6 +50,7 @@ const isJson = (value: unknown, depth = 0): value is Value => {
 /** Whether `value` is something the key can hold. */
 export function validValue(key: string, value: unknown): value is Value {
   if (ROW.test(key)) return value === 0 || value === 1;
+  if (LATER.test(key)) return value === 0 || (typeof value === "string" && ROW_ID.test(value));
   if (WHOLE.has(key)) return Number.isInteger(value) && (value as number) >= 1 && (value as number) <= 999;
   if (key === "spoilers") return typeof value === "boolean";
   return LEAF.test(key) && isJson(value) && JSON.stringify(value).length <= LIMITS.leaf;
@@ -76,7 +81,8 @@ const compareText = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
 
 /**
  * A fixed order over values, for two changes with the same stamp: a tick beats an untick, a higher number beats a lower
- * one (a higher ceiling, more deaths), spoiler protection on beats off, and anything beats null.
+ * one (a higher ceiling, more deaths), spoiler protection on beats off, and anything beats null. A number beats a string, so
+ * an `l:` back on the route (0) beats a set-aside (a row id): the opposite of `c:`, and harmless either way.
  */
 export function compareValues(a: Value, b: Value): number {
   const ra = rank(a);

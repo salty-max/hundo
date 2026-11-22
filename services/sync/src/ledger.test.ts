@@ -24,13 +24,16 @@ const e = (at: number, value: Entry[1]): Entry => [at, value];
 
 describe("keys and values", () => {
   it("accepts the keys of a guide's progress and nothing else", () => {
-    for (const key of ["c:heart-piece-3", "c:a", "ceiling", "chapter", "spoilers", "x:mode", "x:runs.normal.deaths", "x:reported"]) expect(isKey(key), key).toBe(true);
-    for (const key of ["", "c:", "c:UPPER", "c:-lead", "c:has space", "x:", "x:a b", "theme", "__proto__", "constructor", "c:" + "a".repeat(81)]) expect(isKey(key), key).toBe(false);
+    for (const key of ["c:heart-piece-3", "c:a", "l:quest-shiva-shop", "ceiling", "chapter", "spoilers", "x:mode", "x:runs.normal.deaths", "x:reported"]) expect(isKey(key), key).toBe(true);
+    for (const key of ["", "c:", "c:UPPER", "c:-lead", "c:has space", "l:", "l:UPPER", "l:a.b", "x:", "x:a b", "theme", "__proto__", "constructor", "c:" + "a".repeat(81), "l:" + "a".repeat(81)]) expect(isKey(key), key).toBe(false);
   });
 
   it("holds each key to its own kind of value", () => {
     expect(validValue("c:a", 1) && validValue("c:a", 0)).toBe(true);
     for (const bad of [2, -1, true, "1", null]) expect(validValue("c:a", bad), String(bad)).toBe(false);
+    // A set-aside holds the row id the reader had reached, bounded like a row's, and 0 once back on the route.
+    expect(validValue("l:a", "quest-shiva-shop") && validValue("l:a", 0)).toBe(true);
+    for (const bad of [1, -1, true, "", "Upper", "has\ttab", "a".repeat(81), null, ["a"]]) expect(validValue("l:a", bad), String(bad)).toBe(false);
     expect(validValue("ceiling", 1) && validValue("chapter", 999)).toBe(true);
     for (const bad of [0, 1000, 1.5, "3", null, NaN]) expect(validValue("ceiling", bad), String(bad)).toBe(false);
     expect(validValue("spoilers", true) && validValue("spoilers", false)).toBe(true);

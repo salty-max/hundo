@@ -26,7 +26,7 @@ describe("the saved ledger", () => {
   });
 
   it("keeps what a newer build wrote: a kind of key it doesn't know and its mark to send, a higher v, and fields it doesn't read", () => {
-    const newer = { ...record, v: 2, later: { kept: true }, entries: { ...record.entries, "l:heart-well": [7, "shield"], spare: [7, 1] }, dirty: ["ceiling", "l:heart-well"] };
+    const newer = { ...record, v: 2, notes: { kept: true }, entries: { ...record.entries, "n:heart-well": [7, "shield"], spare: [7, 1] }, dirty: ["ceiling", "n:heart-well"] };
     localStorage.setItem(SYNC_KEY, JSON.stringify(newer));
     const read = readRecord()!;
     expect(read).toEqual(newer);
@@ -36,7 +36,7 @@ describe("the saved ledger", () => {
   });
 
   it("drops a key of a kind it knows that breaks that kind's rules, and a newer one that isn't well formed", () => {
-    const entries = { "c:UPPER": [1, 1], "x:leaf": [1, "x".repeat(300)], "l:has space": [1, 1], "L:shout": [1, 1], "l:big": [1, "x".repeat(300)], "l:tab\t": [1, 1], constructor: [1, 1], toString: [1, 1] };
+    const entries = { "c:UPPER": [1, 1], "x:leaf": [1, "x".repeat(300)], "n:has space": [1, 1], "L:shout": [1, 1], "n:big": [1, "x".repeat(300)], "n:tab\t": [1, 1], constructor: [1, 1], toString: [1, 1] };
     localStorage.setItem(SYNC_KEY, JSON.stringify({ ...record, entries: { ...record.entries, ...entries } }).replace(/^\{/, '{"__proto__":{"polluted":1},'));
     expect(readRecord()?.entries).toEqual(record.entries);
     expect(Object.hasOwn(readRecord()!, "__proto__")).toBe(false);
