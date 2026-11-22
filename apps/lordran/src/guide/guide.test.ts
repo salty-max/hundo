@@ -1,4 +1,4 @@
-import { allRows, buildName, chapters, rowsByTag } from "@hundo/core/guide";
+import { addons, allRows, buildName, chapters, namedBuilds, readsNotes, rowsByTag } from "@hundo/core/guide";
 import { STORAGE_KEY, validateState } from "@hundo/core/progress-state";
 import config, { targets } from "./config";
 import { readerText } from "@hundo/core/reader-text";
@@ -123,6 +123,19 @@ describe("Lordran builds", () => {
     expect(buildName(normalizeBuild("str dex hum"))).toBe("Quality");
     expect(buildName(normalizeBuild("pyro hum"))).toBe("Pyromancer");
     expect(normalizeBuild("hum")).toEqual([]);
+  });
+
+  // Every build a reader can name reads its notes: the steps are for a custom pick, never what a named build sees (22 Nov 2026).
+  // An add-on goes beside a build that doesn't hold its leanings already (a Pyromancer is pyromancy itself).
+  it("reads notes for every named build, alone and beside each add-on", () => {
+    expect(namedBuilds.length).toBeGreaterThan(0);
+    expect(addons.length).toBeGreaterThan(0);
+    for (const build of namedBuilds) {
+      expect(readsNotes(build.stats), build.id).toEqual([build.id]);
+      for (const addon of addons.filter((item) => !item.stats.some((stat) => build.stats.includes(stat)))) {
+        expect(readsNotes([...build.stats, ...addon.stats]), `${build.id} + ${addon.id}`).toEqual([build.id, addon.id]);
+      }
+    }
   });
 
   // A starter is usable in the opening hours with the build's starting class's stats, within a few levels; two hands count Strength one

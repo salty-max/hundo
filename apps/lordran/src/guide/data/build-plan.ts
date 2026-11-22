@@ -22,8 +22,7 @@ import type { BuildGuide, BuildNote, BuildPick, BuildTask, NamedBuild } from "@h
  * on less.
  *
  * A step sits on the row whose tick means it's done, and says nothing its chapter hasn't reached. A pick that is no named build reads the
- * steps' own words, and so does a build without notes yet. Notes are written for Paladin and Pyromancer so far (22 Nov 2026); the others
- * read steps until theirs are written.
+ * steps' own words. Every named build and the Pyromancy add-on has notes (22 Nov 2026), so a named build never reads steps (guide.test.ts).
  */
 
 const F = (page: string): BuildGuide => ["Fextralife", `https://darksouls.wiki.fextralife.com/${page}`];
@@ -507,6 +506,7 @@ export const picks: BuildPick[] = [
     kind: "catalyst",
     item: "Tin Crystallization Catalyst",
     role: "endgame",
+    needs: { int: 32 },
     guides: [only(gamevoyagersSorcerer, "sorcerer", "magic-knight"), only(F("Moonlight+Sorcerer"), "sorcerer"), only(F("Darkmoon+Battlemage"), "magic-knight")],
     lists: [only(gameranx, "sorcerer"), only(gameRant, "sorcerer"), only(theGamer, "magic-knight")],
     sources: [W("tin-crystallization-catalyst"), W("logan-s-catalyst")],
@@ -637,8 +637,9 @@ export const picks: BuildPick[] = [
     kind: "spell",
     item: "Darkmoon Blade",
     role: "endgame",
+    needs: { fth: 30 },
     guides: [F("Faith+-+Dex+Hybrid"), F("Proud+Sword+Build"), steamDexFaith],
-    sources: [W("blade-of-the-darkmoon")],
+    sources: [W("blade-of-the-darkmoon"), FX("Darkmoon+Blade")],
   },
   {
     row: "boss-gwyndolin",
@@ -761,6 +762,7 @@ export const tasks: BuildTask[] = [
     row: "route-andre",
     serves: ["str", "dex", "int", "fth", "pyro"],
     title: "Find Andre, your smith",
+    quiet: ["pyromancy"],
     text: "He takes a Normal weapon to +5 with Titanite Shards, which he sells for 800 souls each, and each Normal level raises its Strength and Dexterity scaling. Casters’ guides reinforce their weapon here early too. Past +5 each of his paths needs an ember: more Normal levels, Raw, or Divine, which grows with Faith.",
     path: true,
     sources: [W("andre-of-astora"), FX("Blacksmith+Andre"), W("normal"), W("divine"), FX("Upgrades"), W("pyromancer"), FX("Magic+User+Guide")],
@@ -770,7 +772,8 @@ export const tasks: BuildTask[] = [
     row: "quest-griggs",
     serves: ["int"],
     title: "Buy your first sorceries from Griggs",
-    text: "With 10 Intelligence he trades at Firelink: Soul Arrow for 1,000 souls, Great Soul Arrow for 6,000 and Great Heavy Soul Arrow for 8,000, and his two Dragoncrest rings for 20,000 each.",
+    quiet: ["magic-knight"],
+    text: "He sells Soul Arrow for 1,000 souls, Great Soul Arrow for 6,000 and Great Heavy Soul Arrow for 8,000, and his two Dragoncrest rings for 20,000 each.",
     sources: [W("griggs-of-vinheim"), FX("Griggs+of+Vinheim")],
   },
   {
@@ -778,14 +781,14 @@ export const tasks: BuildTask[] = [
     serves: ["str", "dex"],
     title: "Take the Large Ember to Andre",
     path: true,
-    text: "With it he takes a Normal weapon from +5 to +10, or turns a +5 weapon Raw: more base damage, less Strength and Dexterity scaling.",
+    text: "Normal goes on to +10 with it. Raw gives more base damage for less Strength and Dexterity scaling, and stops at +5.",
     sources: [W("large-ember"), W("andre-of-astora"), W("raw"), FX("Regular+Upgrades")],
   },
   {
     row: "quest-laurentius",
     serves: ["pyro"],
     title: "Buy his pyromancies and start on the flame",
-    text: "Laurentius sells Fireball for 800 souls and Combustion for 500, and reinforces the Pyromancy Flame for souls alone: 10,500 to reach +5. A Pyromancer starts with a flame; anyone else gets one from him.",
+    text: "Laurentius sells Fireball for 800 souls and Combustion for 500, and reinforces the Pyromancy Flame for souls alone: 10,500 to reach +5. A Pyromancer starts with a flame; he gives anyone else one.",
     sources: [W("laurentius"), W("pyromancy-flame"), FX("Laurentius+of+the+Great+Swamp")],
   },
   {
@@ -801,21 +804,22 @@ export const tasks: BuildTask[] = [
     serves: ["int"],
     title: "Find Rickert, the magesmith",
     path: true,
-    text: "He turns a +5 Normal weapon Magic with a Green Titanite Shard, which adds magic damage that grows with Intelligence, and sells Soul Arrow for 2,000 souls and Heavy Soul Arrow for 4,000.",
+    text: "Magic takes a Green Titanite Shard and adds magic damage that grows with Intelligence, while lowering what the weapon gets from Strength and Dexterity, and a Magic weapon can’t take a buff. His Soul Arrow costs 2,000 souls and Heavy Soul Arrow 4,000.",
     sources: [W("rickert-of-vinheim"), FX("Rickert+of+Vinheim"), W("magic"), FX("Upgrades")],
   },
   {
     row: "covenant-chaos-servant",
     serves: ["pyro"],
     title: "Join for Great Chaos Fireball",
-    text: "Joining gives Great Chaos Fireball. Offering 30 Humanity later raises you to rank +2, which gives Chaos Storm.",
-    sources: [W("chaos-servant"), FX("Chaos+Servant")],
+    text: "Joining makes Laurentius ask where you learned your pyromancy: answer No and his shop stays open. Offering 30 Humanity later raises you to rank +2, which gives Chaos Storm.",
+    sources: [W("chaos-servant"), FX("Chaos+Servant"), W("laurentius")],
   },
   {
     row: "quest-eingyi",
     serves: ["pyro"],
     title: "Buy Eingyi’s mists",
-    text: "With the egg on your head he sells Poison Mist for 10,000 souls and Toxic Mist for 25,000. Once you’ve joined the covenant at the Fair Lady, he reinforces the flame too.",
+    quiet: ["pyromancy"],
+    text: "Poison Mist costs 10,000 souls and Toxic Mist 25,000.",
     sources: [W("eingyi"), FX("Eingyi")],
   },
   {
@@ -830,6 +834,7 @@ export const tasks: BuildTask[] = [
     row: "ember-divine",
     serves: ["fth"],
     title: "Take the Divine Ember to Andre",
+    quiet: ["dex-faith"],
     path: true,
     text: "Divine adds magic damage that grows with Faith and keeps part of the weapon’s Strength and Dexterity scaling, but a Divine weapon can’t take a buff.",
     sources: [W("divine"), W("mace"), FX("Upgrades"), steamPaladin[1]],
@@ -838,21 +843,22 @@ export const tasks: BuildTask[] = [
     row: "ember-enchanted",
     serves: ["int"],
     title: "Take the Enchanted Ember to Rickert",
-    text: "He then turns a Magic +5 weapon Enchanted, whose magic damage gains Intelligence scaling faster than Magic’s.",
+    text: "Enchanted starts from a Magic +5 weapon: its Intelligence scaling grows faster than Magic’s, and it stops at +5.",
     sources: [W("enchanted"), W("rickert-of-vinheim"), FX("Upgrades")],
   },
   {
     row: "quest-shiva-shop",
     serves: ["str", "dex"],
     title: "Shop with Shiva while a Forest Hunter",
-    quiet: ["paladin"],
-    text: "By the waterwheel he sells the Uchigatana for 5,000 souls, the Demon’s Greataxe for 10,000 and the Washing Pole for 20,000.",
+    quiet: ["paladin", "quality", "magic-knight"],
+    text: "Among his weapons are the Uchigatana for 5,000 souls, the Demon’s Greataxe for 10,000 and the Washing Pole for 20,000.",
     sources: [W("shiva-of-the-east")],
   },
   {
     row: "quest-dusk",
     serves: ["int"],
     title: "Say Yes to Dusk and buy from her",
+    quiet: ["magic-knight"],
     text: "Her sign sells Cast Light for 1,000 souls, Hidden Body for 2,000 and the Oolacile Ivory Catalyst for 1,000, each spell needing 14 Intelligence. Summoning her once leaves the Antiquated Set, Crown of Dusk among it.",
     sources: [W("dusk-of-oolacile"), FX("Dusk+of+Oolacile")],
   },
@@ -860,7 +866,8 @@ export const tasks: BuildTask[] = [
     row: "quest-logan",
     serves: ["int"],
     title: "Free Logan for his Firelink shop",
-    text: "With 15 Intelligence he sells sorceries at Firelink, among them Homing Soulmass for 20,000 souls and Soul Spear for 40,000, which need 18 and 36 Intelligence.",
+    quiet: ["magic-knight"],
+    text: "Among his sorceries are Homing Soulmass for 20,000 souls and Soul Spear for 40,000, which need 18 and 36 Intelligence.",
     sources: [W("big-hat-logan"), FX("Big+Hat+Logan")],
   },
   // Chapter 5
@@ -869,15 +876,16 @@ export const tasks: BuildTask[] = [
     serves: ["str", "dex"],
     title: "Meet the Giant Blacksmith",
     quiet: ["paladin"],
-    text: "He makes a +10 Normal weapon Lightning, which loses its Strength and Dexterity scaling, and forges weapons from boss souls.",
+    text: "He makes a +10 Normal weapon Lightning, which loses its Strength and Dexterity scaling.",
     sources: [W("giant-blacksmith"), W("lightning"), FX("Giant+Blacksmith"), FX("Upgrades")],
   },
   {
     row: "ember-dark",
     serves: ["fth"],
     title: "Take the Dark Ember to Andre",
+    quiet: ["dex-faith"],
     path: true,
-    text: "He then turns a Divine +5 weapon Occult: less base magic damage, but the part that grows with Faith stays.",
+    text: "Occult has less base magic damage than Divine but keeps the part that grows with Faith, and stops at +5.",
     sources: [W("occult"), FX("Upgrades")],
   },
   // Chapter 6
@@ -886,7 +894,7 @@ export const tasks: BuildTask[] = [
     serves: ["str", "dex"],
     title: "Take the Very Large Ember to Andre",
     path: true,
-    text: "He then takes a +10 Normal weapon on to +15; its last level takes a Titanite Slab.",
+    text: "Only the Normal path reaches +15, and its last level takes a Titanite Slab.",
     sources: [W("embers"), W("titanite-slab"), W("normal"), FX("Upgrades")],
   },
   // Chapter 7
@@ -903,15 +911,15 @@ export const tasks: BuildTask[] = [
     serves: ["int"],
     title: "Take the Large Magic Ember to Rickert",
     path: true,
-    text: "He then takes a Magic weapon on from +5 to +10.",
-    sources: [W("magic"), W("rickert-of-vinheim"), FX("Upgrades")],
+    text: "Magic goes no further than +10; an Enchanted weapon stays at +5.",
+    sources: [W("magic"), W("enchanted"), W("rickert-of-vinheim"), FX("Upgrades")],
   },
   // Chapter 8
   {
     row: "route-vamos",
     serves: ["pyro"],
     title: "Find Vamos",
-    text: "He ascends a +5 Normal weapon to Fire with a Green Titanite Shard: its damage then grows with nothing you level, as your pyromancies’ don’t. A Fire +5 weapon can later go on to Chaos.",
+    text: "Fire takes a +5 Normal weapon and a Green Titanite Shard: its damage then grows with nothing you level, as your pyromancies’ don’t.",
     path: true,
     sources: [W("vamos"), FX("Blacksmith+Vamos"), W("fire"), W("chaos"), FX("Upgrades")],
   },
@@ -919,13 +927,15 @@ export const tasks: BuildTask[] = [
     row: "quest-reah",
     serves: ["fth"],
     title: "Buy Reah’s miracles",
-    text: "At the Parish altar she sells Wrath of the Gods and Great Heal for 10,000 souls each, and Magic Barrier for 6,000.",
+    quiet: ["dex-faith"],
+    text: "Wrath of the Gods and Great Heal cost 10,000 souls each, and Magic Barrier 6,000.",
     sources: [W("rhea-of-thorolund"), FX("Reah+of+Thorolund")],
   },
   {
     row: "ember-large-divine",
     serves: ["fth"],
     title: "Take the Large Divine Ember to Andre",
+    quiet: ["dex-faith"],
     path: true,
     text: "He then takes a Divine weapon on from +5 to +10.",
     sources: [W("divine"), W("andre-of-astora")],
@@ -935,6 +945,7 @@ export const tasks: BuildTask[] = [
     row: "ember-chaos-flame",
     serves: ["pyro"],
     title: "Take the Chaos Flame Ember to Vamos",
+    quiet: ["pyromancy"],
     text: "The next step on the Fire path, if you want it: with the ember and a Red Titanite Chunk he turns a Fire +5 weapon Chaos, which grows with your Humanity, up to 10, instead of with nothing.",
     path: true,
     sources: [W("chaos"), FX("Chaos+Upgrades"), W("vamos")],
@@ -944,31 +955,41 @@ export const tasks: BuildTask[] = [
     row: "covenant-sunlight",
     serves: ["fth"],
     title: "Join for Lightning Spear",
-    quiet: ["paladin"],
-    text: "Joining takes 25 Faith, five less for each boss you’ve helped kill as a white phantom, and gives Lightning Spear; 10 Sunlight Medals give Great Lightning Spear.",
-    sources: [W("warrior-of-sunlight"), FX("Warrior+of+Sunlight")],
+    quiet: ["paladin", "dex-faith"],
+    text: "Great Lightning Spear needs 30 Faith to cast, whatever joining asked.",
+    sources: [W("warrior-of-sunlight"), FX("Warrior+of+Sunlight"), W("great-lightning-spear")],
   },
   {
     row: "quest-darkmoon-rank",
     serves: ["fth"],
     title: "Rank up for Darkmoon Blade and its talisman",
     quiet: ["paladin"],
-    text: "Ten Souvenirs of Reprisal raise you to rank +1, which gives Darkmoon Blade, a buff for your weapon, and the Darkmoon Talisman.",
-    sources: [W("blade-of-the-darkmoon"), FX("Blade+of+the+Darkmoon")],
+    text: "Rank +1 gives Darkmoon Blade, a buff for your weapon that needs 30 Faith, and the Darkmoon Talisman.",
+    sources: [W("blade-of-the-darkmoon"), FX("Blade+of+the+Darkmoon"), FX("Darkmoon+Blade")],
   },
   {
     row: "reinforcement-chaos",
     serves: ["pyro"],
     title: "Take your Chaos weapon to +5",
-    quiet: ["pyromancer"],
+    quiet: ["pyromancer", "pyromancy"],
     path: true,
-    text: "If you took it Chaos, Vamos takes it on with Red Titanite Chunks, and its last level takes a Red Titanite Slab.",
+    text: "Only for a weapon you took Chaos: +5 is as far as it goes.",
     sources: [W("chaos"), FX("Chaos+Upgrades"), W("red-titanite-slab")],
   },
 ];
 
 const paladin = (row: string, text: string, more: Partial<BuildNote> = {}): BuildNote => ({ row, for: ["paladin"], text, ...more });
 const pyromancer = (row: string, text: string, more: Partial<BuildNote> = {}): BuildNote => ({ row, for: ["pyromancer"], text, ...more });
+const quality = (row: string, text: string, more: Partial<BuildNote> = {}): BuildNote => ({ row, for: ["quality"], text, ...more });
+const strength = (row: string, text: string, more: Partial<BuildNote> = {}): BuildNote => ({ row, for: ["strength"], text, ...more });
+const dexterity = (row: string, text: string, more: Partial<BuildNote> = {}): BuildNote => ({ row, for: ["dexterity"], text, ...more });
+const sorcerer = (row: string, text: string, more: Partial<BuildNote> = {}): BuildNote => ({ row, for: ["sorcerer"], text, ...more });
+const magicKnight = (row: string, text: string, more: Partial<BuildNote> = {}): BuildNote => ({ row, for: ["magic-knight"], text, ...more });
+const faith = (row: string, text: string, more: Partial<BuildNote> = {}): BuildNote => ({ row, for: ["faith"], text, ...more });
+const dexFaith = (row: string, text: string, more: Partial<BuildNote> = {}): BuildNote => ({ row, for: ["dex-faith"], text, ...more });
+const pyromancy = (row: string, text: string, more: Partial<BuildNote> = {}): BuildNote => ({ row, for: ["pyromancy"], text, ...more });
+/** A note whose words fit several builds: never a stage, which names one build's weapon. */
+const shared = (row: string, builds: string[], text: string, more: Partial<BuildNote> = {}): BuildNote => ({ row, for: builds, text, ...more });
 
 /**
  * What each row means for a build, in the guide's voice: what to do there and when, merged with the row's own advice and never repeating
@@ -1032,7 +1053,7 @@ export const notes: BuildNote[] = [
     "You have Fireball already. Your Pyromancy Flame is the part that matters: no stat you level raises your pyromancies’ damage, so Pyromancer guides take its upgrades as far as they go. +5 costs 10,500 souls.",
     { sources: [W("pyromancer")] },
   ),
-  pyromancer("quest-laurentius-after-depths", "The flame’s next five levels cost 43,000 souls in all, from 5,500 for +6 to 12,000 for +10."),
+  pyromancer("quest-laurentius-after-depths", "The flame’s next five levels cost 43,000 souls in all, from 5,500 for +6 to 12,000 for +10.", { for: ["pyromancer", "pyromancy"] }),
   pyromancer("route-swamp-bonfire", "Poison Mist, on that corpse, is a cloud that poisons whatever walks into it; Pyromancer guides carry it."),
   pyromancer("pyromancy-power-within", "Power Within raises your damage while it drains your HP: a buff Pyromancer guides carry."),
   pyromancer("covenant-chaos-servant", "Great Chaos Fireball is one Pyromancer guides keep. Offering 30 Humanity here later raises you to rank +2, which gives Chaos Storm."),
@@ -1055,4 +1076,238 @@ export const notes: BuildNote[] = [
   ),
   pyromancer("pyromancy-fire-tempest", "Fire Tempest is the late pyromancy Pyromancer guides end on: pillars of fire all around you."),
   pyromancer("ring-dark-wood-grain", "Pyromancer guides wear the Dark Wood Grain Ring for a faster roll in light armor."),
+
+  // Quality
+  quality("pickup-claymore", "The Claymore is the weapon Quality guides name, carried at +15, as far as the Normal path goes. It needs 16 Strength and 10 Dexterity, or 11 Strength in both hands.", {
+    stage: "Claymore",
+  }),
+  quality("route-andre", "Take your Claymore to +5 here, with Titanite Shards at 800 souls each, and keep it Normal from then on: each Normal level adds to what it gets from both your Strength and your Dexterity.", {
+    stage: "Claymore +5",
+  }),
+  quality("ember-large", "This takes your Claymore on to +10. Raw would stop at +5 and cut the Strength and Dexterity scaling a Quality build levels for.", {
+    stage: "Claymore +10",
+  }),
+  quality("ember-very-large", "Your Claymore goes to +15 with this, as far as any weapon goes; that last level takes a Titanite Slab.", { stage: "Claymore +15" }),
+
+  // Pure Strength
+  strength("pickup-firelink-graveyard", "The Zweihander is an early weapon Strength guides fight with. In both hands it needs 16 Strength and 10 Dexterity, three levels from where a Warrior or a Bandit starts.", {
+    stage: "Zweihander",
+  }),
+  strength("route-andre", "Take the Zweihander to +5 here, with Titanite Shards at 800 souls each, and keep it Normal: each Normal level adds to what it gets from your Strength.", {
+    stage: "Zweihander +5",
+  }),
+  strength("ember-large", "This takes the Zweihander on to +10. Raw would stop at +5 and cut what it gets from your Strength, the stat you level.", { stage: "Zweihander +10" }),
+  strength("pickup-great-club", "The Great Club is a heavier weapon some Strength guides take up: 19 Strength holds it in both hands, 28 in one.", {
+    stage: "Great Club, if you take it",
+  }),
+  strength(
+    "quest-shiva-shop",
+    "Of his stock, the Demon’s Greataxe is the axe Strength guides end on, at +15. It costs 10,000 souls: buy it while you can shop here, and swing it once you have 31 Strength for both hands, 46 for one.",
+    { stage: "Demon’s Greataxe, at 31 Strength" },
+  ),
+  strength("ember-very-large", "Once you swing the Demon’s Greataxe, this takes it to +15, as far as any weapon goes; until then it can take the Zweihander there. The last level takes a Titanite Slab.", {
+    stage: "Demon’s Greataxe +15, once you swing it",
+  }),
+  strength("ring-red-tearstone", "Strength guides wear the Red Tearstone Ring: your attack rises by half while your HP is below a fifth."),
+
+  // Pure Dexterity
+  dexterity("route-andre", "Take your Scimitar to +5 here, with Titanite Shards at 800 souls each, and keep it Normal: each Normal level adds to what it gets from your Dexterity.", {
+    stage: "Scimitar +5",
+  }),
+  dexterity("ember-large", "This takes your Scimitar on to +10. Raw would stop at +5 and cut what it gets from your Dexterity, the stat you level.", { stage: "Scimitar +10" }),
+  dexterity("pickup-iaito", "The Iaito is a katana Dexterity guides take up once their Dexterity reaches 20.", { stage: "Iaito, at 20 Dexterity" }),
+  dexterity("pickup-estoc", "The Estoc is a thrusting sword Dexterity guides carry, and a Wanderer can use it now: it needs 10 Strength and 12 Dexterity.", {
+    stage: "Estoc, if you take it",
+  }),
+  dexterity(
+    "quest-shiva-shop",
+    "Of his stock, the Uchigatana is the katana Dexterity guides keep to the end, at +15: 5,000 souls, and its cuts make the target bleed. A Wanderer can hold it in both hands now.",
+    { stage: "Uchigatana", sources: [W("wanderer")] },
+  ),
+  dexterity("ember-very-large", "Your Uchigatana goes to +15 with this, as far as any weapon goes; the last level takes a Titanite Slab.", { stage: "Uchigatana +15" }),
+  dexterity("pickup-great-scythe", "Some Dexterity guides fight with the Great Scythe instead of a katana, kept Normal to +15. It needs 14 Strength and 14 Dexterity.", {
+    stage: "Great Scythe, if you take it",
+    sources: [gamevoyagersWanderer[1]],
+  }),
+  dexterity(
+    "rare-weapon-quelaags-furysword",
+    "The Giant Blacksmith makes it from your Scimitar +10, or any +10 curved sword, for 5,000 souls: Quelaag’s Furysword is the curved sword Dexterity guides carry beside their katana, and its fire grows with your Humanity.",
+    { stage: "Quelaag’s Furysword", sources: [W("quelaag-s-furysword")] },
+  ),
+  dexterity("ring-leo", "Dexterity guides wear the Leo Ring: counterattacks with a thrusting weapon hit harder."),
+
+  // Melee builds together
+  shared("pickup-grass-crest-shield", ["quality", "dexterity", "dex-faith"], "Guides for this build carry the Grass Crest Shield: your stamina comes back faster with it, even with your weapon in both hands."),
+  shared("route-giant-blacksmith", ["quality", "strength", "dexterity", "magic-knight", "dex-faith"], "From +10, a Normal weapon can go Lightning here: lightning damage in place of what it gets from your stats."),
+  shared("extra-havel", ["strength", "sorcerer", "dex-faith"], "Guides for this build wear Havel’s Ring: half again as much equip load, for heavier armor."),
+  shared("ring-favor-protection", ["strength", "dexterity", "faith", "dex-faith"], "Guides for this build wear the Ring of Favor and Protection to the end, for more HP, stamina and equip load."),
+
+  // Sorcerer
+  sorcerer(
+    "route-andre",
+    "Andre sells a Longsword for 1,000 souls, the early weapon Sorcerer guides take up, and a Sorcerer can hold it in both hands now. Take it to +5 and stop there: a Normal +5 weapon is what can later be made Magic, to grow with Intelligence.",
+    { stage: "Longsword +5" },
+  ),
+  sorcerer(
+    "quest-griggs",
+    "You start with Soul Arrow, and a second copy, 1,000 souls here, gives you twice the casts. Sorcerer guides move on to Great Heavy Soul Arrow, 8,000, at 16 Intelligence, and wear the Bellowing Dragoncrest Ring, 20,000, which makes your sorceries hit a fifth harder.",
+    { sources: [W("soul-arrow"), W("bellowing-dragoncrest-ring")] },
+  ),
+  sorcerer("route-rickert", "Bring your +5 Longsword and a Green Titanite Shard for a Magic weapon, the path Sorcerer guides take: its damage then grows with your Intelligence, and it goes on to +10 later.", {
+    stage: "Magic Longsword",
+  }),
+  sorcerer("quest-dusk", "Of the Antiquated Set, the Crown of Dusk is the piece Sorcerer guides wear: your sorceries hit a fifth harder, and your magic defense falls by nearly a third.", {
+    sources: [W("crown-of-dusk")],
+  }),
+  sorcerer("quest-logan", "What he sells asks more Intelligence to cast: Homing Soulmass, 20,000 souls, needs 18, and Soul Spear, 40,000, needs 36."),
+  sorcerer("sorcery-crystal-soul-spear", "Buy it here for 50,000 souls even before your Intelligence reaches the 44 it needs: Crystal Soul Spear is the main attack Sorcerer guides end on."),
+  sorcerer(
+    "rare-weapon-seath-tail",
+    "The Moonlight Greatsword is the weapon Sorcerer guides end on: its damage grows with your Intelligence, and it needs 28 of it, with 16 Strength, or 11 in both hands.",
+    { stage: "Moonlight Greatsword" },
+  ),
+  sorcerer("sorcery-white-dragon-breath", "White Dragon Breath, a beam of crystal that leaves spikes along the ground, is one Sorcerer guides add once their Intelligence reaches 50."),
+  sorcerer("ember-large-magic", "If your Longsword stayed Magic rather than going Enchanted, this is its last stretch: +10 is as far as Magic goes.", {
+    stage: "Magic Longsword +10, if it stayed Magic",
+  }),
+
+  // Magic Knight
+  magicKnight(
+    "route-andre",
+    "Take your weapon to +5 here, with Titanite Shards at 800 souls each. That’s where its paths part: a Normal +5 weapon can later be made Magic, to grow with Intelligence, or stay Normal and keep growing with your Dexterity.",
+    { stage: "Your weapon +5" },
+  ),
+  magicKnight("ember-large", "On the Normal path this takes your weapon past +5. If you might make it Magic, leave it at +5: Magic starts from a Normal +5 weapon.", {
+    stage: "Your weapon +10, on the Normal path",
+  }),
+  magicKnight(
+    "route-rickert",
+    "The fork for your weapon. Made Magic, it grows with Intelligence but gets less from your Dexterity, and it can’t take a buff; kept Normal, it can take a sorcery’s buff later.",
+    { stage: "Magic weapon, if you take it" },
+  ),
+  magicKnight("pickup-painted-annex", "Velka’s Rapier, behind those planks, grows with both your Dexterity and your Intelligence and needs 16 of each: a Magic Knight guide keeps it beside its main blade.", {
+    stage: "Velka’s Rapier",
+  }),
+  magicKnight("ember-very-large", "If your weapon stayed Normal, this takes it on to +15, as far as any weapon goes.", { stage: "Your weapon +15, on the Normal path" }),
+  magicKnight("sorcery-crystal-magic-weapon", "Crystal Magic Weapon is the buff Magic Knight guides lay on a Normal weapon, which a Magic one can’t take; casting it takes 25 Intelligence."),
+  magicKnight(
+    "rare-weapon-seath-tail",
+    "The Moonlight Greatsword is what Magic Knight guides end on: its damage grows with your Intelligence, which it needs 28 of, with 16 Strength, or 11 in both hands.",
+    { stage: "Moonlight Greatsword" },
+  ),
+  magicKnight("ember-large-magic", "If your weapon went Magic and stayed so rather than going Enchanted, this is its last stretch: +10 is as far as Magic goes.", {
+    stage: "Magic weapon +10, if it stayed Magic",
+  }),
+
+  // Sorcerer and Magic Knight together
+  shared("ember-enchanted", ["sorcerer", "magic-knight"], "If your weapon went Magic, it forks here: Enchanted grows faster with Intelligence but stops at +5, while Magic goes on to +10 later."),
+  shared(
+    "quest-logans-cell",
+    ["sorcerer", "magic-knight"],
+    "His Archives stock adds the Crystal sorceries, Crystal Magic Weapon, Homing Crystal Soulmass and Crystal Soul Spear, each with a row of its own in this chapter.",
+  ),
+  shared(
+    "sorcery-homing-crystal-soulmass",
+    ["sorcerer", "magic-knight"],
+    "Guides for this build carry Homing Crystal Soulmass to the end. It costs 30,000 souls, and casting it takes 24 Intelligence.",
+  ),
+  shared(
+    "quest-logan-finish",
+    ["sorcerer", "magic-knight"],
+    "The Tin Crystallization Catalyst he drops hits hardest of any catalyst at high Intelligence, but halves your casts. Guides for this build carry it; it needs 32 Intelligence.",
+  ),
+  shared(
+    "quest-logan-study",
+    ["sorcerer", "magic-knight"],
+    "Logan’s Catalyst is the one guides for this build cast with when casts count: it keeps them all, where the Tin halves them. It needs 24 Intelligence, though below 40 other catalysts cast harder.",
+    { sources: [W("tin-crystallization-catalyst")] },
+  ),
+
+  // Pure Faith
+  faith("pickup-claymore", "Pure Faith guides keep the Claymore to the end, and it grows with your Faith once it’s made Divine later. A Cleric holds it in both hands after two levels of Dexterity: it needs 10.", {
+    stage: "Claymore",
+    sources: [W("cleric")],
+  }),
+  faith("route-andre", "Take your Claymore to +5 here, with Titanite Shards at 800 souls each, and stop there: Divine, which grows with Faith, starts from a Normal +5 weapon.", {
+    stage: "Claymore +5",
+  }),
+  faith("miracle-great-magic-barrier", "Pure Faith guides list Great Magic Barrier, for once your Faith reaches 24: it cuts the magic damage you take for a while.", {
+    sources: [W("great-magic-barrier")],
+  }),
+  faith("ring-wolf", "Some Pure Faith guides wear the Wolf Ring: 40 more poise, so blows interrupt you less."),
+  faith("ember-divine", "Make your +5 Claymore a Divine weapon here, the path Pure Faith guides take: its damage then grows with your Faith, though it can no longer take a buff.", {
+    stage: "Divine Claymore",
+  }),
+  faith("miracle-emit-force", "Pure Faith guides carry Emit Force, a ranged orb that bursts into a shockwave where it lands."),
+  faith(
+    "ember-dark",
+    "Here your Divine Claymore +5 can become an Occult weapon, the path Pure Faith guides end on: less base magic damage, but what grows with your Faith stays, and it stops at +5.",
+    { stage: "Occult Claymore" },
+  ),
+  faith("quest-reah-pit", "Replenishment, her thanks, is one Pure Faith guides carry: it heals you slowly for a while, and needs 16 Faith."),
+  faith("quest-reah", "Of her stock, Wrath of the Gods is the one Pure Faith guides carry once their Faith reaches 28: a shockwave around you that knocks most enemies down."),
+  faith("ember-large-divine", "If your Claymore stayed Divine rather than going Occult, this takes it on from +5 to +10.", { stage: "Divine Claymore +10, if it stayed Divine" }),
+  faith("covenant-sunlight", "Great Lightning Spear, for the 10 medals, is the spear Pure Faith guides end on; it needs 30 Faith."),
+  faith(
+    "quest-darkmoon-rank",
+    "The rank gives the Darkmoon Talisman too, the talisman Pure Faith guides end on: it needs 24 Faith, and casts harder than the Canvas Talisman once your Faith passes 39.",
+    { sources: [W("darkmoon-talisman")] },
+  ),
+  faith(
+    "boss-gwyndolin",
+    "Sunlight Blade is lightning on a Normal weapon for a minute, at 30 Faith. Your Divine or Occult Claymore can’t take it, so Pure Faith guides that carry it keep a Normal weapon for it.",
+    { sources: [W("divine"), W("occult")] },
+  ),
+  faith("ring-sun-firstborn", "Pure Faith guides wear the Ring of the Sun’s Firstborn: your attack miracles hit a fifth harder."),
+  faith("quest-domhnall-firelink", "With Gwyndolin dead he adds the Crown of the Dark Sun to his stock, for 10,000 souls: Pure Faith guides cast in it.", {
+    sources: [W("domhnall-of-zena")],
+  }),
+
+  // Dex/Faith
+  dexFaith("route-andre", "Take your weapon to +5 here, with Titanite Shards at 800 souls each: it carries you until you have the Dexterity for this build’s own weapons.", {
+    stage: "Your weapon +5",
+  }),
+  dexFaith("ember-large", "This takes your weapon on to +10, to carry you while your Dexterity climbs toward a katana’s needs; Raw would stop at +5.", { stage: "Your weapon +10" }),
+  dexFaith("pickup-iaito", "The Iaito is one of the katanas Dex/Faith guides take to +15 and buff, once their Dexterity reaches 20.", { stage: "Iaito, at 20 Dexterity" }),
+  dexFaith(
+    "quest-shiva-shop",
+    "Of his stock, the Uchigatana is the katana Dex/Faith guides keep Normal to +15 and buff, since a Divine weapon can’t take a buff: 5,000 souls, and it needs 14 Dexterity.",
+    { stage: "Uchigatana", sources: [W("divine")] },
+  ),
+  dexFaith("ember-very-large", "Your Uchigatana goes on to +15 with this, as far as any weapon goes, and stays a weapon your buffs can take. The last level takes a Titanite Slab.", {
+    stage: "Uchigatana +15",
+  }),
+  dexFaith("pickup-great-scythe", "The Great Scythe is one Dex/Faith guides take to +15 and buff instead of a katana; it needs 14 Strength and 14 Dexterity.", {
+    stage: "Great Scythe, if you take it",
+  }),
+  dexFaith("quest-darkmoon-rank", "Darkmoon Blade is the buff Dex/Faith guides end on: magic damage on your weapon for a minute, once your Faith reaches 30."),
+  dexFaith(
+    "boss-gwyndolin",
+    "Sunlight Blade, in the tomb’s chest, is the other buff Dex/Faith guides carry: lightning on your weapon for a minute, at 30 Faith. It won’t stack with Darkmoon Blade.",
+  ),
+  dexFaith("extra-ricard", "Ricard’s Rapier is a thrusting sword Dex/Faith guides take to +15 and buff; it needs 20 Dexterity.", { stage: "Ricard’s Rapier, if you take it" }),
+
+  // Pure Faith and Dex/Faith together
+  shared(
+    "covenant-way-of-white",
+    ["faith", "dex-faith"],
+    "Starting as a Cleric, you have a talisman and Heal already, so you need nothing from him yet. Any other class needs the Talisman, 1,000 souls, and Heal, 4,000, which takes 12 Faith.",
+  ),
+
+  // Pyromancy, beside another build
+  pyromancy(
+    "quest-laurentius",
+    "Unless you started with a Pyromancy Flame, Laurentius gives you one at Firelink: melee guides carry one beside their weapon. No stat you level raises your pyromancies’ damage; the flame’s upgrades, for souls, do.",
+    { sources: [W("pyromancer"), W("pyromancy-flame"), FX("Laurentius+of+the+Great+Swamp")] },
+  ),
+  pyromancy("covenant-chaos-servant", "Great Chaos Fireball is a pyromancy that guides with a flame beside their weapon keep."),
+  pyromancy("quest-quelaana", "Guides with a flame beside their weapon take two of hers: Great Combustion, a close burst for 5,000 souls, and Great Fireball, thrown at range, for 20,000."),
+  pyromancy("route-vamos", "A Fire weapon stops growing with Strength or Dexterity: if yours grows with a stat your build levels, leave it as it is."),
+  pyromancy("pyromancy-fire-tempest", "Some guides with a flame beside their weapon end on Fire Tempest: pillars of fire all around you."),
+  shared(
+    "pyromancy-power-within",
+    ["pyromancy", "dex-faith"],
+    "Guides for this build use Power Within: two fifths more damage for 100 seconds, while it drains your HP. It’s a pyromancy, so it needs a Pyromancy Flame, which Laurentius gives you if you lack one.",
+    { sources: [W("laurentius"), W("pyromancy-flame"), FX("Pyromancies")] },
+  ),
 ];
