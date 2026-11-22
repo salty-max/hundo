@@ -58,7 +58,7 @@ describe("a save from a newer build", () => {
     ...defaultState(),
     version: 4,
     checks: { [a]: true, "row-from-a-newer-build": true },
-    later: { [b]: a },
+    notes: { [b]: a },
     extra: { ...(defaultState().extra ?? {}), addedByANewerBuild: 7 },
   });
   const stored = () => JSON.parse(localStorage.getItem(STORAGE_KEY)!);

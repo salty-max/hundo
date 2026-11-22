@@ -16,8 +16,8 @@ const meta = {
   component: ArticleRoute,
   args: { chapter, footer: null },
   decorators: [
-    (Story) => {
-      useProgress.setState({ data: defaultState() });
+    (Story, { parameters }) => {
+      useProgress.setState({ data: { ...defaultState(), ...(parameters.save ?? {}) } });
       return (
         <MemoryRouter>
           <Story />
@@ -39,6 +39,17 @@ export const ProseAndList: Story = {
 
 /** A step reached by a link: it stands out, with the accent's bar at its start. */
 export const LinkedStep: Story = { args: { target: `entry-${linked.id}` } };
+
+const asideProse = chapter.groups[0].rows[0];
+const asideListed = chapter.groups[1].rows[0];
+/** A step set aside in prose and one in the compact list: each carries a Set aside tag that puts it back, and when it comes back. */
+export const SetAside: Story = {
+  parameters: { save: { later: { [asideProse.id]: asideProse.id, [asideListed.id]: asideListed.id } } },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole("button", { name: `Set aside. Put “${asideProse.title}” back on the route` })).toBeVisible();
+    await expect(canvas.getByRole("button", { name: `Set aside. Put “${asideListed.title}” back on the route` })).toBeVisible();
+  },
+};
 
 // The grid ArticleRoute draws its parts in, with its column tracks and the gap between them as the browser worked them out.
 function layout(article: HTMLElement) {

@@ -7,6 +7,7 @@ import { BuildStrip } from "../components/BuildStrip";
 import { ChapterHero } from "../components/ChapterHero";
 import { ChapterNav } from "../components/ChapterNav";
 import { ChecklistRoute } from "../components/ChecklistRoute";
+import { Handoff } from "../components/Handoff";
 import { MissablesStrip } from "../components/MissablesStrip";
 import { NextUp } from "../components/NextUp";
 import { SealedChapter } from "../components/SealedChapter";
@@ -59,7 +60,13 @@ function GuideView({ chapter, target }: { chapter: Chapter; target?: string }) {
     element?.scrollIntoView({ block: "start" });
   }, [target, locationKey]);
 
-  const footer = <ChapterNav chapter={chapter.id} in={config.layout === "article" ? "article" : "route"} />;
+  // The chapter's end: what to settle before leaving it, then on to the next.
+  const footer = (
+    <>
+      <Handoff chapter={chapter} />
+      <ChapterNav chapter={chapter.id} in={config.layout === "article" ? "article" : "route"} />
+    </>
+  );
 
   return (
     <div className={`flex flex-col ${routeGap}`}>

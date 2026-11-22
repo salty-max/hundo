@@ -2,6 +2,7 @@ import { Collapsible } from "@base-ui/react/collapsible";
 import { Link } from "react-router";
 import { CheckBox } from "./CheckBox";
 import { Icon } from "./Icon";
+import { AsideMark } from "./Later";
 import { rowLinkClasses } from "./TickItem";
 import { BuildWords } from "./BuildMark";
 import { Button, Empty, Panel, PanelActions, PanelHead, PanelText, PanelTitle, Tag } from "./ui";
@@ -115,6 +116,7 @@ function PlanItem({ item: { row, notes, tasks, warnings }, picked, ticked }: { i
           )}
         </label>
         <BuildWords row={row} at="plan" picked={picked} notes={notes} tasks={tasks} warnings={warnings} leads={leads} />
+        <AsideMark row={row} at="column" />
       </div>
       <Link className={rowLinkClasses} to={`/guide/${row.chapter}/${row.id}`} aria-label={`Jump to “${row.title}” in chapter ${row.chapter}`}>
         Jump to

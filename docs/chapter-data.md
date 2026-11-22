@@ -47,7 +47,7 @@ export default {
 - **`id`** is the saved check: progress stores `{ [id]: true }`.
   - It must be unique across the guide **(tested)**.
   - Write it in kebab-case, starting with the kind of row, as `quest-up-a-wall`, `echo-aruroda` or `mission-exodus-in-america` do.
-  - **Never rename or reuse an id once the guide is live.** On load, a saved check for an id the data no longer has is dropped, so a renamed row comes back unticked for every reader. A reused id ticks the wrong row.
+  - **Never rename or reuse an id once the guide is live.** A saved check for an id the data no longer has shows nowhere, so a renamed row comes back unticked for every reader. A reused id ticks the wrong row. Every id that has shipped is a line of `data/live-ids.txt` (below), so a rename fails the tests. To break a bundled row into rows of their own, split it (Splitting a row).
 - **`tags`**: every tag must be a category in `config.ts` **(tested)**. The first one is the row's label and decides its icon and tone. A row counts toward every category it carries, so a dungeon chest is `["dungeon-chest", "chest"]`. Never add the `missable` tag by hand: core adds it to the rows listed in `missables.ts`.
 - **`title`**: never empty **(tested)**. In the article layout it's the checkbox label, so the guides write it as an action: "Learn Aruroda in the dunes". Red Dead's checklist uses the mission's own name.
 - **`text`**: the directions, in the second person, in the order the player meets things. Name the landmark, the action and the reward. Give exact counts and prices where the source gives them.
@@ -55,6 +55,31 @@ export default {
   - `{ quantity: 3 }`: the row awards that many of the guide's `quantity` category, counted by amount.
   - `{ reference: "https://…" }`: the page this row alone was written from (see Sources: it isn't shown). It must be https **(tested)**.
   - `{ map: ["Site", "https://…"] }`: this row's own map, only where it differs from its group's (see Maps).
+  - `{ requires: ["equipment-monarch-wings"] }`: what the row needs before it can be done, as rows (an ability, a key, an item). Every entry is needed; an entry that is a list is met by any one of its rows: `[["key-basement", "key-master"]]`. Until then the row waits: Next up doesn't offer it, and it says what it needs ([core.md](core.md#the-guides-flow)). Real rows, never the row itself, no loop **(tested)**. A requirement can only name a row, so a key with no row of its own needs one first (a route step, which counts nothing). Use it for a row the route reaches before it can be done, or that a reader off the route may try too early, not for every row after an ability.
+  - `{ gives: "Monarch Wings" }`: on a row another requires, what it gives as the waiting row names it ("Needs Monarch Wings"). Without it the row's title stands in. Never empty **(tested)**.
+  - `{ place: "Blighttown" }`: where the row is done when that isn't its group's `location` (a shop in another area). A row set aside comes back the next time the route reaches its place. Never empty **(tested)**.
+
+## Places
+
+A group's `location` is also where its rows are done: a row set aside comes back the next time the route reaches that place, after somewhere else ([core.md](core.md#the-guides-flow)). Name a place the same way each time it comes back, since that's how a return is found, and separate several with " · " ("Greenpath · Forgotten Crossroads"). A row done elsewhere than its group takes its own `place`. Hallownest, Koholint, Pharloom and Red Dead locate every group; in Lordran and Echoes a set-aside row comes back only when nothing else is left until their groups get locations.
+
+## Splitting a row
+
+A row that bundles things a reader collects separately (four rewards over several stops) can be split into rows of their own, without anyone losing their tick. `data/splits.ts` exports `splits`, which `config.ts` passes as `splits`:
+
+```ts
+export const splits: Split[] = [{ from: "pickup-sens-scavenger", into: ["ring-steel-protection", "weapon-shotel", "pickup-hush-black-sorcerer"] }];
+```
+
+- **`from` is retired for good**: its row goes from the chapter data, and the id is never a row again **(tested)**. A save, a backup or another device that has it ticked has every part ticked instead, and the same for a row set aside. The old id is never kept as one of the parts: a tick on it would then mean the whole bundle or only its first part, and nothing could tell which.
+- **`into`** are new rows (new ids), each a real row or another split's `from` **(tested)**. Point missables, choices, questlines and builds at the parts: they test real rows, so a reference left on the old id fails.
+- **Its line stays** in `live-ids.txt`, which accepts a split's `from`. The split stays in `splits.ts` for good: a device can come back after months.
+- **Counts move.** A guide's own list grows by the new rows (its goal is its rows), so its figure can dip a point for a reader who hadn't ticked the bundle; one who had keeps every part ticked. A game's list keeps its goal. Record a new count in `facts-to-verify.md` as usual.
+- **Only once saves read forward on every guide** ([core.md](core.md#saved-progress)): a page on an older build drops ticks on rows it doesn't have.
+
+## Live ids
+
+`data/live-ids.txt` lists every row id that has shipped, sorted, one a line. `data.test.ts` fails when a current row isn't in it (its message prints the lines to add) and when a line is neither a current row nor a split's `from` (a rename or a dropped row: split it instead). A line that never reached main, a row renamed inside one pull request, may simply be deleted.
 
 ## Maps
 

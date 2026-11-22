@@ -35,6 +35,8 @@ export const paths = {
   down: '<path d="m6 9 6 6 6-6"/>',
   right: '<path d="m9 6 6 6-6 6"/>',
   left: '<path d="m15 6-6 6 6 6"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  undo: '<path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/>',
   arrow: '<path d="M3 12h17m-6-6 6 6-6 6"/>',
   out: '<path d="M7 17 17 7M9 7h8v8"/>',
   play: '<path d="m8 5 11 7-11 7V5Z"/>',

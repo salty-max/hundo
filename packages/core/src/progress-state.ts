@@ -1,5 +1,5 @@
-import { CHAPTER_COUNT, brand, byId, config, readChapter } from "./guide";
-import type { Checks, Extra, ProgressState } from "./types";
+import { CHAPTER_COUNT, brand, byId, config, isRetired, partsOf, readChapter } from "./guide";
+import type { Checks, Extra, Later, ProgressState } from "./types";
 
 export const STORAGE_KEY = `${brand.storagePrefix}.v1`;
 
@@ -20,7 +20,7 @@ export const defaultState = (): ProgressState => ({
 });
 
 /** The fields this build reads. A save's others were written by a newer build, and go back as they came. */
-const KNOWN = new Set(["version", "guide", "checks", "ceiling", "spoilers", "chapter", "extra"]);
+const KNOWN = new Set(["version", "guide", "checks", "ceiling", "spoilers", "chapter", "extra", "later"]);
 /**
  * Fields core no longer reads, named here when one goes: they're dropped rather than carried, so a later field can never read an
  * old value under the same name. None yet.
@@ -68,6 +68,20 @@ export function readExtra(value: unknown): Extra {
 const savedChapter = (value: unknown) => readChapter(Number.isInteger(value) && (value as number) > CHAPTER_COUNT ? CHAPTER_COUNT : value);
 
 /**
+ * The rows a save sets aside: unticked ones only, a split bundle's as each of its parts, each with the row the reader had reached, or the
+ * row itself when that isn't a row id (a bundle's anchor becomes its first part).
+ */
+function readLater(saved: Record<string, unknown>, checks: Checks, kept: (id: string) => boolean): Later {
+  const later: Later = {};
+  for (const [id, anchor] of Object.entries(saved)) {
+    if (typeof anchor !== "string") continue;
+    const at = partsOf(anchor)[0];
+    for (const part of partsOf(id)) if (kept(part) && checks[part] !== true) later[part] = ROW_ID.test(at) && !isRetired(at) ? at : part;
+  }
+  return later;
+}
+
+/**
  * Parse untrusted JSON (storage or an imported file) into a safe state. Version 3 is the shared format, and a higher one reads the
  * same, since a newer build only ever adds fields: what this build knows is used, and the rest (fields, ticks on rows it doesn't have,
  * keys in the guide's extra) is kept on the state and written back as it was. Saves from before the shared format go through the
@@ -84,8 +98,18 @@ export function validateState(value: unknown): ProgressState {
   const fresh = defaultState();
   const newer = current ? (carryUnknown(Object.fromEntries(Object.entries(v).filter(([key]) => !KNOWN.has(key))), {}, RETIRED) as object) : {};
   const result: ProgressState = { ...fresh, ...newer, version: current ? (v.version as number) : VERSION };
-  const kept = (id: string) => byId.has(id) || (current && ROW_ID.test(id));
-  result.checks = Object.fromEntries(Object.entries(checks).filter(([id, checked]) => checked === true && kept(id))) as Checks;
+  // A split bundle's old id is retired: a tick on it ticks every part, and the old id goes (unstamped, so an older device that still
+  // lists the bundle isn't unticked by it). Kept by the next read otherwise, it would tick a part again after the reader unticked it.
+  const kept = (id: string) => !isRetired(id) && (byId.has(id) || (current && ROW_ID.test(id)));
+  result.checks = {} as Checks;
+  for (const [id, checked] of Object.entries(checks)) {
+    if (checked !== true) continue;
+    for (const part of partsOf(id)) if (kept(part)) result.checks[part] = true;
+  }
+  if (current && isPlain(v.later)) {
+    const later = readLater(v.later, result.checks, kept);
+    if (Object.keys(later).length) result.later = later;
+  }
   const chapter = current ? savedChapter : readChapter;
   result.ceiling = chapter(v.ceiling);
   result.chapter = chapter(v.chapter);
