@@ -246,6 +246,18 @@ Every entry in `data/missables.ts` has two hosts that state its condition. None 
 
 - **invasion-chester: does Chester's invasion need Manus alive?** Nothing backs a “keep Manus alive” condition. wikidot marvellous-chester (read directly) says he invades the Township if you're human, and its general note says NPC Black Phantoms appear only while "the area boss has not been defeated", without naming which boss counts for the Township; it adds that killing his merchant form first stops the invasion. fextralife and fandom name only human form. The row says go human and keep his merchant alive. To settle it: kill Manus while human, return to the Township stairs before the mimic bridge, and see whether he still invades (or a page that names the boss the Township counts).
 
+**The continuous route in chapter 10 (22 Nov 2026).** Four sections in walking order: the Sanctuary Garden (its bonfire before the Guardian, on both hosts, against the cold reader's memory) and Elizabeth; Royal Wood to Artorias, with the five lifts told apart (two of the old rows' lifts were the same one); the Township in its order and the Chasm; then back up by the Chasm's lift for Chester, Gough and Kalameet. No row added. Source-checked on the live pages. Still on one host, or read differently:
+
+- **Warping out of Oolacile before Manus**: no page gates it. wikidot's Broken Pendant page gives warping as the way back with no condition, and fextralife says every expansion bonfire can be warped to and from. Not checked in game: rest at the Sanctuary Garden bonfire and open the warp list.
+- **Ciaran** (`quest-ciaran`): by a small grave in Artorias's arena in Royal Wood, on both hosts, not the Darkroot headstone. Chapter 11's Tracer rows say "She appears at Artorias’s grave only while you carry his soul", which reads as Sif's arena in Darkroot; its pass will match chapter 10.
+- **Dusk's sign** (`quest-elizabeth-request`, `quest-dusk-rescued`): hidden from the Broken Pendant (wikidot) or from placing the Lordvessel (fextralife) until Manus; the rows say only "until Manus is dead". Using it while hollow is wikidot's alone.
+- **The Help Me carving** (`route-chasm-spells`): a ledge on the right before the stone bridge, down to a dead end of Humanity Phantoms (wikidot's carving page); fextralife says left.
+- **The slab's pool** (`forge-royal-slab`): at the edge of a small pool (wikidot's slab page); a group of enemies around it (fextralife Royal Wood).
+- **The way down to Kalameet** (`quest-gough`): a ramp down from the tower at Chester's end (fextralife Royal Wood), or a path left of an elevator (fextralife Kalameet); no page has a lift down into the valley.
+- **Chester** (`invasion-chester`): no invasion once his merchant form is dead, wikidot alone; the shop surviving his phantom's death, wikidot alone.
+- **The Lesser Guardians' tails** (`extra-guardian-tail`): after Artorias and a rest, wikidot alone; fextralife says after another boss.
+- **Elizabeth's mushrooms after Manus** (`quest-elizabeth`) and young Sif changing adult Sif's scene: wikidot alone.
+
 ### Chapter 11
 
 - **The forging list's bases and menu** (Boss-soul forging checklist). `rare-weapon-butterfly-horn` said a +10 spear or thrusting sword until 19 Nov 2026; wikidot's [Moonlight Butterfly soul page](https://darksouls.wikidot.com/soul-of-the-moonlight-butterfly) (read directly) names a spear only, so the row now says spear, which fits either way. The group note's menu name, Modify Equipment, is on no page read: wikidot's Giant Blacksmith page says only that he makes boss-soul weapons. To settle both: a second host's recipe table, or the smith's menu in game.
