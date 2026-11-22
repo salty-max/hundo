@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { readHint, readRecord } from "../sync/local";
+import { readHint, readRecord, sendable } from "../sync/local";
 
 /**
  * Where sync stands, for the topbar and the Sync screen:
@@ -26,7 +26,7 @@ export function startingPhase(): SyncPhase {
   // No link cookie means not linked, whatever an old ledger says: the first cycle drops it.
   if (!readHint()) return "off";
   const record = readRecord();
-  return !record ? "joining" : record.dirty.length > 0 ? "waiting" : "synced";
+  return !record ? "joining" : sendable(record).length > 0 ? "waiting" : "synced";
 }
 
 export const useSyncStatus = create<SyncStatus>(() => ({ phase: startingPhase(), devices: 0, lastSync: null }));

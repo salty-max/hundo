@@ -6,7 +6,7 @@ import { SelectImpl as Select } from "./select-impl";
 import { DialogDescription, DialogFooter, DialogSeparator, DialogStatus, DialogText } from "./dialog";
 import { StorageWarning } from "./StorageWarning";
 import { Button } from "./ui";
-import { brand, chapters, readChapter, text } from "../guide";
+import { brand, byId, chapters, readChapter, text } from "../guide";
 import { exportProgress } from "../backup";
 import { validateState } from "../progress-state";
 import { isOpen, useProgress } from "../store/progress";
@@ -116,7 +116,8 @@ export function SettingsScreen() {
       if (file.size > 1_000_000) throw new Error("The backup is too large.");
       const parsed = validateState(JSON.parse(await file.text()));
       setImported(parsed);
-      const count = Object.keys(parsed.checks).length;
+      // Rows this build has: a newer build's backup may carry ticks it can't show, which it keeps all the same.
+      const count = Object.keys(parsed.checks).filter((id) => byId.has(id)).length;
       setFeedback({ text: `${count} checked ${count === 1 ? "entry" : "entries"} found. Select Replace with backup to load them.`, error: false });
     } catch {
       setFeedback({ text: `Couldn’t read this ${brand.name} progress backup.`, error: true });

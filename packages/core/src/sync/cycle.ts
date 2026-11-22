@@ -5,7 +5,7 @@ import { useProgress } from "../store/progress";
 import { useUi } from "../store/ui";
 import { call, type Reply } from "./api";
 import { seed, viewFrom } from "./fields";
-import { cleanEntries, dropRecord, readHint, readRecord, writeRecord, type SyncRecord } from "./local";
+import { cleanEntries, dropRecord, readHint, readRecord, sendable, writeRecord, type SyncRecord } from "./local";
 import { merge, observe, offsetFrom, stamp, type Clock, type Entries } from "./ledger";
 
 /*
@@ -133,7 +133,7 @@ async function exchange(): Promise<Outcome> {
   for (let round = 0, rebased = false; round < ROUNDS; ) {
     const record = readRecord();
     if (!record || !readHint()) return { kind: "off" };
-    const keys = record.dirty.slice(0, BATCH);
+    const keys = sendable(record).slice(0, BATCH);
     const sent = pick(record.entries, keys);
     const touch = Date.now() - record.touched > TOUCH_AFTER;
     // Nothing to send, no touch due, a revision to go by and a full answer not long ago: only ask whether anything has changed.
@@ -144,7 +144,7 @@ async function exchange(): Promise<Outcome> {
 
     if (quiet && reply.status === 200 && reply.body?.unchanged === true && reply.body.rev === record.rev) {
       // Nothing changed in the group: nothing to merge, apply or save, so nothing is written. What this tab has waiting is its own business.
-      return { kind: "ok", devices: record.devices, dirty: (readRecord()?.dirty.length ?? 0) > 0, pulled };
+      return { kind: "ok", devices: record.devices, dirty: sendable(readRecord() ?? { dirty: [] }).length > 0, pulled };
     }
 
     if (reply.status === 400 && reply.body?.error === "clock" && typeof reply.body.now === "number" && !rebased) {
@@ -178,7 +178,7 @@ async function exchange(): Promise<Outcome> {
     if (!writeRecord(latest)) return retry("error");
     devices = server.devices;
     round++;
-    if (latest.dirty.length === 0) return { kind: "ok", devices, dirty: false, pulled };
+    if (sendable(latest).length === 0) return { kind: "ok", devices, dirty: false, pulled };
   }
   return { kind: "ok", devices, dirty: true, pulled };
 }
@@ -214,7 +214,8 @@ export async function syncOnce(): Promise<Outcome> {
 export function flushOnExit() {
   const record = readRecord();
   // Not for a ledger of another group than the cookie names: its stamps are the old group's, and the next round starts afresh.
-  if (!record || record.group !== readHint() || record.dirty.length === 0) return;
-  const sent = pick(record.entries, record.dirty.slice(0, 200));
+  const keys = record ? sendable(record) : [];
+  if (!record || record.group !== readHint() || keys.length === 0) return;
+  const sent = pick(record.entries, keys.slice(0, 200));
   void call("/sync", { guide: brand.id, entries: sent }, true);
 }

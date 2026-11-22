@@ -4,7 +4,7 @@ import { useProgress } from "../store/progress";
 import { Browser, makeWorld, pair } from "../test/sync-world";
 import { askAfterFirstTick } from "../persistence";
 import { flushOnExit, syncOnce } from "./cycle";
-import { readRecord, SYNC_KEY } from "./local";
+import { readRecord, SYNC_KEY, writeRecord } from "./local";
 
 const [r1, r2, r3, r4] = allRows.map((row) => row.id);
 const checks = () => Object.keys(useProgress.getState().data.checks).sort();
@@ -156,6 +156,29 @@ describe("a linked pair", () => {
     later();
     await sync(b);
     expect(b.calls.every((call) => Object.keys(call.body.entries as object).length === 0)).toBe(true);
+  });
+
+  it("keeps a newer build's key waiting for that build's tab, sends what it can, and isn't left waiting on it", async () => {
+    // Another tab of the guide, on a newer build, marked a kind of key this build doesn't know to send. The API here doesn't take it
+    // either, and one key it doesn't take refuses the whole push: sending it from here would hold back every tick.
+    await a.run(() => {
+      const record = readRecord()!;
+      record.entries[`l:${r2}`] = [Date.now(), r3];
+      record.dirty.push(`l:${r2}`);
+      writeRecord(record);
+    });
+    await tick(a, [r2]);
+    a.calls = [];
+    expect(await sync(a)).toMatchObject({ kind: "ok", dirty: false });
+    const sent = a.calls.flatMap((call) => Object.keys((call.body.entries ?? {}) as object));
+    expect(sent).toContain(`c:${r2}`);
+    expect(sent).not.toContain(`l:${r2}`);
+    const record = await a.run(() => readRecord());
+    expect(record?.entries[`l:${r2}`]).toEqual([expect.any(Number), r3]);
+    expect(record?.dirty).toEqual([`l:${r2}`]);
+    later();
+    await sync(b);
+    expect(await checked(b)).toEqual(sorted(r1, r2));
   });
 
   it("sends a change made while a request is out in the same cycle, and loses nothing", async () => {

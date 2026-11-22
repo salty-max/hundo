@@ -1,5 +1,6 @@
 import { allRows, CHAPTER_COUNT } from "../guide";
 import { STORAGE_KEY, defaultState } from "../progress-state";
+import { reloadFromAnotherTab } from "../persistence";
 import { useProgress } from "./progress";
 import { SYNC_KEY, readRecord, writeRecord } from "../sync/local";
 
@@ -48,6 +49,45 @@ describe("progress store", () => {
     localStorage.setItem(STORAGE_KEY, "{not json");
     useProgress.getState().reloadFromStorage();
     expect(useProgress.getState()).toMatchObject({ storageError: true, data: defaultState() });
+  });
+});
+
+describe("a save from a newer build", () => {
+  /** What a tab on a newer build saved: a higher version, a field, a tick on a row this build doesn't have, a key in the extra. */
+  const newer = () => ({
+    ...defaultState(),
+    version: 4,
+    checks: { [a]: true, "row-from-a-newer-build": true },
+    later: { [b]: a },
+    extra: { ...(defaultState().extra ?? {}), addedByANewerBuild: 7 },
+  });
+  const stored = () => JSON.parse(localStorage.getItem(STORAGE_KEY)!);
+
+  it("loads it, and keeps all of it through this build's own changes", () => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(newer()));
+    useProgress.getState().reloadFromStorage();
+    expect(useProgress.getState()).toMatchObject({ storageError: false, data: { checks: { [a]: true } } });
+    useProgress.getState().setCheck(b, true);
+    useProgress.getState().visitChapter(last);
+    useProgress.getState().saveSettings({ spoilers: false, ceiling: last });
+    expect(stored()).toEqual({ ...newer(), checks: { ...newer().checks, [b]: true }, chapter: last, ceiling: last, spoilers: false });
+  });
+
+  it("keeps it when another tab saves it while this one is open, and this one ticks after", () => {
+    useProgress.getState().setCheck(c, true);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(newer()));
+    reloadFromAnotherTab();
+    useProgress.getState().setCheck(b, true);
+    expect(stored()).toEqual({ ...newer(), checks: { ...newer().checks, [b]: true } });
+  });
+
+  it("goes back whole with an Undo, as an Undo restores only the rows it names", () => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(newer()));
+    useProgress.getState().reloadFromStorage();
+    const before = { ...useProgress.getState().data.checks };
+    useProgress.getState().setMany([a, b], false);
+    useProgress.getState().restore([a, b], before);
+    expect(stored()).toEqual(newer());
   });
 });
 

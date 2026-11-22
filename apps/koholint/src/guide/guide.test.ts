@@ -78,6 +78,10 @@ describe("Koholint saves from before the shared format", () => {
     expect(validateState(v1)).toEqual({ ...defaultState(), checks: { [a]: true }, ceiling: 3, chapter: 2, extra: { mode: "hero", runs: v1.runs } });
   });
 
+  it("reads a chapter number it never had as chapter 1, as it always has", () => {
+    expect(validateState({ ...v1, ceiling: 99, chapter: 99 })).toMatchObject({ ceiling: 1, chapter: 1 });
+  });
+
   it("refuses a version 1 file that names a guide", () => {
     expect(() => validateState({ ...v1, guide: "echoes-of-wisdom" })).toThrow();
   });

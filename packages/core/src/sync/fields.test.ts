@@ -52,6 +52,21 @@ describe("viewFrom", () => {
     expect(next.checks).toEqual({ [r1]: true });
   });
 
+  it("unticks a row this build doesn't know that the progress carries, and keeps the rest of what it carries", () => {
+    const current = { ...state({ checks: { [r1]: true, "row-from-a-newer-build": true, "another-new-row": true } }), later: { [r1]: r2 } };
+    const next = viewFrom({ "c:row-from-a-newer-build": [5, 0], "c:another-new-row": [5, 1] }, current);
+    expect(next.checks).toEqual({ [r1]: true, "another-new-row": true });
+    expect(next).toMatchObject({ later: { [r1]: r2 } });
+  });
+
+  it("keeps the keys a newer build added to the guide's extra when it lays the ledger's leaves over it", () => {
+    if (!config.state.extra) return;
+    const fresh = defaultState().extra ?? {};
+    const current = state({ extra: { ...fresh, addedByANewerBuild: 7 } as unknown as ProgressState["extra"] });
+    const next = viewFrom({ "x:anotherNewLeaf.deep": [5, 3] }, current);
+    expect(next.extra).toEqual({ ...fresh, addedByANewerBuild: 7, anotherNewLeaf: { deep: 3 } });
+  });
+
   it("holds a chapter to the guide's own and never resets it to 1", () => {
     const next = viewFrom({ ceiling: [5, 999], chapter: [5, 999], spoilers: [5, false] }, defaultState());
     expect(next).toMatchObject({ ceiling: CHAPTER_COUNT, chapter: CHAPTER_COUNT, spoilers: false });
