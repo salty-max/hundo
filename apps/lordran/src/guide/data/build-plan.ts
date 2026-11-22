@@ -1283,7 +1283,7 @@ export const notes: BuildNote[] = [
   dexFaith("quest-darkmoon-rank", "Darkmoon Blade is the buff Dex/Faith guides end on: magic damage on your weapon for a minute, once your Faith reaches 30."),
   dexFaith(
     "boss-gwyndolin",
-    "Sunlight Blade, in the tomb’s chest, is the other buff Dex/Faith guides carry: lightning on your weapon for a minute, at 30 Faith. It won’t stack with Darkmoon Blade.",
+    "Sunlight Blade is the other buff Dex/Faith guides carry: lightning on your weapon for a minute, at 30 Faith. It won’t stack with Darkmoon Blade.",
   ),
   dexFaith("extra-ricard", "Ricard’s Rapier is a thrusting sword Dex/Faith guides take to +15 and buff; it needs 20 Dexterity.", { stage: "Ricard’s Rapier, if you take it" }),
 
