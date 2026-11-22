@@ -19,7 +19,7 @@ file). From each guide it takes:
 `src/plugin.ts` then:
 
 - makes three copies of each chapter 1 banner for its band (480, 960 and up to 1,800px wide), and separate 960, 1,920, 2,880 and 3,840px copies for the hero’s backdrop, all cut directly from the original to 3:1 with Lanczos resampling, plus smaller 3:2 crops for phones;
-- copies the icon tiles and the display font, with the font's licence into `fonts/`;
+- copies the icon tiles and makes a WOFF2 subset of each display font for the guide titles sharing its family, preserving shaping features and licence metadata; fonts declaring reserved names in their licence header stay byte-for-byte unchanged, and each font’s licence is copied into `fonts/`;
 - writes one stylesheet of the guides' palettes, fonts and corners (each dark palette written twice, as home.css writes its own: below),
   and the tab's icon (the logo's ring, one arc per guide);
 - makes the link preview's picture (`src/og.ts`), a 1200×630 JPEG named by its content: six chapter 1 banners, two across and three
@@ -47,7 +47,7 @@ The hero uses responsive WebP copies (`BACKDROP_WIDTHS` in `src/plugin.ts`) from
 
 For phones up to 480px wide, a picture source supplies a 3:2 crop at the same 72% focal point, at widths 720/960/1200/1800. It omits the sides hidden by the narrow viewport, preserving visible detail while reducing transfer size. Mobile crops prefer AVIF with a WebP fallback; the media-matched AVIF preload is ignored by browsers which need the fallback. The first image has high fetch priority and media-matched responsive preloads, so only the applicable crop loads. Later images keep low priority and load only shortly before their turn. The backdrop may now be the largest contentful paint; image quality is no longer reduced to keep it out of that metric. The headline’s masks, glow and theme contrast treatments are unchanged. Recheck performance on the production build when changing image sizes or compression.
 
-Local validation on 22 November 2026 (Lighthouse 13.6, Chrome 158, three runs per viewport): desktop performance 100 with median LCP 805ms; mobile performance 95 with median LCP 2,859ms. Accessibility, best practices and SEO were 100 on both. Mobile still exceeds the repository’s 2,500ms LCP budget; that check remains failing. The image is discovered early at high priority and the mobile AVIF transfers about 30KB. Lighthouse’s simulated image LCP graph also includes the guide fonts requested below the hero; the observed local LCP was about 82ms. These local figures do not replace a production or real-device measurement, and the budget has not been relaxed.
+The landing build subsets decorative fonts to the guide titles, without changing the guides’ own font files. Playfair Display declares a reserved name and is served unchanged. A browser comparison of all six titles against the original fonts checks both their width and rendered pixels. This reduces decorative font transfer from about 194KiB to 55KiB. The existing Lighthouse budgets remain unchanged; run `pnpm lighthouse home` to check the current build rather than relying on measurements from the old full-font build.
 
 Light and dark follow the device, in CSS alone, until the reader presses the theme button for the scheme the device isn't using. Only then
 is a choice kept, in localStorage under `hundo.theme` (`THEME_KEY`), and the root gets `data-theme`; pressing it back to the device's scheme
@@ -95,10 +95,12 @@ production build as CI's `lighthouse-home` job does.
 
 ## Tests
 
+`src/test/setup.ts` builds the real page and all assets once per Vitest run, before workers start. It writes a temporary V8 fixture that preserves Maps and Buffers; the page and link-preview suites read independent copies. Watch reruns rebuild the fixture, and teardown removes it. This avoids competing AVIF encodes in each suite’s 60-second setup hook. Generation failures still fail the run, and the tests still inspect actual emitted assets.
+
 - `page.test.ts`: the page as the build makes it. Every guide with a `vercel.json` in `apps/` is on it, linking to its `brand.home`, its
   game the band's title and its own name above it, unless it is the game's, with no publisher. Its pictures and fonts are among the files
   the build writes, and each guide's dark palette is written for both ways into dark. The hero's backdrop lists every guide's banner A to Z, their
-  responsive copies up to 4K, and holds only the first, with a matching responsive preload, hidden from assistive technology. The top bar links to the repository in a new tab and holds
+  responsive copies up to 4K, verifies the reserved-name font stays unmodified, and holds only the first, with a matching responsive preload, hidden from assistive technology. The top bar links to the repository in a new tab and holds
   the theme button, invisible until its script runs. Find narrows the guides. The theme button and the Find field keep their room before
   their script runs (never `hidden`, which gave them none: showing the field grew the guides' bar from 26 to 82px on a phone and pushed
   the guides down) and go, room and all, where scripts are off. A guide's cookie fills in its band and no other, and

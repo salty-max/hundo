@@ -17,6 +17,8 @@
     "react-dom": "catalog:"
   },
   "devDependencies": {
-    "sharp": "^0.35.5"
+    "@types/subset-font": "^2.3.0",
+    "sharp": "^0.35.5",
+    "subset-font": "^2.9.0"
   }
 }

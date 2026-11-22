@@ -7,7 +7,8 @@ import { wireFind } from "./find";
 import { wireGroup, wireProgress } from "./progress";
 import { APPS, readGuides, type Guide } from "./guides";
 import { GITHUB, type GuideArt } from "./page";
-import { BACKDROP_WIDTHS, MOBILE_BACKDROP_WIDTHS, fillPage, make, type Made } from "./plugin";
+import { BACKDROP_WIDTHS, MOBILE_BACKDROP_WIDTHS, fillPage, type Made } from "./plugin";
+import { homePage } from "./test/fixture";
 import { wireTheme } from "./theme";
 
 const deployed = readdirSync(APPS).filter((name) => existsSync(join(APPS, name, "vercel.json")));
@@ -16,7 +17,8 @@ describe("the landing page", () => {
   let made: Made;
   let guides: Guide[];
   beforeAll(async () => {
-    [made, guides] = await Promise.all([make(), readGuides()]);
+    made = homePage();
+    guides = await readGuides();
     document.body.innerHTML = made.home;
   });
 
@@ -71,6 +73,9 @@ describe("the landing page", () => {
     }
     expect([...made.files.keys()].filter((path) => path.startsWith("fonts/") && path.endsWith("-OFL.txt")).length).toBeGreaterThan(0);
     for (const [, url] of css.matchAll(/url\(\/([^)]+)\)/g)) expect(made.files.has(url), url).toBe(true);
+    // Playfair's licence reserves its name: its emitted font must remain the unmodified original.
+    const playfair = css.match(/font-family:"Playfair Display";src:url\(\/([^)]+)\)/)![1];
+    expect(made.files.get(playfair)).toEqual(readFileSync(join(APPS, "koholint", "public", "fonts", "playfair.woff2")));
     expect((made.files.get("favicon.svg") as string).match(/<path /g)?.length).toBe(deployed.length);
     expect(made.head).toContain('rel="preload"');
   });

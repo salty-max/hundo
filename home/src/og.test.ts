@@ -4,7 +4,8 @@ import { join } from "node:path";
 import sharp from "sharp";
 import { APPS, readGuides, type Guide } from "./guides";
 import { OG_HEIGHT, OG_WIDTH, ogImage, ogTags, ringArcs, wallGuides, wallTiles, WORD, WORD_ADVANCE, WORD_HEIGHT } from "./og";
-import { fillPage, HOME, make, type Made } from "./plugin";
+import { fillPage, HOME, type Made } from "./plugin";
+import { homePage } from "./test/fixture";
 
 const index = readFileSync(join(import.meta.dirname, "..", "index.html"), "utf8");
 const range = (n: number) => Array.from({ length: n }, (_, i) => i);
@@ -16,8 +17,8 @@ beforeAll(async () => {
 
 describe("the link preview", () => {
   let made: Made;
-  beforeAll(async () => {
-    made = await make();
+  beforeAll(() => {
+    made = homePage();
   });
 
   const tag = (property: string) => made.og.match(new RegExp(`<meta property="${property}" content="([^"]*)">`))?.[1];

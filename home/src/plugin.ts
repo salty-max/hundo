@@ -5,6 +5,7 @@ import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import sharp from "sharp";
+import subsetFont from "subset-font";
 import type { Plugin } from "vite";
 import { APPS, readGuides } from "./guides";
 import { ogImage, ogTags } from "./og";
@@ -60,6 +61,7 @@ export const make = async (apps = APPS): Promise<Made> => {
 
   const art: Record<string, GuideArt> = {};
   const display: Record<string, string> = {};
+  const titleFonts = new Map<string, string>();
   for (const guide of guides) {
     const root = join(apps, guide.folder);
     const banner = join(root, "src", "guide", "banners", "chapter-1.webp");
@@ -114,11 +116,25 @@ export const make = async (apps = APPS): Promise<Made> => {
       }),
     };
     const fonts = join(root, "public", "fonts");
-    const font = readFileSync(join(fonts, guide.display.file));
-    display[guide.folder] = add(hashed(guide.display.file.replace(/\.woff2$/, ""), "woff2", font), font);
     const licence = licenceOf(fonts, guide.display.family);
     if (!existsSync(licence)) throw new Error(`${guide.folder}: no ${licence}, the licence that goes with its display font`);
-    files.set(`fonts/${licence.split("/").at(-1)}`, readFileSync(licence));
+    const licenceBytes = readFileSync(licence);
+    let titleFont = titleFonts.get(guide.display.family);
+    if (!titleFont) {
+      // Only guide titles use this face here. Include every title sharing it, retaining shaping features and licence metadata.
+      const titles = guides.filter((other) => other.display.family === guide.display.family).map((other) => other.game).join(" ");
+      const original = readFileSync(join(fonts, guide.display.file));
+      // A subset is a modified font. Keep reserved-name faces intact rather than distribute renamed derivatives.
+      const licenceHeader = licenceBytes.toString("utf8").split(/This Font Software is licensed|SIL OPEN FONT LICENSE/i)[0];
+      const font = /reserved font name/i.test(licenceHeader) ? original : await subsetFont(original, titles, {
+        targetFormat: "woff2",
+        preserveNameIds: [0, 7, 8, 9, 13, 14],
+      });
+      titleFont = add(hashed(`${guide.folder}-title`, "woff2", font), font);
+      titleFonts.set(guide.display.family, titleFont);
+    }
+    display[guide.folder] = titleFont;
+    files.set(`fonts/${licence.split("/").at(-1)}`, licenceBytes);
   }
 
   const hundoFont = readFileSync(HUNDO_FONT_FILE);
