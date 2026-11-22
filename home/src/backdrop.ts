@@ -4,6 +4,7 @@
 // paper. It runs only while it can be seen: never for a reader who asks for reduced motion (the first banner stays, and nothing else is
 // fetched), and not while the tab is hidden or the hero is scrolled away, coming back to a full hold when it can be seen again. Nothing is
 // kept.
+import type { GuideArt } from "./page";
 
 /** How long each banner holds before the next starts coming in, in ms. The fade itself is home.css's, 1.5 s. */
 export const HOLD = 7000;
@@ -13,16 +14,18 @@ export const AHEAD = 2000;
 /** Starts the backdrop, if the page has one with more than one banner. */
 export function wireBackdrop(root: ParentNode = document) {
   const box = root.querySelector<HTMLElement>("[data-backdrop]");
-  const urls = box?.dataset.backdrop?.split(" ").filter(Boolean) ?? [];
+  const pictures: GuideArt["backdrop"][] = JSON.parse(box?.dataset.backdrop ?? "[]");
   const first = box?.querySelector("img");
-  if (!box || !first || urls.length < 2) return;
+  if (!box || !first || pictures.length < 2) return;
   let front = first;
+  const frame = document.createElement("picture");
+  const sources = [...first.parentElement!.querySelectorAll("source")].map((source) => source.cloneNode(false));
   let back = document.createElement("img");
   back.alt = "";
   back.decoding = "async";
   back.setAttribute("fetchpriority", "low");
-  back.setAttribute("width", first.getAttribute("width") ?? "");
-  back.setAttribute("height", first.getAttribute("height") ?? "");
+  back.sizes = first.sizes;
+  frame.append(...sources, back);
 
   const still = matchMedia("(prefers-reduced-motion: reduce)");
   // Until the observer's first answer: a page restored scrolled down starts nothing.
@@ -34,10 +37,18 @@ export function wireBackdrop(root: ParentNode = document) {
   // Bumped on every stop, so a banner still decoding when the backdrop stops doesn't come in.
   let run = 0;
   /** The next banner into the hidden image, laid on top: it was the one before, covered since its follower came in. */
-  const load = (url: string) => {
+  const load = (copies: GuideArt["backdrop"]) => {
+    const largest = copies.wide.at(-1)!;
     back.classList.remove("on");
-    box.append(back);
-    if (back.getAttribute("src") !== url) back.src = url;
+    back.setAttribute("fetchpriority", "low");
+    box.append(back.parentElement!);
+    back.width = largest.width;
+    back.height = largest.width / 3;
+    for (const source of back.parentElement!.querySelectorAll("source")) {
+      source.srcset = copies.narrow.map((copy) => `${source.type === "image/avif" ? copy.avif : copy.url} ${copy.width}w`).join(", ");
+    }
+    back.srcset = copies.wide.map((copy) => `${copy.url} ${copy.width}w`).join(", ");
+    if (back.getAttribute("src") !== largest.url) back.src = largest.url;
   };
   const stop = () => {
     for (const timer of timers) clearTimeout(timer);
@@ -46,10 +57,10 @@ export function wireBackdrop(root: ParentNode = document) {
   };
   const schedule = () => {
     stop();
-    const next = (shown + 1) % urls.length;
+    const next = (shown + 1) % pictures.length;
     const ticket = run;
     timers = [
-      setTimeout(() => load(urls[next]), HOLD - AHEAD),
+      setTimeout(() => load(pictures[next]), HOLD - AHEAD),
       // Not laid on top again here: a move restyles the image from nothing, and .on given to it then would show it at once, not fade it in.
       setTimeout(async () => {
         const decoded = await back.decode().then(

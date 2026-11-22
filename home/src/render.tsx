@@ -2,9 +2,10 @@
 // palette, display font and corners. Runs in Node at build.
 import { renderToStaticMarkup } from "react-dom/server";
 import type { Guide, Palette } from "./guides";
-import { Home, NotFound, type GuideArt } from "./page";
+import { BackdropPreloads, Home, NotFound, type GuideArt } from "./page";
 
 export const renderHome = (guides: Guide[], art: Record<string, GuideArt>) => renderToStaticMarkup(<Home guides={guides} art={art} />);
+export const renderBackdropHead = (art: GuideArt["backdrop"]) => renderToStaticMarkup(<BackdropPreloads art={art} />);
 export const renderNotFound = () => renderToStaticMarkup(<NotFound />);
 
 /** hundo's own font, named apart from any guide's so a guide that sets Manrope as its display font keeps its own face. */

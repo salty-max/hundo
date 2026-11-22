@@ -6,8 +6,8 @@ import sharp from "sharp";
 import { wireFind } from "./find";
 import { wireGroup, wireProgress } from "./progress";
 import { APPS, readGuides, type Guide } from "./guides";
-import { GITHUB } from "./page";
-import { BACKDROP_WIDTH, make, type Made } from "./plugin";
+import { GITHUB, type GuideArt } from "./page";
+import { BACKDROP_WIDTHS, MOBILE_BACKDROP_WIDTHS, fillPage, make, type Made } from "./plugin";
 import { wireTheme } from "./theme";
 
 const deployed = readdirSync(APPS).filter((name) => existsSync(join(APPS, name, "vercel.json")));
@@ -171,31 +171,58 @@ describe("the landing page", () => {
     document.body.innerHTML = made.home;
   });
 
-  it("puts every guide's banner behind the hero, A to Z, the first in the markup at low priority, small copies, hidden from assistive technology", async () => {
+  it("serves responsive full-resolution hero art, including 4K copies, for every slide", async () => {
     const backdrop = document.querySelector<HTMLElement>("main > .sky > .backdrop")!;
     expect(backdrop.nextElementSibling!.matches("section.hero")).toBe(true);
     expect(backdrop.getAttribute("aria-hidden")).toBe("true");
-    const urls = backdrop.dataset.backdrop!.split(" ");
-    expect(urls.map((url) => url.replace(/-backdrop-.*/, ""))).toEqual(guides.map((guide) => `/assets/${guide.folder}`));
+    const pictures = JSON.parse(backdrop.dataset.backdrop!) as GuideArt["backdrop"][];
+    expect(pictures.map((copies) => copies.wide[0].url.replace(/-backdrop-.*/, ""))).toEqual(guides.map((guide) => `/assets/${guide.folder}`));
     expect(guides.map((guide) => guide.folder)).toEqual(bands().map((band) => band.className.match(/\bg-(\w+)/)![1]));
-    for (const url of urls) {
-      expect(url).toMatch(new RegExp(`^/assets/\\w+-backdrop-${BACKDROP_WIDTH}-\\w+\\.webp$`));
-      // every one cut to the same small size, whatever its banner's shape: the most it can count for the largest paint (plugin.ts)
-      const { width, height } = await sharp(made.files.get(url.slice(1)) as Buffer).metadata();
-      expect([width, height], url).toEqual([BACKDROP_WIDTH, BACKDROP_WIDTH / 3]);
+    for (const picture of pictures) {
+      expect(picture.wide.map((copy) => copy.width)).toEqual(BACKDROP_WIDTHS);
+      expect(picture.narrow.map((copy) => copy.width)).toEqual(MOBILE_BACKDROP_WIDTHS);
+      expect(picture.wide.at(-1)!.width).toBeGreaterThanOrEqual(3840);
+      for (const [copies, ratio] of [[picture.wide, 3], [picture.narrow, 1.5]] as const) {
+        for (const copy of copies) {
+          const { width, height } = await sharp(made.files.get(copy.url.slice(1)) as Buffer).metadata();
+          expect([width, height], copy.url).toEqual([copy.width, copy.width / ratio]);
+          if ("avif" in copy) {
+            const metadata = await sharp(made.files.get(copy.avif.slice(1)) as Buffer).metadata();
+            expect([metadata.width, metadata.height], copy.avif).toEqual([copy.width, copy.width / ratio]);
+          }
+        }
+      }
     }
     // only the first is in the markup: the script fetches each next one before it's due
     const images = [...backdrop.querySelectorAll("img")];
     expect(images.length).toBe(1);
     const [first] = images;
-    expect(first.getAttribute("src")).toBe(urls[0]);
+    expect(first.getAttribute("src")).toBe(pictures[0].wide.at(-1)!.url);
+    expect(first.getAttribute("srcset")).toBe(pictures[0].wide.map((copy) => `${copy.url} ${copy.width}w`).join(", "));
+    // A phone crops a tall slice of the 3:1 picture: 100vw alone would still select an undersized image.
+    expect(first.getAttribute("sizes")).toContain("1120px");
     expect(first.classList.contains("on")).toBe(true);
-    expect(first.getAttribute("width")).toBe(String(BACKDROP_WIDTH));
-    expect(first.getAttribute("height")).toBe(String(Math.round(BACKDROP_WIDTH / 3)));
+    expect(first.getAttribute("width")).toBe("3840");
+    expect(first.getAttribute("height")).toBe("1280");
     expect(first.getAttribute("alt")).toBe("");
-    expect(first.getAttribute("fetchpriority")).toBe("low");
-    // and nothing asks the browser for any of them ahead of the page's own pictures
-    expect(made.head + made.home).not.toMatch(/rel="preload"[^>]*-backdrop-/);
+    expect(first.getAttribute("fetchpriority")).toBe("high");
+    // Discover the first slide in the head, before the stylesheet and below-fold art.
+    const preloads = [...new DOMParser().parseFromString(made.homeHead, "text/html").querySelectorAll<HTMLLinkElement>('link[rel="preload"][as="image"]')].filter((link) => link.getAttribute("imagesrcset")?.includes("-backdrop-"));
+    expect(preloads).toHaveLength(2);
+    const template = readFileSync(join(import.meta.dirname, "..", "index.html"), "utf8");
+    const built = fillPage(template, "/index.html", made).split("</head>")[0];
+    expect(built.indexOf(made.homeHead)).toBeLessThan(built.indexOf('rel="stylesheet"'));
+    const lost = fillPage(readFileSync(join(import.meta.dirname, "..", "404.html"), "utf8"), "/404.html", made);
+    expect(lost).not.toContain(made.homeHead);
+    const mobile = backdrop.querySelector("source")!;
+    expect(mobile.getAttribute("srcset")).toBe(pictures[0].narrow.map((copy) => `${copy.avif} ${copy.width}w`).join(", "));
+    expect(mobile.type).toBe("image/avif");
+    expect(backdrop.querySelectorAll("source")).toHaveLength(2);
+    for (const [media, image] of [["(max-width: 30rem)", mobile], ["(min-width: 30.001rem)", first]] as const) {
+      const preload = preloads.find((link) => link.media === media)!;
+      expect(preload.getAttribute("imagesrcset")).toBe(image.getAttribute("srcset"));
+      expect(preload.getAttribute("imagesizes")).toBe(image.getAttribute("sizes"));
+    }
   });
 
   it("has the repository and the theme button in its top bar, the button marked ready only by the script that runs it", () => {
