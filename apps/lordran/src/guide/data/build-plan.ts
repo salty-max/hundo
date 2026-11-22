@@ -327,17 +327,6 @@ export const picks: BuildPick[] = [
     lists: [theGamer],
     sources: [W("great-fireball"), W("quelaana-of-izalith")],
   },
-  {
-    row: "miracle-great-magic-barrier",
-    for: ["faith", "paladin"],
-    kind: "spell",
-    item: "Great Magic Barrier",
-    role: "upgrade",
-    needs: { fth: 24 },
-    guides: [only(F("Highland_Cleric"), "faith"), only(F("Paladin+Build"), "paladin"), only(steamPaladin, "paladin")],
-    lists: [only(gamersDecide, "faith"), only(theGamer, "faith")],
-    sources: [W("great-magic-barrier")],
-  },
   // Chapter 4
   {
     row: "ring-wolf",
@@ -455,6 +444,17 @@ export const picks: BuildPick[] = [
     guides: [F("Darkmoon+Battlemage")],
     lists: [gamersDecideInt],
     sources: [W("velka-s-rapier")],
+  },
+  {
+    row: "miracle-great-magic-barrier",
+    for: ["faith", "paladin"],
+    kind: "spell",
+    item: "Great Magic Barrier",
+    role: "upgrade",
+    needs: { fth: 24 },
+    guides: [only(F("Highland_Cleric"), "faith"), only(F("Paladin+Build"), "paladin"), only(steamPaladin, "paladin")],
+    lists: [only(gamersDecide, "faith"), only(theGamer, "faith")],
+    sources: [W("great-magic-barrier")],
   },
   // Chapter 7
   {
