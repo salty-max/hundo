@@ -1,18 +1,20 @@
 import { Icon } from "./Icon";
 import { Button } from "./ui";
-import { buildName, chapterPlan } from "../guide";
+import { buildName, chapterPlan, readsNotes } from "../guide";
 import { useBuild } from "../store/build";
 import { useUi } from "../store/ui";
 import type { Chapter } from "../types";
 
-const count = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
-
-/** "2 steps and 1 pick from build guides", or nothing. */
+/**
+ * "notes on 2 rows in this chapter" (rows, not notes, since a build and its add-on can each have one on a row), "3 steps in this chapter"
+ * for a pick that reads steps, or nothing.
+ */
 function inThisChapter(chapter: Chapter, picked: readonly string[]) {
   const rows = chapterPlan(chapter, picked);
+  if (!rows.length) return "";
+  if (readsNotes(picked)) return `${rows.length === 1 ? "a note on 1 row" : `notes on ${rows.length} rows`} in this chapter`;
   const steps = rows.reduce((sum, row) => sum + row.tasks.length, 0);
-  const picks = rows.reduce((sum, row) => sum + row.picks.length, 0);
-  return [steps && count(steps, "step", "steps"), picks && count(picks, "pick from build guides", "picks from build guides")].filter(Boolean).join(" and ");
+  return `${steps === 1 ? "1 step" : `${steps} steps`} in this chapter`;
 }
 
 /**
@@ -35,14 +37,14 @@ export function BuildStrip({ chapter }: { chapter: Chapter }) {
         {picked.length ? (
           <>
             <strong>{buildName(picked)}</strong>
-            <span className="text-muted"> · {here ? `in this chapter, ${here}` : "nothing for it in this chapter"}</span>
+            <span className="text-muted"> · {here || "nothing for it in this chapter"}</span>
           </>
         ) : asked ? (
           <span className="text-muted">No build chosen: just the checklist.</span>
         ) : (
           <>
             <strong>Playing a build?</strong>
-            <span className="text-muted"> Pick one, and the guide points out what build guides use for it and the steps to it.</span>
+            <span className="text-muted"> Pick one, and the guide says what each row means for it.</span>
           </>
         )}
       </p>

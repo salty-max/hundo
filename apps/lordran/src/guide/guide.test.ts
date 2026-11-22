@@ -160,6 +160,32 @@ describe("Lordran builds", () => {
       }
     }
   });
+
+  // A later pick's note says when, so a reader doesn't spend souls on what their build can't use yet: the figure it needs, or a word for
+  // later. Words pass loosely ("once" fits most sentences), so the review reads them too.
+  const saysWhen = (text: string, needs: Record<string, number>) =>
+    Object.values(needs).some((need) => new RegExp(`\\b${need}\\b`).test(text)) || /\b(later|once|until|wait|when)\b/i.test(text);
+
+  it("says when, in the note, for a later pick its build can't use from the start or on a row that says to buy only what you need", () => {
+    const named = config.builds?.named ?? [];
+    let checked = 0;
+    for (const note of config.builds?.notes ?? []) {
+      const row = allRows.find((item) => item.id === note.row)!;
+      const waits = /only what you need|\bwait\b/i.test(row.text ?? "");
+      for (const pick of (config.builds?.picks ?? []).filter((item) => item.row === note.row && item.role !== "starter")) {
+        for (const id of pick.for.filter((build) => note.for.includes(build))) {
+          const build = named.find((item) => item.id === id)!;
+          const names = Object.keys(classes).filter((name) => build.start?.class.includes(name));
+          // An add-on has no start of its own and a build guides start differently has no one class: their needs always say when.
+          const far = pick.needs !== undefined && (build.addon === true || !names.length || Math.min(...names.map((name) => short(classes[name], pick.needs!))) > 3);
+          if (!far && !waits) continue;
+          checked++;
+          expect(saysWhen(note.text, pick.needs ?? {}), `${note.row}: ${pick.item} for ${id}`).toBe(true);
+        }
+      }
+    }
+    if (config.builds?.notes?.length) expect(checked, "a note this holds to it").toBeGreaterThan(0);
+  });
 });
 
 describe("Lordran sync", () => {

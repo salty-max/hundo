@@ -39,7 +39,7 @@ export function SealedChapter({ chapter, ceiling, onReveal }: { chapter: number;
           <h1 className={pageTitleClasses}>
             <span className="sr-only">Chapter {chapter}:</span> Not revealed yet
           </h1>
-          <p className="max-w-100 self-center text-15 leading-[1.6] phone:text-14/normal">
+          <p className="max-w-100 self-center text-15/[1.6] phone:text-14/normal">
             Hidden to spare you spoilers until you reach it. {alsoReveals(chapter, ceiling)}
           </p>
         </div>

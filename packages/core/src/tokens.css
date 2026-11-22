@@ -40,6 +40,8 @@
   --hero-to:color-mix(in srgb,var(--accent) 22%,var(--surface));
   --missable-line:color-mix(in srgb,var(--rose-ink) 50%,var(--surface));
   --choice-line:color-mix(in srgb,var(--amber-ink) 50%,var(--surface));
+  /* The rail a build's note sits on under its row: the guide's own colour, softened so the words stay ahead of it. */
+  --build-line:color-mix(in srgb,var(--primary) 58%,var(--surface));
   /* the tint a control takes while it's pressed (press-style.ts): the ink, see-through, so it darkens a light fill and lightens a dark one */
   --press:color-mix(in srgb,var(--ink) 10%,transparent);
   --rose-bg:#f5e8e3;--rose-ink:#8f4a43;--violet-bg:#efeaf4;--violet-ink:#6c5683;--amber-bg:#f3eddb;--amber-ink:#755626;
@@ -140,6 +142,7 @@
   --color-hero-to: var(--hero-to);
   --color-missable-line: var(--missable-line);
   --color-choice-line: var(--choice-line);
+  --color-build-line: var(--build-line);
   --color-press: var(--press);
 
   --color-rose-bg: var(--rose-bg);

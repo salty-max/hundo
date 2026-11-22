@@ -5,14 +5,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 // A category's label in its tone, as the rows, the article and the checklist show it.
 const row = { ...chapters[0].groups[0].rows[0], quantity: 3 };
-// A build pick's labels, as BuildMark.tsx tones them.
-const roles: [string, Tone][] = [
-  ["Starter", "mint"],
-  ["Upgrade", "sky"],
-  ["Endgame", "violet"],
-  ["Core", "clay"],
-  ["Rare drop", "amber"],
-];
+// Every tone a label can take, named for itself: whatever tones the guide's categories use, each is drawn, so axe checks it in every look.
+const tones: Tone[] = ["rose", "violet", "amber", "clay", "sky", "mint"];
 
 const meta = {
   title: "Core/Tag",
@@ -27,9 +21,8 @@ type Story = StoryObj<typeof meta>;
 export const One: Story = {};
 
 /**
- * Every category of the guide, each in its tone (a category with none takes the soft primary), then Missable and a quantity, then a build
- * pick's role, Core and Rare drop in theirs. The pick tags and Missable (rose) together draw every tone, whatever the guide's categories use,
- * so axe checks each in every look.
+ * Every category of the guide, each in its tone (a category with none takes the soft primary), then Missable and a quantity, then every
+ * tone by name, whatever the guide's categories use, so axe checks each in every look.
  */
 export const AllTones: Story = {
   render: () => (
@@ -39,9 +32,9 @@ export const AllTones: Story = {
       ))}
       <Tag tag="missable" />
       <Quantity row={row} />
-      {roles.map(([word, tone]) => (
-        <Tag key={word} tag="role" tone={tone}>
-          {word}
+      {tones.map((tone) => (
+        <Tag key={tone} tag={`tone-${tone}`} tone={tone}>
+          {tone[0].toUpperCase() + tone.slice(1)}
         </Tag>
       ))}
     </div>

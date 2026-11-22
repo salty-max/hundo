@@ -254,7 +254,7 @@ const tag = cva("rounded-tag px-2 py-1 text-11 font-extrabold tracking-[0.02em] 
 
 type TagAt = "line" | "prose" | "column";
 
-/** A category label, coloured by the category's tone, or by `tone` for a label that is no category (a build pick's role). */
+/** A category label, coloured by the category's tone, or by `tone` for a label that is no category. */
 export function Tag({ tag: name, at, tone, children }: { tag: string; at?: TagAt; tone?: Tone | "none"; children?: ReactNode }) {
   return (
     <span className={tag({ tone: tone ?? (name === "missable" ? "rose" : name === "one-way" ? "amber" : (cats[name]?.[3] ?? "none")), at })}>

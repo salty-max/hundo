@@ -187,7 +187,8 @@ export type BuildGuide = [name: string, url: string, builds?: string[]];
  * "best". For each build it's for, it needs two independent hosts, at least one of them a guide that lays that build out (`guides`); a
  * ranked "best builds" list (`lists`) can only be a second voice. A pick standing on lists alone, or on a guide for another build, goes to
  * the guide's facts-to-verify instead. Its role is the same for every build in `for`: a pick whose timing differs by build is two picks,
- * and no two picks for one item on one row share a build.
+ * and no two picks for one item on one row share a build. A reader never sees a pick as a line of its own: the build's note on its row
+ * says it (`BuildNote`), and the pick is the sourced structure under those words, behind the note's Who says so and the weapon track.
  */
 export interface BuildPick {
   /** A row id from the guide data. */
@@ -195,21 +196,15 @@ export interface BuildPick {
   /** The named builds (ids) the guides recommend it for. A pick that is no named build (a custom one) gets no picks. */
   for: string[];
   kind: BuildKind;
-  /** The item, as the game names it: "Great Combustion". */
+  /** The item, as the game names it: "Great Combustion". Each build's note on the row names it (data.test.ts). */
   item: string;
-  /** When it serves the build. A starter's `needs` are met by its builds' starting classes (the guide's own test holds that). */
-  role: PickRole;
-  /** What the build is built around, kept once it's had: the flame, a ring that raises every spell. */
-  core?: true;
-  /** It doesn't come every time (a random drop). Only a core pick may be one: anything less isn't worth the farming (data.test.ts). */
-  rare?: true;
-  /** What it needs to use, one-handed, by leaning id ({ fth: 14 }), as its wiki page gives it: shown under the pick as context. */
-  needs?: Record<string, number>;
   /**
-   * What guides use it for, as a build guide says it ("a first weapon you can use now; it grows with Faith"), with the item's facts where
-   * they help. Which stats it scales with, never a letter, and nothing the row's chapter hasn't reached.
+   * When it serves the build. A starter's `needs` are met by its builds' starting classes, and a later pick's note says when (the guide's
+   * own test holds both).
    */
-  why: string;
+  role: PickRole;
+  /** What it needs to use, one-handed, by leaning id ({ fth: 14 }), as its wiki page gives it. */
+  needs?: Record<string, number>;
   /**
    * Build guides that use it, each for the builds it lays out. Each build in `for` needs one guide of its own and two independent hosts in
    * all, guides and lists together (data.test.ts). Shown by name only, never as links, and only those for the reader's build.
@@ -217,14 +212,15 @@ export interface BuildPick {
   guides: BuildGuide[];
   /** Ranked lists that name it ("best builds" articles): a second voice for a build, never its only one. */
   lists?: BuildGuide[];
-  /** https pages for any fact in `why` or `needs`. */
+  /** https pages for any fact in `needs`. */
   sources?: string[];
 }
 
 /**
  * A step a build takes at a row: buying from a trainer, joining a covenant, reinforcing, ascending, taking an ember to a smith. It is done
  * when its row is ticked (no progress of its own), so it sits only on a row whose tick means the step is done; an upgrade no row stands for
- * is part of the step it leads to. Steps are numbered per pick, in route order.
+ * is part of the step it leads to. A named build reads its note on the row instead (`BuildNote`); the step's own words are what a pick that
+ * is no named build sees, and the facts under the notes.
  */
 export interface BuildTask {
   /** A row id from the guide data. */
@@ -233,17 +229,46 @@ export interface BuildTask {
   serves: string[];
   /** What to do, as a short imperative: "Buy his pyromancies and start on the flame". */
   title: string;
-  /** How: who, where, what it costs, what it opens. Nothing the row's chapter hasn't reached. */
+  /** How: who, where, what it costs, what it opens. Nothing the row's chapter hasn't reached, nor what the row already says. */
   text: string;
   /**
    * What is lost if it waits, in the row's own chapter terms ("Answer No when…"). Two independent hosts in `sources`, as a missable. Never
-   * on a missable row, whose own warning says it.
+   * on a missable row, whose own warning says it. Shown to every pick it serves, after the build's note.
    */
   before?: string;
-  /** A step on the weapon's path (a smith, an ember, a reinforcement): it's a stage of the build's weapon track as well as a step. */
+  /** A step on the weapon's path (a smith, an ember, a reinforcement): each named build it serves has a stage of its weapon track here. */
   path?: true;
+  /**
+   * Named builds (ids) its leanings serve that it says nothing to beyond the row's own words: they get no note here (Shiva's shop for a
+   * Paladin). Every other named build it serves has one, so a note left out is written down, not forgotten (data.test.ts).
+   */
+  quiet?: string[];
   /** https pages for its facts. */
   sources: string[];
+}
+
+/**
+ * What a row means for a named build, in the guide's own voice: what to do here and when, written against the row so it neither repeats
+ * nor contradicts it. One per row per build, where the build has a pick or a step there; a note may serve several builds the same words
+ * fit. It's all a named build sees on the row, once the guide has written notes for each build in the reader's pick.
+ */
+export interface BuildNote {
+  /** A row id from the guide data. */
+  row: string;
+  /** The named builds (ids, add-ons included) it's written for. */
+  for: string[];
+  /**
+   * One or two sentences that name each pick the row holds for these builds and say when a later one is worth having. Nothing past the
+   * row's chapter, never "best", no run of the row's own words.
+   */
+  text: string;
+  /**
+   * The build's weapon as this row leaves it, for its weapon track ("Mace +5", "Divine Mace"): on a row with a weapon or path pick or a
+   * path step for the build, and only on a note for one build, since a stage names one build's weapon.
+   */
+  stage?: string;
+  /** https pages for any fact in `text` that the row's picks and steps don't already source. */
+  sources?: string[];
 }
 
 /** A chained side quest: one character's arc, or one task in parts, as existing rows. Progress stays per row. */
@@ -431,6 +456,11 @@ export interface GuideConfig {
     picks?: BuildPick[];
     /** The steps a build takes: trainers, covenants, smiths, the flame. */
     tasks?: BuildTask[];
+    /**
+     * What each row means for each named build, in the guide's voice. A pick reads these once each build in it has notes; until then (a
+     * build the guide has named but not written for) it reads as a custom pick does, by its leanings' steps.
+     */
+    notes?: BuildNote[];
   };
   /** Shown while nothing is flagged as missable: why that is safe. Its sources back the claim and aren't shown. */
   reassurance?: { text: string; sources: SourceLink[] };

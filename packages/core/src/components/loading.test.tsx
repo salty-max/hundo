@@ -4,6 +4,8 @@ import { MemoryRouter } from "react-router";
 import { DialogHost } from "./DialogHost";
 import { Select } from "./Select";
 import { ToastHost } from "./ToastHost";
+import { WhoSaysTrigger } from "./BuildMark";
+import { WhoSaysHost } from "./WhoSaysHost";
 import { chunks } from "./chunks";
 import { changeChecks } from "../actions";
 import { allRows, hasBuilds } from "../guide";
@@ -25,6 +27,7 @@ vi.mock("./chunks", async (importActual) => ({ ...(await importActual<typeof imp
 type SelectModule = typeof import("./select-impl");
 type DialogModule = typeof import("./DialogFrames");
 type ToastsModule = typeof import("./Toasts");
+type WhoSaysModule = typeof import("./WhoSays");
 
 /** A promise settled from outside. */
 const deferred = <T,>() => {
@@ -273,5 +276,24 @@ describe("the toasts while their chunk loads", () => {
     expect(await screen.findByRole("button", { name: "Undo" })).toBeInTheDocument();
     expect(screen.getByText("Checked 3 steps.")).toBeInTheDocument();
     expect(importer).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe("Who says so while its popover's chunk loads", () => {
+  it("opens the popover on the trigger tapped before its chunk arrived", async () => {
+    const user = userEvent.setup();
+    const popover = deferred<WhoSaysModule>();
+    chunks.whoSays = loadable(() => popover.promise);
+    render(
+      <>
+        <WhoSaysTrigger lines={[{ item: "Homeward", by: ["Fextralife", "Steam"] }]} of="for your Paladin, on “Join the Way of White”" />
+        <WhoSaysHost />
+      </>,
+    );
+    await user.click(screen.getByRole("button", { name: "Who says so, for your Paladin, on “Join the Way of White”" }));
+    expect(screen.queryByRole("dialog")).toBeNull();
+    await act(async () => popover.resolve(await vi.importActual<WhoSaysModule>("./WhoSays")));
+    const popup = await screen.findByRole("dialog", { name: "Who says so" });
+    expect(popup).toHaveTextContent("Homeward: recommended by Fextralife and Steam.");
   });
 });

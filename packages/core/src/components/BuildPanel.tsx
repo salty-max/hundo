@@ -3,9 +3,9 @@ import { Link } from "react-router";
 import { CheckBox } from "./CheckBox";
 import { Icon } from "./Icon";
 import { rowLinkClasses } from "./TickItem";
-import { PickWords, StepNumber } from "./BuildMark";
+import { BuildWords } from "./BuildMark";
 import { Button, Empty, Panel, PanelActions, PanelHead, PanelText, PanelTitle, Tag } from "./ui";
-import { buildName, buildPlan, chapters, stepNumber, weaponTrack, type PlanRow, type TrackStage } from "../guide";
+import { buildName, buildOf, buildPlan, chapters, leadsFor, readsNotes, weaponTrack, type PlanRow, type TrackStage } from "../guide";
 import { two } from "../format";
 import { isOpen, useProgress } from "../store/progress";
 import { useBuild } from "../store/build";
@@ -14,7 +14,7 @@ import type { Chapter } from "../types";
 
 /**
  * The Progress page's Your build: the build's weapon track, then its plan, chapter by chapter in the chapters revealed, each row that holds
- * a step or a pick for it, ticked in place. Drawn whenever the guide has builds, so its address (/dashboard/build) means the same with or
+ * something for it with the build's words for it, ticked in place. Drawn whenever the guide has builds, so its address (/dashboard/build) means the same with or
  * without a pick; without one it says how to choose one.
  */
 export function BuildPanel() {
@@ -26,9 +26,12 @@ export function BuildPanel() {
       <PanelHead>
         <PanelTitle id="build-title">{picked.length ? `Your build: ${buildName(picked)}` : "Your build"}</PanelTitle>
         <PanelText>
-          {picked.length
-            ? "Your weapon, the steps to the build and what build guides use for it, chapter by chapter in the chapters you’ve revealed. It changes no count."
-            : "Pick the build you play, and its steps and what build guides use for it show here, chapter by chapter. It changes no count."}
+          {/* A pick that reads steps (a custom one, or a build without notes yet) has no weapon track, so it isn't promised one. */}
+          {!picked.length
+            ? "Pick the build you play, and what each row means for it shows here, chapter by chapter. It changes no count."
+            : readsNotes(picked)
+              ? "Your weapon, then what each row means for the build, chapter by chapter in the chapters you’ve revealed. It changes no count."
+              : "The steps to the build, chapter by chapter in the chapters you’ve revealed. It changes no count."}
         </PanelText>
       </PanelHead>
       {/* Keyed on the pick, so a new one opens its chapters afresh. */}
@@ -48,14 +51,14 @@ function Plan({ picked }: { picked: string[] }) {
   if (!plan.length && !track.length) return <Empty>Nothing in the chapters you’ve revealed is for this build yet. More shows as you reveal chapters.</Empty>;
   return (
     <div className="grid gap-2">
-      {track.length > 0 && <Track stages={track} picked={picked} more={hidden > 0} />}
+      {track.length > 0 && <Track stages={track} more={hidden > 0} />}
       {plan.map(({ chapter, rows }) => (
         <ChapterPart key={chapter.id} chapter={chapter} rows={rows} picked={picked} />
       ))}
       {hidden > 0 && (
         <p className="flex items-center gap-2 border-t border-line-soft pt-3 text-13 text-muted [&_svg]:size-4">
           <Icon name="lock" />
-          {hidden === 1 ? "One more chapter is" : `${hidden} more chapters are`} hidden by spoiler protection: their steps and picks show as you reveal them.
+          {hidden === 1 ? "One more chapter is" : `${hidden} more chapters are`} hidden by spoiler protection: what they hold for the build shows as you reveal them.
         </p>
       )}
     </div>
@@ -93,13 +96,15 @@ function ChapterPart({ chapter, rows, picked }: { chapter: Chapter; rows: PlanRo
   );
 }
 
-/** A row in the plan: its box and title, then its steps (numbered) and its picks (each with its role and who recommends it), and Jump to. */
-function PlanItem({ item: { row, tasks, picks }, picked, ticked }: { item: PlanRow; picked: string[]; ticked: boolean }) {
+/** A row in the plan: its box and title, then the build's words for it on their rail, and Jump to. */
+function PlanItem({ item: { row, notes, tasks, warnings }, picked, ticked }: { item: PlanRow; picked: string[]; ticked: boolean }) {
   const id = `plan-${row.id}`;
+  // The panel is the build's already: a line names its build only beside an add-on, where two builds share the rows.
+  const leads = (buildOf(picked)?.addons.length ?? 0) > 0 ? leadsFor(picked) : undefined;
   return (
     <li className="relative grid grid-cols-[auto_minmax(0,1fr)_auto] items-start gap-3 border-t border-line-soft py-2.5 first:border-t-0 phone:gap-2.5">
       <CheckBox id={id} labelId={`${id}-label`} row={row} />
-      <div className="grid gap-1 leading-[1.3]">
+      <div className="grid leading-[1.3]">
         <label id={`${id}-label`} htmlFor={id} className="cursor-pointer">
           <strong className={ticked ? "text-15 text-muted line-through decoration-1" : "text-15"}>{row.title}</strong>
           {row.tags.includes("missable") && (
@@ -109,26 +114,7 @@ function PlanItem({ item: { row, tasks, picks }, picked, ticked }: { item: PlanR
             </>
           )}
         </label>
-        <div className="grid gap-1 text-13/normal text-muted">
-          {tasks.map((task) => (
-            <p key={task.title} className="flex items-start gap-2">
-              <StepNumber n={stepNumber(task, picked)} label=":" />
-              <span>
-                <strong className="text-ink">{task.title}.</strong> {task.text}
-              </span>
-            </p>
-          ))}
-          {picks.map((pick) => (
-            <p key={`${pick.item} ${pick.for.join(" ")}`} className="flex items-start gap-2">
-              <span className="grid w-5 shrink-0 place-items-center pt-0.5 text-primary [&_svg]:size-3.5">
-                <Icon name="star" />
-              </span>
-              <span>
-                <PickWords pick={pick} picked={picked} strong="text-ink" />
-              </span>
-            </p>
-          ))}
-        </div>
+        <BuildWords row={row} at="plan" picked={picked} notes={notes} tasks={tasks} warnings={warnings} leads={leads} />
       </div>
       <Link className={rowLinkClasses} to={`/guide/${row.chapter}/${row.id}`} aria-label={`Jump to “${row.title}” in chapter ${row.chapter}`}>
         Jump to
@@ -138,11 +124,12 @@ function PlanItem({ item: { row, tasks, picks }, picked, ticked }: { item: PlanR
 }
 
 /**
- * The build's weapon track: how guides start it, then each step on the weapon's path and each weapon pick, in route order, from the revealed
- * chapters. A stage is filled once its row is ticked (the start always is), and its title jumps to the row. Nothing says what hidden
- * chapters hold, only that more shows as they're revealed.
+ * The build's weapon track: how guides start it, then each stage its notes name, in route order, from the revealed chapters: the weapon as
+ * each row leaves it, a pick's role where it is one, and its chapter. Only the start says why, since the plan under it holds the words. A stage is
+ * filled once its row is ticked (the start always is), and its name jumps to the row. Nothing says what hidden chapters hold, only that more
+ * shows as they're revealed.
  */
-function Track({ stages, picked, more }: { stages: TrackStage[]; picked: string[]; more: boolean }) {
+function Track({ stages, more }: { stages: TrackStage[]; more: boolean }) {
   const checks = useProgress((s) => s.data.checks);
   return (
     <section aria-labelledby="build-track" className="grid gap-2.5 rounded-card border border-soft-line bg-soft px-4 py-3.5 phone:p-3">
@@ -152,7 +139,7 @@ function Track({ stages, picked, more }: { stages: TrackStage[]; picked: string[
       </h3>
       <ol className="m-0 grid list-none p-0">
         {stages.map((stage, i) => (
-          <Stage key={"start" in stage ? "start" : `${stage.row.id} ${"task" in stage ? stage.task.title : stage.pick.item}`} stage={stage} picked={picked} last={i === stages.length - 1} done={"start" in stage || checks[stage.row.id] === true} />
+          <Stage key={"start" in stage ? "start" : stage.row.id} stage={stage} last={i === stages.length - 1} done={"start" in stage || checks[stage.row.id] === true} />
         ))}
       </ol>
       {more && <p className="text-12/normal text-muted">More shows as you reveal chapters.</p>}
@@ -160,19 +147,10 @@ function Track({ stages, picked, more }: { stages: TrackStage[]; picked: string[
   );
 }
 
-function Stage({ stage, picked, done, last }: { stage: TrackStage; picked: string[]; done: boolean; last: boolean }) {
-  const when = "start" in stage ? "from the start" : `ch. ${stage.row.chapter}${"task" in stage ? ` · step ${stepNumber(stage.task, picked)}` : ""}`;
-  const title =
-    "start" in stage ? (
-      <strong className="text-14/sm">{stage.start.weapon}</strong>
-    ) : (
-      <Link to={`/guide/${stage.row.chapter}/${stage.row.id}`} className="text-14/sm font-bold text-ink underline decoration-line underline-offset-3 hover:decoration-primary">
-        {"task" in stage ? stage.task.title : stage.pick.item}
-      </Link>
-    );
-  // A why is written to follow "Item:", so standing alone it takes a capital and a full stop.
-  const why = "start" in stage ? stage.start.why : "pick" in stage ? stage.pick.why : "";
-  const text = why && `${why[0].toUpperCase()}${why.slice(1)}.`;
+function Stage({ stage, done, last }: { stage: TrackStage; done: boolean; last: boolean }) {
+  const when = "start" in stage ? "from the start" : `ch. ${stage.row.chapter}`;
+  // The start says the class it's carried by, then its why, which is written to follow "Weapon:", so it takes a capital and a full stop.
+  const why = "start" in stage ? [`Starting as ${stage.start.class}.`, stage.start.why && `${stage.start.why[0].toUpperCase()}${stage.start.why.slice(1)}.`].filter(Boolean).join(" ") : "";
   return (
     <li className={`relative grid grid-cols-[0.875rem_minmax(0,1fr)_auto] gap-x-2.5 ${last ? "" : "pb-3"}`}>
       {/* The line down to the next stage, behind the dots. */}
@@ -180,11 +158,22 @@ function Stage({ stage, picked, done, last }: { stage: TrackStage; picked: strin
       <span aria-hidden="true" className={`relative mt-0.5 size-3.5 rounded-full border-2 border-primary ${done ? "bg-primary" : "bg-surface"}`} />
       <span className="grid min-w-0 gap-0.5">
         <span>
-          {title}
-          {"start" in stage && <span className="text-13 text-muted"> · starting as {stage.start.class}</span>}
+          {"start" in stage ? (
+            <strong className="text-14/sm">{stage.start.weapon}</strong>
+          ) : (
+            <Link to={`/guide/${stage.row.chapter}/${stage.row.id}`} className="text-14/sm font-bold text-ink underline decoration-line underline-offset-3 hover:decoration-primary">
+              {stage.note.stage}
+            </Link>
+          )}{" "}
+          {("start" in stage || stage.word) && (
+            <span className="text-11 font-extrabold tracking-[0.07em] whitespace-nowrap text-soft-ink uppercase">
+              <span className="sr-only">, </span>
+              {"start" in stage ? "Starting weapon" : stage.word}
+            </span>
+          )}
           {done && "row" in stage && <span className="sr-only"> (done)</span>}
         </span>
-        {text && <span className="text-13/normal text-muted">{text}</span>}
+        {why && <span className="text-13/normal text-muted">{why}</span>}
       </span>
       <span className="text-12/normal font-bold whitespace-nowrap text-muted tabular-nums">{when}</span>
     </li>

@@ -1,6 +1,6 @@
 import config from "virtual:guide/config";
 import { pct } from "./format";
-import type { BuildGuide, BuildKind, BuildPick, BuildStart, BuildTask, Chapter, Checks, Choice, LeftItem, NamedBuild, PickRole, Row } from "./types";
+import type { BuildGuide, BuildKind, BuildNote, BuildPick, BuildStart, BuildTask, Chapter, Checks, Choice, LeftItem, NamedBuild, PickRole, Row } from "./types";
 
 export { config };
 export const { brand, categories: cats, completion, text } = config;
@@ -137,14 +137,29 @@ const byRow = <T extends { row: string }>(items: readonly T[]) => {
 };
 const picksByRow = byRow(config.builds?.picks ?? []);
 const tasksByRow = byRow(config.builds?.tasks ?? []);
-/** Whether a row has a step or a pick for any build, whatever the pick: a row without never reads the pick. */
-export const hasBuildLines = (rowId: string) => picksByRow.has(rowId) || tasksByRow.has(rowId);
+const notesByRow = byRow(config.builds?.notes ?? []);
+/** Whether a row has a step, a pick or a note for any build, whatever the pick: a row without never reads the pick. */
+export const hasBuildLines = (rowId: string) => picksByRow.has(rowId) || tasksByRow.has(rowId) || notesByRow.has(rowId);
 
-/** What a pick needs, in the guide's leaning order and words: "needs 16 Strength and 10 Dexterity". Empty when it says nothing. */
-export function needsText(pick: BuildPick) {
-  const needs = pick.needs ?? {};
-  const parts = leanings.filter((leaning) => needs[leaning.id] !== undefined).map((leaning) => `${needs[leaning.id]} ${leaning.label}`);
-  return parts.length ? `needs ${inWords(parts)}` : "";
+/** The named builds (ids) the guide has written notes for. */
+const noted = new Set((config.builds?.notes ?? []).flatMap((note) => note.for));
+
+/**
+ * The builds a pick reads notes for: its named build and its add-ons, by id, once the guide has written notes for every one of them. Null
+ * for a custom pick, and for one holding a build the guide hasn't written for yet: it reads its leanings' steps instead.
+ */
+export function readsNotes(picked: readonly string[]): string[] | null {
+  const of = buildOf(picked);
+  if (!of) return null;
+  const ids = [of.build.id, ...of.addons.map((addon) => addon.id)];
+  return ids.every((id) => noted.has(id)) ? ids : null;
+}
+
+/** A row's notes for the pick, the named build's before its add-ons'. None for a pick that reads steps. */
+export function notesFor(rowId: string, picked: readonly string[]): BuildNote[] {
+  const ids = readsNotes(picked);
+  const notes = notesByRow.get(rowId) ?? [];
+  return ids ? [...new Set(ids.flatMap((id) => notes.filter((note) => note.for.includes(id))))] : [];
 }
 
 /** A row's picks for the named build the pick is, or for an add-on it holds. None for a custom pick: guides recommend for named builds. */
@@ -158,44 +173,60 @@ export function picksFor(rowId: string, picked: readonly string[]): BuildPick[] 
 /** Which builds a pick's guide or list backs: the ones it names, else every build the pick is for. */
 export const backs = (link: BuildGuide, pick: BuildPick) => link[2] ?? pick.for;
 
-/** The sites that recommend a pick for the reader's build, by name, build guides first: "Fextralife, TheGamer". Never their links. */
-export function recommendedBy(pick: BuildPick, picked: readonly string[]) {
-  const of = buildOf(picked);
-  const ids = of ? [of.build.id, ...of.addons.map((addon) => addon.id)] : [];
-  const links = [...pick.guides, ...(pick.lists ?? [])].filter((link) => backs(link, pick).some((id) => ids.includes(id)));
-  return [...new Set(links.map(([name]) => name))].join(", ");
+/**
+ * Who recommends what a note says, for the reader's builds it's written for: each pick under it, with the sites that back it for those
+ * builds, build guides first, by name and never linked. Empty for a note with no pick under it, which states game facts as the row does.
+ */
+export function whoSays(note: BuildNote, picked: readonly string[]): { item: string; by: string[] }[] {
+  const ids = (readsNotes(picked) ?? []).filter((id) => note.for.includes(id));
+  return (picksByRow.get(note.row) ?? [])
+    .filter((pick) => pick.for.some((id) => ids.includes(id)))
+    .map((pick) => {
+      const links = [...pick.guides, ...(pick.lists ?? [])].filter((link) => backs(link, pick).some((id) => ids.includes(id)));
+      return { item: pick.item, by: [...new Set(links.map(([name]) => name))] };
+    });
 }
 
-/** A row's steps that serve any of the picked leanings. */
+const serves = (task: BuildTask, picked: readonly string[]) => task.serves.some((id) => picked.includes(id));
+
+/** The names a row's build lines are led by: each note's build, and the pick's name for its steps. */
+export interface Leads {
+  note: (note: BuildNote) => string;
+  steps: string;
+}
+
+/** A pick's leads: a note's is the named build's name, or the add-on's for a note written for the add-on alone. */
+export function leadsFor(picked: readonly string[]): Leads {
+  const of = buildOf(picked);
+  const builds = of ? [of.build, ...of.addons] : [];
+  return { note: (note) => builds.find((build) => note.for.includes(build.id))?.name ?? buildName(picked), steps: buildName(picked) };
+}
+
+/** A row's steps as a pick that reads steps sees them: those serving any of its leanings. None for a pick that reads notes. */
 export const tasksFor = (rowId: string, picked: readonly string[]): BuildTask[] =>
-  picked.length ? (tasksByRow.get(rowId) ?? []).filter((task) => task.serves.some((id) => picked.includes(id))) : [];
+  picked.length && !readsNotes(picked) ? (tasksByRow.get(rowId) ?? []).filter((task) => serves(task, picked)) : [];
 
-const routeIndex = new Map(allRows.map((row, i) => [row.id, i]));
-/** Every step in route order, the data's order within a row. */
-const tasksInRoute = [...(config.builds?.tasks ?? [])].sort((a, b) => routeIndex.get(a.row)! - routeIndex.get(b.row)!);
-/**
- * A step's number in the pick's steps, in route order across every chapter. Hidden chapters come later in the route, so a revealed step's
- * number never moves when one is revealed.
- */
-export const stepNumber = (task: BuildTask, picked: readonly string[]) =>
-  tasksInRoute.filter((other) => other.serves.some((id) => picked.includes(id))).indexOf(task) + 1;
+/** What a row's steps say is lost by waiting, for a pick that reads notes: shown after its note, since it's a deadline, not advice. */
+export const warningsFor = (rowId: string, picked: readonly string[]): string[] =>
+  readsNotes(picked) ? (tasksByRow.get(rowId) ?? []).flatMap((task) => (task.before && serves(task, picked) ? [task.before] : [])) : [];
 
-/** A row and what it holds for the pick. */
+/** A row and what it holds for the pick: its notes, or its steps for a pick that reads steps, and any deadline. */
 export interface PlanRow {
   row: Row;
+  notes: BuildNote[];
   tasks: BuildTask[];
-  picks: BuildPick[];
+  warnings: string[];
 }
 
 /** What a chapter holds for the pick, row by row in route order. */
 export const chapterPlan = (chapter: Chapter, picked: readonly string[]): PlanRow[] =>
   chapterRows(chapter)
-    .map((row) => ({ row, tasks: tasksFor(row.id, picked), picks: picksFor(row.id, picked) }))
-    .filter((item) => item.tasks.length + item.picks.length > 0);
+    .map((row) => ({ row, notes: notesFor(row.id, picked), tasks: tasksFor(row.id, picked), warnings: warningsFor(row.id, picked) }))
+    .filter((item) => item.notes.length + item.tasks.length + item.warnings.length > 0);
 
 /**
- * The build's plan, chapter by chapter: the revealed chapters only (the guide's spoiler rules), each with its rows that hold a step or a
- * pick for it. A chapter with nothing for it is left out.
+ * The build's plan, chapter by chapter: the revealed chapters only (the guide's spoiler rules), each with its rows that hold something
+ * for it. A chapter with nothing for it is left out.
  */
 export function buildPlan(isChapterOpen: (chapter: number) => boolean, picked: readonly string[]) {
   if (!picked.length) return [];
@@ -205,23 +236,29 @@ export function buildPlan(isChapterOpen: (chapter: number) => boolean, picked: r
     .filter((part) => part.rows.length > 0);
 }
 
-/** A stage of a build's weapon track: how guides start it, a step on the weapon's path, or a weapon or path pick, with its row. */
-export type TrackStage = { start: BuildStart } | { row: Row; task: BuildTask } | { row: Row; pick: BuildPick };
+/**
+ * A stage of a build's weapon track: how guides start it, or a row's note that names the weapon as the row leaves it, with the role of the
+ * row's weapon or path pick for the build as a word ("Upgrade"), or no word for a smith's stage, whose name says it.
+ */
+export type TrackStage = { start: BuildStart } | { row: Row; note: BuildNote; word: string };
 
 /**
- * The build's weapon track: the weapon its start names, then the steps on the weapon's path and the weapon and path picks for it, in route
- * order, from the revealed chapters only. Nothing is said of what hidden chapters hold, not even how much. The steps are the named build's
- * own, never an add-on's: Pyromancy beside a Quality build doesn't put the Fire path in its weapon's track (its steps still show in the plan).
- * Empty for a custom pick, which no guide starts, and for a build whose start names no weapon and whose revealed chapters hold no stage yet.
+ * The build's weapon track: the weapon its start names, then each note that names a stage of it, in route order, from the revealed chapters
+ * only. Nothing is said of what hidden chapters hold, not even how much. The stages are the named build's own, never an add-on's: Pyromancy
+ * beside a Quality build doesn't put the Fire path in its weapon's track. Empty for a pick that reads steps.
  */
 export function weaponTrack(isChapterOpen: (chapter: number) => boolean, picked: readonly string[]): TrackStage[] {
   const of = buildOf(picked);
-  if (!of) return [];
+  if (!of || !readsNotes(picked)) return [];
+  const own = of.build.id;
   const stages: TrackStage[] = of.build.start?.weapon ? [{ start: of.build.start }] : [];
   for (const row of allRows) {
     if (!isChapterOpen(row.chapter)) continue;
-    for (const task of tasksFor(row.id, of.build.stats)) if (task.path) stages.push({ row, task });
-    for (const pick of picksFor(row.id, picked)) if (pick.kind === "weapon" || pick.kind === "path") stages.push({ row, pick });
+    for (const note of notesByRow.get(row.id) ?? []) {
+      if (!note.stage || !note.for.includes(own)) continue;
+      const pick = (picksByRow.get(row.id) ?? []).find((item) => item.for.includes(own) && (item.kind === "weapon" || item.kind === "path"));
+      stages.push({ row, note, word: pick ? pickRoles[pick.role] : "" });
+    }
   }
   return stages;
 }
