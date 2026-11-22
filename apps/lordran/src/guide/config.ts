@@ -18,6 +18,7 @@ import { named, notes, picks, tasks } from "./data/build-plan";
 import { choices } from "./data/choices";
 import { missables } from "./data/missables";
 import { questlines } from "./data/questlines";
+import { splits } from "./data/splits";
 import { sources } from "./data/sources";
 
 const banners = byChapter(import.meta.glob<Banner>("./banners/chapter-*.webp", { eager: true, query: "?banner", import: "default" }));
@@ -51,11 +52,11 @@ export const targets: BoardItem[] = [
   { tag: "dlc-gear", goal: 8, list: "guide" },
   { tag: "trade", goal: 18, list: "game" },
   { tag: "estus", goal: 5, list: "guide" },
-  { tag: "forge", goal: 5, list: "guide" },
+  { tag: "forge", goal: 6, list: "guide" },
   { tag: "invasion", goal: 7, list: "game" },
   { tag: "cycle", goal: 4, list: "guide" },
-  { tag: "extra", goal: 11, list: "guide" },
-  { tag: "pickup", goal: 26, list: "guide" },
+  { tag: "extra", goal: 14, list: "guide" },
+  { tag: "pickup", goal: 34, list: "guide" },
 ];
 
 const config: GuideConfig = {
@@ -105,6 +106,7 @@ const config: GuideConfig = {
   missables,
   choices,
   questlines,
+  splits,
   builds: {
     leanings: [
       { id: "str", label: "Strength" },

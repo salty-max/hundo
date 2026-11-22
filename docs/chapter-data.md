@@ -61,18 +61,18 @@ export default {
 
 ## Places
 
-A group's `location` is also where its rows are done: a row set aside comes back the next time the route reaches that place, after somewhere else ([core.md](core.md#the-guides-flow)). Name a place the same way each time it comes back, since that's how a return is found, and separate several with " · " ("Greenpath · Forgotten Crossroads"). A row done elsewhere than its group takes its own `place`. Hallownest, Koholint, Pharloom and Red Dead locate every group; in Lordran and Echoes a set-aside row comes back only when nothing else is left until their groups get locations.
+A group's `location` is also where its rows are done: a row set aside comes back the next time the route reaches that place, after somewhere else ([core.md](core.md#the-guides-flow)). Name a place the same way each time it comes back, since that's how a return is found, and separate several with " · " ("Greenpath · Forgotten Crossroads"). A row done elsewhere than its group takes its own `place`. Hallownest, Koholint, Pharloom and Red Dead locate every group, and Lordran every group whose rows are done in one stretch; in Echoes a set-aside row comes back only when nothing else is left until its groups get locations.
 
 ## Splitting a row
 
 A row that bundles things a reader collects separately (four rewards over several stops) can be split into rows of their own, without anyone losing their tick. `data/splits.ts` exports `splits`, which `config.ts` passes as `splits`:
 
 ```ts
-export const splits: Split[] = [{ from: "pickup-sens-scavenger", into: ["ring-steel-protection", "weapon-shotel", "pickup-hush-black-sorcerer"] }];
+export const splits: Split[] = [{ from: "pickup-sens-scavenger", into: ["pickup-shotel", "pickup-black-sorcerer-set"] }];
 ```
 
 - **`from` is retired for good**: its row goes from the chapter data, and the id is never a row again **(tested)**. A save, a backup or another device that has it ticked has every part ticked instead, and the same for a row set aside. The old id is never kept as one of the parts: a tick on it would then mean the whole bundle or only its first part, and nothing could tell which.
-- **`into`** are new rows (new ids), each a real row or another split's `from` **(tested)**. Point missables, choices, questlines and builds at the parts: they test real rows, so a reference left on the old id fails.
+- **`into`** are new rows (new ids), each a real row or another split's `from` **(tested)**. Never a row that already shipped: where a bundle held something with a row of its own, leave that row out of `into`. A device that ticked and unticked the bundle sends an untick that would win over that row's own tick (`viewFrom` takes the later stamp part by part), and no test can tell an old id from a new one. Point missables, choices, questlines and builds at the parts: they test real rows, so a reference left on the old id fails.
 - **Its line stays** in `live-ids.txt`, which accepts a split's `from`. The split stays in `splits.ts` for good: a device can come back after months.
 - **Counts move.** A guide's own list grows by the new rows (its goal is its rows), so its figure can dip a point for a reader who hadn't ticked the bundle; one who had keeps every part ticked. A game's list keeps its goal. Record a new count in `facts-to-verify.md` as usual.
 - **Only once saves read forward on every guide** ([core.md](core.md#saved-progress)): a page on an older build drops ticks on rows it doesn't have.
