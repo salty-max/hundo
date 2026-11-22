@@ -37,7 +37,7 @@ export interface SyncRecord {
 }
 
 /**
- * A key of a kind this build's ledger doesn't know, as a newer build of the guide writes one (`l:<rowId>`, say). Never a name every object
+ * A key of a kind this build's ledger doesn't know, as a newer build of the guide writes one (`n:<rowId>`, say). Never a name every object
  * has (`constructor`, `toString`), which `merge` would read as an entry already there.
  */
 const NEWER = /^[a-z][a-z0-9]{0,15}(?::[A-Za-z0-9_.-]{1,80})?$/;

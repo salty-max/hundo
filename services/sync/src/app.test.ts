@@ -491,6 +491,17 @@ describe("sync", () => {
     expect((await b.sync()).body.entries).toMatchObject({ "c:one": [13, 1] });
   });
 
+  it("carries a row set aside for later beside its tick, the later stamp winning, and refuses one that isn't a row id", async () => {
+    const world = new World();
+    const { a, b } = await link(world);
+    await a.sync({ "l:shop": [10, "shop"] });
+    expect((await b.sync()).body.entries).toEqual({ "l:shop": [10, "shop"] });
+    await b.sync({ "l:shop": [12, 0], "c:shop": [12, 1] });
+    expect((await a.sync()).body.entries).toEqual({ "l:shop": [12, 0], "c:shop": [12, 1] });
+    expect((await a.sync({ "l:shop": [13, "has space"] })).body).toEqual({ error: "entries" });
+    expect((await a.sync({ "l:shop": [13, 1] })).body).toEqual({ error: "entries" });
+  });
+
   it("settles a tie between devices the same way whichever pushes first", async () => {
     const world = new World();
     const { a, b } = await link(world);

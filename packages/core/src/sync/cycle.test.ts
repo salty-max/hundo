@@ -163,8 +163,8 @@ describe("a linked pair", () => {
     // either, and one key it doesn't take refuses the whole push: sending it from here would hold back every tick.
     await a.run(() => {
       const record = readRecord()!;
-      record.entries[`l:${r2}`] = [Date.now(), r3];
-      record.dirty.push(`l:${r2}`);
+      record.entries[`n:${r2}`] = [Date.now(), r3];
+      record.dirty.push(`n:${r2}`);
       writeRecord(record);
     });
     await tick(a, [r2]);
@@ -172,10 +172,10 @@ describe("a linked pair", () => {
     expect(await sync(a)).toMatchObject({ kind: "ok", dirty: false });
     const sent = a.calls.flatMap((call) => Object.keys((call.body.entries ?? {}) as object));
     expect(sent).toContain(`c:${r2}`);
-    expect(sent).not.toContain(`l:${r2}`);
+    expect(sent).not.toContain(`n:${r2}`);
     const record = await a.run(() => readRecord());
-    expect(record?.entries[`l:${r2}`]).toEqual([expect.any(Number), r3]);
-    expect(record?.dirty).toEqual([`l:${r2}`]);
+    expect(record?.entries[`n:${r2}`]).toEqual([expect.any(Number), r3]);
+    expect(record?.dirty).toEqual([`n:${r2}`]);
     later();
     await sync(b);
     expect(await checked(b)).toEqual(sorted(r1, r2));
