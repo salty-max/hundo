@@ -1,6 +1,6 @@
 import type { GuideConfig, Panel } from "./types";
 
-/** Keys whose strings no reader sees: citations, storage, addresses, files, ids, tags and settings. */
+/** Keys whose strings no reader sees: citations, storage, addresses, files, ids (a row's requirements, the splits), tags and settings. */
 const hidden = new Set([
   "sources",
   "reference",
@@ -28,6 +28,8 @@ const hidden = new Set([
   "icon",
   "layout",
   "corners",
+  "requires",
+  "splits",
 ]);
 /**
  * Tuples whose leading or trailing places hold identifiers: a row's id and tags, a category's icon and tone, a chip's id, the builds a pick's

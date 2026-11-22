@@ -17,7 +17,7 @@ import type { ProgressState } from "./types";
 
 allowSlowMounts();
 
-// Every guide, with the flow's data drawn onto its own rows (no guide has any of it yet): the first three groups of chapter 1 at
+// Every guide, with the flow's data drawn onto its own rows in place of any the guide has: the first three groups of chapter 1 at
 // Testville, Fieldham and Testville again (a second visit, beside Market Row); a gate row in chapter 2 that gives "Test Key", two rows of
 // chapter 1 that wait on it (one on it or a second gate); a chapter 2 row that needs a row of chapter 1; one missable; and a chain of
 // splits (zz-older → zz-old-bundle + a row; zz-old-bundle → two rows).
@@ -44,6 +44,7 @@ vi.mock("virtual:guide/config", async (importOriginal) => {
     [hidden]: { place: "Hiddenburg" },
     [nowhere]: { place: "Nowhere" },
   };
+  const flowKeys = new Set(["requires", "gives", "place"]);
   const location = new Map<object, string>([
     [g0, "Testville"],
     [g1, "Fieldham"],
@@ -65,7 +66,10 @@ vi.mock("virtual:guide/config", async (importOriginal) => {
         groups: chapter.groups.map((group) => ({
           ...group,
           location: location.get(group) ?? group.location,
-          rows: group.rows.map(([id, tags, title, text, more]) => [id, tags, title, text, { ...more, ...extra[id] }]),
+          rows: group.rows.map(([id, tags, title, text, more]) => {
+            const kept = Object.fromEntries(Object.entries(more ?? {}).filter(([key]) => !flowKeys.has(key)));
+            return [id, tags, title, text, { ...kept, ...extra[id] }];
+          }),
         })),
       })),
     },
