@@ -241,6 +241,24 @@ describe.runIf(hasBuilds)("a guide with builds", () => {
     await waitFor(() => expect(screen.queryByRole("dialog", { name: "Who says so" })).toBeNull());
   });
 
+  // A step's deadline (`before`) under a note: Lordran's Logan's catalyst, after the Sorcerer's note (22 Nov 2026).
+  it("shows a step's deadline after the build's note, in bold", async () => {
+    const found = (config.builds?.tasks ?? []).flatMap((task) => {
+      const hit = task.before ? noted.find(({ note, build }) => note.row === task.row && task.serves.some((id) => build.stats.includes(id))) : undefined;
+      return hit ? [{ before: task.before!, ...hit }] : [];
+    })[0];
+    if (!found) return;
+    const { before, note, build } = found;
+    const row = byId.get(note.row)!;
+    reveal(row.chapter);
+    act(() => useBuild.getState().setPicked(build.stats));
+    await open(`/guide/${row.chapter}`);
+    const step = document.getElementById(`entry-${row.id}`)!;
+    expect(await within(step).findByText(escape(note.text))).toBeInTheDocument();
+    expect(within(step).getByText(before).tagName).toBe("STRONG");
+    expect(step.textContent!.indexOf(note.text)).toBeLessThan(step.textContent!.indexOf(before));
+  });
+
   it("shows a pick that reads steps each step serving it, with its title, for the pick only", async () => {
     if (!stepped) return;
     const { task, picked } = stepped;
@@ -275,6 +293,8 @@ describe.runIf(hasBuilds)("a guide with builds", () => {
       .filter((addon) => !noted.has(addon.id))
       .flatMap((addon) => namedBuilds.filter((build) => noted.has(build.id) && !addon.stats.some((stat) => build.stats.includes(stat))).map((build) => [...build.stats, ...addon.stats]))[0];
     const task = pair && (config.builds?.tasks ?? []).find((item) => item.serves.some((id) => pair.includes(id)));
+    // Empty once a guide's add-ons all have notes, as Lordran's do (22 Nov 2026): builds-unwritten.test.ts holds the same reading on the
+    // guide's builds with notes dropped, so the fallback stays tested either way.
     if (!pair || !task) return;
     const row = byId.get(task.row)!;
     reveal(row.chapter);
