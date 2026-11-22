@@ -1,6 +1,6 @@
 import { CHAPTER_COUNT, byId, config } from "../guide";
-import { defaultState } from "../progress-state";
-import type { Extra, ProgressState } from "../types";
+import { defaultState, readExtra } from "../progress-state";
+import type { ProgressState } from "../types";
 import { stamp, validValue, type Clock, type Entries, type Value } from "./ledger";
 
 /*
@@ -72,15 +72,17 @@ function put(tree: Record<string, unknown>, path: string[], value: Value) {
 
 /**
  * The progress `entries` describe, laid over `current`: what the ledger holds replaces what it has a key for, and everything else stays
- * as it is. A row this build doesn't know isn't applied (its entry stays in the ledger), and a chapter is held to the guide's own,
- * never reset to 1.
+ * as it is. A row this build doesn't know is never ticked from the ledger, which may hold rows no build has any more, but a tick on one
+ * that this progress carries (a newer build's, kept by validateState) goes with an untick, so a newer tab doesn't read it back from
+ * here. A chapter is held to the guide's own, never reset to 1.
  */
 export function viewFrom(entries: Entries, current: ProgressState): ProgressState {
   const checks = { ...current.checks };
   for (const [key, [, value]] of Object.entries(entries)) {
-    if (!isRow(key) || !byId.has(key.slice(2))) continue;
-    if (value === 1) checks[key.slice(2)] = true;
-    else delete checks[key.slice(2)];
+    if (!isRow(key)) continue;
+    const id = key.slice(2);
+    if (value !== 1) delete checks[id];
+    else if (byId.has(id)) checks[id] = true;
   }
   const ceiling = chapterOf(entries.ceiling?.[1], current.ceiling);
   const spoilers = typeof entries.spoilers?.[1] === "boolean" ? entries.spoilers[1] : current.spoilers;
@@ -92,7 +94,7 @@ export function viewFrom(entries: Entries, current: ProgressState): ProgressStat
   if (config.state.extra && leaves.length > 0) {
     const tree = structuredClone(current.extra ?? {}) as unknown as Record<string, unknown>;
     for (const [key, [, value]] of leaves) put(tree, key.slice(2).split("."), value);
-    next.extra = config.state.extra.read(tree) as Extra;
+    next.extra = readExtra(tree);
   }
   return next;
 }

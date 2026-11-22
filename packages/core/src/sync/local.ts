@@ -1,7 +1,7 @@
 import { brand } from "../guide";
 import type { ProgressState } from "../types";
 import { changes } from "./fields";
-import { isKey, stamp, validValue, type Clock, type Entries } from "./ledger";
+import { LIMITS, isKey, stamp, validValue, type Clock, type Entries, type Value } from "./ledger";
 
 /*
  * What a device keeps about sync, in `<storagePrefix>.sync`: the ledger (every key with its stamp, so a later sync can tell a new
@@ -15,7 +15,8 @@ export const SYNC_KEY = `${brand.storagePrefix}.sync`;
 export const LINK_COOKIE = "hundo_link";
 
 export interface SyncRecord {
-  v: 1;
+  /** 1, and never bumped, like the progress's version: a newer build adds fields, which an older tab keeps and writes back. */
+  v: number;
   /** The link cookie's value when this ledger was made: a different one means the device moved to another group. */
   group: string;
   entries: Entries;
@@ -35,17 +36,42 @@ export interface SyncRecord {
   devices: number;
 }
 
-/** Keep what the ledger accepts, and drop the rest, so one bad entry can't make the server refuse every push. */
+/**
+ * A key of a kind this build's ledger doesn't know, as a newer build of the guide writes one (`l:<rowId>`, say). Never a name every object
+ * has (`constructor`, `toString`), which `merge` would read as an entry already there.
+ */
+const NEWER = /^[a-z][a-z0-9]{0,15}(?::[A-Za-z0-9_.-]{1,80})?$/;
+const newerKey = (key: string) => NEWER.test(key) && !(key in Object.prototype);
+
+/** Whether the ledger knows this kind of key (`c:`, `x:`, the settings), whatever this one's name: only its own rules judge those. */
+const knownKind = (key: string) => {
+  const colon = key.indexOf(":");
+  return isKey(colon < 0 ? key : `${key.slice(0, colon)}:a`);
+};
+
+/**
+ * Keep what the ledger accepts, and drop the rest, so one bad entry can't make the server refuse every push. A well-formed key of a kind
+ * this build doesn't know is a newer build's, from another tab of the guide: it is kept, so this tab's writes don't strip it, but never
+ * sent from here (`sendable`), since a server that doesn't take it would refuse the whole push.
+ */
 export function cleanEntries(raw: unknown): Entries {
   const out: Entries = {};
   if (raw === null || typeof raw !== "object" || Array.isArray(raw)) return out;
   for (const [key, entry] of Object.entries(raw)) {
-    if (!isKey(key) || !Array.isArray(entry) || entry.length !== 2) continue;
+    if (!Array.isArray(entry) || entry.length !== 2) continue;
     const [at, value] = entry as [unknown, unknown];
-    if (typeof at === "number" && Number.isSafeInteger(at) && at >= 0 && validValue(key, value)) out[key] = [at, value];
+    if (typeof at !== "number" || !Number.isSafeInteger(at) || at < 0) continue;
+    const ok = knownKind(key) ? isKey(key) && validValue(key, value) : newerKey(key) && JSON.stringify(value ?? null).length <= LIMITS.leaf;
+    if (ok) out[key] = [at, value as Value];
   }
   return out;
 }
+
+/** The keys waiting to be sent that this build can send. One of a kind it doesn't know waits for a tab of the newer build that wrote it. */
+export const sendable = (record: Pick<SyncRecord, "dirty">) => record.dirty.filter(isKey);
+
+/** The record's fields this build reads. Others are a newer build's, and go back as they came (never one that reaches a prototype). */
+const RECORD = new Set(["v", "group", "entries", "dirty", "clock", "touched", "rev", "fullAt", "devices", "__proto__", "constructor", "prototype"]);
 
 const finite = (value: unknown, fallback: number) => (typeof value === "number" && Number.isFinite(value) ? value : fallback);
 
@@ -55,14 +81,15 @@ export function readRecord(): SyncRecord | null {
     const raw: unknown = JSON.parse(localStorage.getItem(SYNC_KEY) ?? "null");
     if (raw === null || typeof raw !== "object") return null;
     const r = raw as Record<string, unknown>;
-    if (r.v !== 1 || typeof r.group !== "string") return null;
+    if (!Number.isInteger(r.v) || (r.v as number) < 1 || typeof r.group !== "string") return null;
     const entries = cleanEntries(r.entries);
     const clock = (r.clock ?? {}) as Record<string, unknown>;
     return {
-      v: 1,
+      ...Object.fromEntries(Object.entries(r).filter(([key]) => !RECORD.has(key))),
+      v: r.v as number,
       group: r.group,
       entries,
-      dirty: Array.isArray(r.dirty) ? r.dirty.filter((key): key is string => typeof key === "string" && key in entries) : [],
+      dirty: Array.isArray(r.dirty) ? r.dirty.filter((key): key is string => typeof key === "string" && Object.hasOwn(entries, key)) : [],
       clock: { last: finite(clock.last, 0), offset: finite(clock.offset, 0) },
       touched: finite(r.touched, 0),
       rev: typeof r.rev === "number" && Number.isSafeInteger(r.rev) && r.rev >= 0 ? r.rev : null,

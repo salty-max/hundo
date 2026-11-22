@@ -1,4 +1,4 @@
-import { brand, overall } from "./guide";
+import { brand, byId, overall } from "./guide";
 import { useProgress } from "./store/progress";
 import { useSyncStatus } from "./store/sync";
 import { call } from "./sync/api";
@@ -27,9 +27,9 @@ export const SUMMARY_WAIT = 5_000;
 
 type Summary = { percent: number; chapter: number } | null;
 
-/** What hundo.quest should show: the figure and the chapter, or nothing while nothing is checked. */
+/** What hundo.quest should show: the figure and the chapter, or nothing while nothing this build has is checked. */
 export function summaryOf(data: Pick<ProgressState, "checks" | "chapter">): Summary {
-  if (!Object.values(data.checks).some((checked) => checked === true)) return null;
+  if (!Object.entries(data.checks).some(([id, checked]) => checked === true && byId.has(id))) return null;
   return { percent: overall(data.checks).percent, chapter: data.chapter };
 }
 

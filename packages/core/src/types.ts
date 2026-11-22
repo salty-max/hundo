@@ -301,7 +301,8 @@ export interface Register {}
 export type Extra = Register extends { extra: infer E } ? E : undefined;
 
 export interface ProgressState {
-  version: 3;
+  /** 3, and never bumped (progress-state.ts). A save from a build that bumped it anyway is read as 3 and keeps its number. */
+  version: number;
   guide: string;
   checks: Checks;
   ceiling: number;
@@ -472,7 +473,11 @@ export interface GuideConfig {
   state: {
     /** Reads a backup saved before the shared format; returns its extra fields, or null if it is not one. */
     legacy?: (value: Record<string, unknown>) => { extra?: unknown } | null;
-    extra?: { initial: () => Extra; read: (value: unknown) => Extra };
+    /**
+     * The guide's own state. `read` returns what it knows; keys of a save it leaves out are kept and written back (a newer build's),
+     * except the dotted paths in `retired`: keys the guide no longer reads, so a later key can never read an old value under their name.
+     */
+    extra?: { initial: () => Extra; read: (value: unknown) => Extra; retired?: string[] };
   };
   text: GuideText;
 }

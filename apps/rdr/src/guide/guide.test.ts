@@ -176,8 +176,13 @@ describe("Red Dead saves from before the shared format", () => {
     expect(validateState(JSON.parse(JSON.stringify(state)))).toEqual(state);
   });
 
-  it("refuses unknown versions and other guides", () => {
-    for (const bad of [{ ...base, version: 4 }, { ...base, version: 1, guide: "echoes-of-wisdom" }, { ...base, version: 1, guide: undefined }]) expect(() => validateState(bad)).toThrow();
+  it("refuses versions it never wrote and other guides", () => {
+    for (const bad of [{ ...base, version: 0 }, { ...base, version: 2.5 }, { ...base, version: 1, guide: "echoes-of-wisdom" }, { ...base, version: 1, guide: undefined }]) expect(() => validateState(bad)).toThrow();
+  });
+
+  it("reads a save from a newer build as its own, keeping what it doesn't know of the extra", () => {
+    const state = validateState({ ...base, version: 4, extra: { reported: 41, addedByANewerBuild: 1 } });
+    expect(state).toMatchObject({ version: 4, checks: { [a]: true }, extra: { reported: 41, addedByANewerBuild: 1 } });
   });
 });
 

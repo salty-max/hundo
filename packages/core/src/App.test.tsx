@@ -1,4 +1,4 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { App } from "./App";
 import { STORAGE_KEY, defaultState } from "./progress-state";
@@ -32,6 +32,21 @@ describe("App", () => {
     await user.click(box);
     expect(box).toBeChecked();
     expect(saved()).toEqual({ [firstRow.id]: true });
+  });
+
+  it("keeps all of a newer tab's save when this page reloads it and the reader ticks here", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await screen.findByRole("heading", { level: 1, name: first.title });
+    const box = within(document.getElementById(`entry-${firstRow.id}`)!).getByRole("checkbox");
+    // Another tab of the guide, on a newer build, saves: a higher version, a field, a tick on a row this build doesn't have, an extra key.
+    const newer = { ...defaultState(), version: 4, checks: { "row-from-a-newer-build": true }, later: { "row-from-a-newer-build": firstRow.id }, extra: { ...(defaultState().extra ?? {}), addedByANewerBuild: 7 } };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(newer));
+    act(() => window.dispatchEvent(new StorageEvent("storage", { key: STORAGE_KEY, newValue: localStorage.getItem(STORAGE_KEY) })));
+    expect(useProgress.getState().storageError).toBe(false);
+    await user.click(box);
+    expect(box).toBeChecked();
+    expect(JSON.parse(localStorage.getItem(STORAGE_KEY)!)).toEqual({ ...newer, checks: { ...newer.checks, [firstRow.id]: true } });
   });
 
   it("names the guide <mark> Hundo and puts the copyright under the rail, after a link to every other guide", async () => {
