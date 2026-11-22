@@ -788,7 +788,7 @@ export const tasks: BuildTask[] = [
     row: "quest-laurentius",
     serves: ["pyro"],
     title: "Buy his pyromancies and start on the flame",
-    text: "Laurentius sells Fireball for 800 souls and Combustion for 500, and reinforces the Pyromancy Flame for souls alone: 10,500 to reach +5. A Pyromancer starts with a flame; he gives anyone else one.",
+    text: "Laurentius sells Fireball for 800 souls and Combustion for 500, and reinforces the Pyromancy Flame for souls alone: 10,500 to reach +5.",
     sources: [W("laurentius"), W("pyromancy-flame"), FX("Laurentius+of+the+Great+Swamp")],
   },
   {
@@ -1297,7 +1297,7 @@ export const notes: BuildNote[] = [
   // Pyromancy, beside another build
   pyromancy(
     "quest-laurentius",
-    "Unless you started with a Pyromancy Flame, Laurentius gives you one at Firelink: melee guides carry one beside their weapon. No stat you level raises your pyromancies’ damage; the flame’s upgrades, for souls, do.",
+    "Melee guides carry a Pyromancy Flame beside their weapon. No stat you level raises your pyromancies’ damage; the flame’s upgrades, for souls, do.",
     { sources: [W("pyromancer"), W("pyromancy-flame"), FX("Laurentius+of+the+Great+Swamp")] },
   ),
   pyromancy("covenant-chaos-servant", "Great Chaos Fireball is a pyromancy that guides with a flame beside their weapon keep."),
