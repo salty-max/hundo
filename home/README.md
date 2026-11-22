@@ -18,7 +18,7 @@ file). From each guide it takes:
 
 `src/plugin.ts` then:
 
-- makes three copies of each chapter 1 banner for its band (480, 960 and up to 1,800px wide), and a 288×96 one for the hero's backdrop;
+- makes three copies of each chapter 1 banner for its band (480, 960 and up to 1,800px wide), and separate 960, 1,920, 2,880 and 3,840px copies for the hero’s backdrop, all cut directly from the original to 3:1 with Lanczos resampling, plus smaller 3:2 crops for phones;
 - copies the icon tiles and the display font, with the font's licence into `fonts/`;
 - writes one stylesheet of the guides' palettes, fonts and corners (each dark palette written twice, as home.css writes its own: below),
   and the tab's icon (the logo's ring, one arc per guide);
@@ -43,15 +43,11 @@ hold, and never for a reader who asks for reduced motion, who keeps the first ba
 contrast (`prefers-contrast: more`) gets the bare page, and nothing past the first banner is fetched. Nothing is kept. The link preview
 keeps its still wall of six.
 
-Each banner is a 288×96 copy (`BACKDROP_WIDTH` in `src/plugin.ts`), 3.5 to 8 kB, at a low fetch priority and never preloaded. Chrome
-counts an image drawn larger than its own size as at most its own area for the largest contentful paint, and the backdrop's crop
-(`object-fit: cover`) doesn't lower that, so each banner counts 27,648px² at any width, under the headline's smallest, 33,304px² (two
-lines, from 400 to 600px wide). Measured in Chrome on 21 Nov 2026, with every banner shown in turn at widths from 320 to 1920px: no
-banner was ever the largest paint. The headline was, except where a tall window shows the first band's banner below it, which is larger
-(at 600×900, 768×1024 and 900×900, not at 600×700, 768×800 or 900×700); the page before the backdrop measured the same at those sizes. A
-320px copy, 34,240px², outranked the headline from 400 to 600px wide. The same day, over every banner in light and dark, on a desktop
-and a phone, each kept its contrast against the least contrasting pixel behind it: at least 5.7:1 for the headline, 4.79:1 for the line
-under it, 3.31:1 for the logo and 3.48:1 for the top bar's icons.
+The hero uses responsive WebP copies (`BACKDROP_WIDTHS` in `src/plugin.ts`) from 960×320 up to 3840×1280, including upscaled copies made directly from the guide’s original artwork. This avoids stretching a 288px thumbnail across a desktop. Upscaling preserves the existing composition; it does not invent detail absent from the original. `srcset` and `sizes` select the appropriate copy, with a minimum covered image width on phones: a 3:1 picture covering a tall hero is wider than the viewport. Following slides receive the same responsive sources before decoding and crossfading.
+
+For phones up to 480px wide, a picture source supplies a 3:2 crop at the same 72% focal point, at widths 720/960/1200/1800. It omits the sides hidden by the narrow viewport, preserving visible detail while reducing transfer size. Mobile crops prefer AVIF with a WebP fallback; the media-matched AVIF preload is ignored by browsers which need the fallback. The first image has high fetch priority and media-matched responsive preloads, so only the applicable crop loads. Later images keep low priority and load only shortly before their turn. The backdrop may now be the largest contentful paint; image quality is no longer reduced to keep it out of that metric. The headline’s masks, glow and theme contrast treatments are unchanged. Recheck performance on the production build when changing image sizes or compression.
+
+Local validation on 22 November 2026 (Lighthouse 13.6, Chrome 158, three runs per viewport): desktop performance 100 with median LCP 805ms; mobile performance 95 with median LCP 2,859ms. Accessibility, best practices and SEO were 100 on both. Mobile still exceeds the repository’s 2,500ms LCP budget; that check remains failing. The image is discovered early at high priority and the mobile AVIF transfers about 30KB. Lighthouse’s simulated image LCP graph also includes the guide fonts requested below the hero; the observed local LCP was about 82ms. These local figures do not replace a production or real-device measurement, and the budget has not been relaxed.
 
 Light and dark follow the device, in CSS alone, until the reader presses the theme button for the scheme the device isn't using. Only then
 is a choice kept, in localStorage under `hundo.theme` (`THEME_KEY`), and the root gets `data-theme`; pressing it back to the device's scheme
@@ -102,13 +98,13 @@ production build as CI's `lighthouse-home` job does.
 - `page.test.ts`: the page as the build makes it. Every guide with a `vercel.json` in `apps/` is on it, linking to its `brand.home`, its
   game the band's title and its own name above it, unless it is the game's, with no publisher. Its pictures and fonts are among the files
   the build writes, and each guide's dark palette is written for both ways into dark. The hero's backdrop lists every guide's banner A to Z, their
-  288px copies, and holds only the first, at low priority, never preloaded, hidden from assistive technology. The top bar links to the repository in a new tab and holds
+  responsive copies up to 4K, and holds only the first, with a matching responsive preload, hidden from assistive technology. The top bar links to the repository in a new tab and holds
   the theme button, invisible until its script runs. Find narrows the guides. The theme button and the Find field keep their room before
   their script runs (never `hidden`, which gave them none: showing the field grew the guides' bar from 26 to 82px on a phone and pushed
   the guides down) and go, room and all, where scripts are off. A guide's cookie fills in its band and no other, and
   a linked browser's group draws over them.
 - `backdrop.test.ts`: the hero's backdrop crossfades A to Z, fetching each next banner shortly before it's due and laying it over the one
-  before; it shows none before it's decoded and skips one that won't load; it keeps the first and fetches nothing under reduced motion,
+  before, retaining each slide’s responsive sources and covered-image sizing; it shows none before it's decoded and skips one that won't load; it keeps the first and fetches nothing under reduced motion,
   and stops when that's asked for mid-way; it waits while the tab is hidden or the hero is out of view or not drawn; and it does nothing
   with one banner.
 - `guides.test.ts`: what's read from each guide.

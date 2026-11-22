@@ -8,18 +8,22 @@ import type { Guide } from "./guides";
 export type GuideArt = {
   /** The banner's copies, narrowest first. */
   banner: { url: string; width: number }[];
-  /** The banner's small copy for the hero's backdrop (plugin.ts's BACKDROP_WIDTH). */
-  backdrop: { url: string; width: number };
+  /** Full-width and phone hero crops, each narrowest first. */
+  backdrop: { wide: { url: string; width: number }[]; narrow: { url: string; avif: string; width: number }[] };
   /** The icon tile at 40, 80 and 120px. */
   tile: { url: string; width: number }[];
 };
 
 const srcSet = (copies: GuideArt["banner"]) => copies.map((copy) => `${copy.url} ${copy.width}w`).join(", ");
+const avifSet = (copies: GuideArt["backdrop"]["narrow"]) => copies.map((copy) => `${copy.avif} ${copy.width}w`).join(", ");
 
 // The banner is drawn at the band's height, three times as wide as that: about 280px tall beside the words (840px wide), about 150px in a
 // phone's short band (450px).
 const BANNER_SIZES = "(max-width: 36rem) 460px, 840px";
 const TILE_SIZES = "(max-width: 36rem) 32px, 44px";
+// object-fit: cover draws a 3:1 image wider than the viewport on phones: choose for the covered height, not just the visible width.
+const BACKDROP_SIZES = "(max-width: 36rem) 1120px, (max-width: 60rem) 1440px, 100vw";
+const MOBILE_BACKDROP_SIZES = "(max-width: 22rem) 620px, 548px";
 
 const Arrow = () => (
   <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -145,17 +149,29 @@ const Band = ({ guide, art, eager }: { guide: Guide; art: GuideArt; eager: boole
   );
 };
 
+/** Discover only the first slide before render-blocking styles and the guide bands. */
+export const BackdropPreloads = ({ art }: { art: GuideArt["backdrop"] }) => (
+  <>
+    <link rel="preload" as="image" type="image/avif" media="(max-width: 30rem)" imageSrcSet={avifSet(art.narrow)} imageSizes={MOBILE_BACKDROP_SIZES} fetchPriority="high" />
+    <link rel="preload" as="image" media="(min-width: 30.001rem)" imageSrcSet={srcSet(art.wide)} imageSizes={BACKDROP_SIZES} fetchPriority="high" />
+  </>
+);
+
 /**
  * Behind the headline, and up behind the top bar: one guide's chapter 1 banner at a time, muted and fading out at the foot, A to Z as the
- * bands are, each the small copy made for it (plugin.ts's BACKDROP_WIDTH). The markup holds the first, at a low fetch priority and never
- * preloaded (React preloads an eager image otherwise), and lists every guide's for backdrop.ts, which crossfades to the next on a timer.
+ * bands are. The first responsive picture is in the markup; backdrop.ts loads the same responsive copies for each following slide.
  * Decoration, so hidden from assistive technology.
  */
 const Backdrop = ({ guides, art }: { guides: Guide[]; art: Record<string, GuideArt> }) => {
   const first = art[guides[0].folder].backdrop;
+  const largest = first.wide.at(-1)!;
   return (
-    <div className="backdrop" aria-hidden="true" data-backdrop={guides.map((guide) => art[guide.folder].backdrop.url).join(" ")}>
-      <img className="on" src={first.url} width={first.width} height={Math.round(first.width / 3)} alt="" fetchPriority="low" decoding="async" />
+    <div className="backdrop" aria-hidden="true" data-backdrop={JSON.stringify(guides.map((guide) => art[guide.folder].backdrop))}>
+    <picture>
+      <source type="image/avif" media="(max-width: 30rem)" srcSet={avifSet(first.narrow)} sizes={MOBILE_BACKDROP_SIZES} />
+      <source media="(max-width: 30rem)" srcSet={srcSet(first.narrow)} sizes={MOBILE_BACKDROP_SIZES} />
+      <img className="on" src={largest.url} srcSet={srcSet(first.wide)} sizes={BACKDROP_SIZES} width={largest.width} height={largest.width / 3} alt="" fetchPriority="high" decoding="async" />
+    </picture>
     </div>
   );
 };

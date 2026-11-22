@@ -9,25 +9,21 @@ import type { Plugin } from "vite";
 import { APPS, readGuides } from "./guides";
 import { ogImage, ogTags } from "./og";
 import type { GuideArt } from "./page";
-import { faviconSvg, guidesCss, renderHome, renderNotFound } from "./render";
+import { faviconSvg, guidesCss, renderBackdropHead, renderHome, renderNotFound } from "./render";
 
 /** The page's address, which the link preview's picture is named on (index.html's canonical and og:url). */
 export const HOME = "https://hundo.quest";
 
 /** The banner's copies: a phone's short band, a desktop's band at 1x, and up to the original for 2x and 3x screens. */
 export const BANNER_WIDTHS = [480, 960, 1800];
-/**
- * The hero's backdrop copy, every guide's cut to 288×96 whatever its banner's shape. Chrome counts an image drawn larger than its own
- * size as at most its own area for the largest contentful paint, and the backdrop's crop (object-fit: cover) doesn't lower that, so each
- * banner counts 27,648px² at any width, under the headline's smallest, 33,304 (two lines, from 400 to 600px wide): the backdrop never
- * outranks the headline. Measured in Chrome on 21 Nov 2026: a 320px copy counted its whole 34,240 and outranked the headline from 400
- * to 600px wide, Lighthouse's phone among them, and Koholint's, 320×119 from a 1700×630 banner, 38,080, outranking it from 320 to 600.
- */
-export const BACKDROP_WIDTH = 288;
+/** Full-width hero copies, including upscaled 2× desktop art. Always resize the original, never a small derivative. */
+export const BACKDROP_WIDTHS = [960, 1920, 2880, 3840];
+export const MOBILE_BACKDROP_WIDTHS = [720, 960, 1200, 1800];
 const TILE_WIDTHS = [40, 80, 120];
 const HUNDO_FONT_FILE = join(import.meta.dirname, "fonts", "manrope.woff2");
 
 const contentType: Record<string, string> = {
+  avif: "image/avif",
   webp: "image/webp",
   png: "image/png",
   jpg: "image/jpeg",
@@ -41,6 +37,8 @@ const contentType: Record<string, string> = {
 export type Made = {
   files: Map<string, Buffer | string>;
   head: string;
+  /** Only the home page draws a hero. */
+  homeHead: string;
   /** The link preview picture's tags, in index.html's head alone: 404.html is never shared or indexed. */
   og: string;
   home: string;
@@ -66,12 +64,18 @@ export const make = async (apps = APPS): Promise<Made> => {
     const root = join(apps, guide.folder);
     const banner = join(root, "src", "guide", "banners", "chapter-1.webp");
     if (!existsSync(banner)) throw new Error(`${guide.folder}: no src/guide/banners/chapter-1.webp, which its band on the landing page shows`);
-    const { width = 0 } = await sharp(banner).metadata();
+    const { width = 0, height = 0 } = await sharp(banner).metadata();
     const widths = BANNER_WIDTHS.map((w) => Math.min(w, width)).filter((w, i, all) => all.indexOf(w) === i);
-    const backdrop = await sharp(banner)
-      .resize({ width: BACKDROP_WIDTH, height: BACKDROP_WIDTH / 3, fit: "cover" })
-      .webp({ quality: 78 })
-      .toBuffer();
+    // Keep the same 72% focal point as object-position, but omit the sides a phone never draws.
+    const frameHeight = Math.min(height, Math.floor(width / 3));
+    const frameWidth = Math.min(width, frameHeight * 3);
+    const mobileWidth = Math.round(frameHeight * 1.5);
+    const mobileCrop = {
+      left: Math.round((width - frameWidth) / 2 + (frameWidth - mobileWidth) * 0.72),
+      top: Math.round((height - frameHeight) / 2),
+      width: mobileWidth,
+      height: frameHeight,
+    };
     art[guide.folder] = {
       banner: await Promise.all(
         widths.map(async (w) => {
@@ -79,7 +83,31 @@ export const make = async (apps = APPS): Promise<Made> => {
           return { url: add(hashed(`${guide.folder}-banner-${w}`, "webp", source), source), width: w };
         }),
       ),
-      backdrop: { url: add(hashed(`${guide.folder}-backdrop-${BACKDROP_WIDTH}`, "webp", backdrop), backdrop), width: BACKDROP_WIDTH },
+      backdrop: {
+        wide: await Promise.all(
+          BACKDROP_WIDTHS.map(async (w) => {
+            const source = await sharp(banner)
+              .resize({ width: w, height: w / 3, fit: "cover", kernel: "lanczos3" })
+              .webp({ quality: 84 })
+              .toBuffer();
+            return { url: add(hashed(`${guide.folder}-backdrop-${w}`, "webp", source), source), width: w };
+          }),
+        ),
+        narrow: await Promise.all(
+          MOBILE_BACKDROP_WIDTHS.map(async (w) => {
+            const image = sharp(banner).extract(mobileCrop).resize(w, (w * 2) / 3);
+            const [source, avif] = await Promise.all([
+              image.clone().webp({ quality: 75 }).toBuffer(),
+              image.clone().avif({ quality: 40, effort: 4 }).toBuffer(),
+            ]);
+            return {
+              url: add(hashed(`${guide.folder}-backdrop-mobile-${w}`, "webp", source), source),
+              avif: add(hashed(`${guide.folder}-backdrop-mobile-${w}`, "avif", avif), avif),
+              width: w,
+            };
+          }),
+        ),
+      },
       tile: TILE_WIDTHS.map((w) => {
         const source = readFileSync(join(root, "public", "icons", `tile-${w}.png`));
         return { url: add(hashed(`${guide.folder}-tile-${w}`, "png", source), source), width: w };
@@ -106,17 +134,17 @@ export const make = async (apps = APPS): Promise<Made> => {
     `<link rel="stylesheet" href="${stylesheet}">`,
     `<link rel="icon" href="/favicon.svg" type="image/svg+xml">`,
   ].join("\n    ");
-  return { files, head, og, home: renderHome(guides, art), notFound: renderNotFound() };
+  return { files, head, homeHead: renderBackdropHead(art[guides[0].folder].backdrop), og, home: renderHome(guides, art), notFound: renderNotFound() };
 };
 
 /** A page with the build's markup in its marks: index.html gets the home page and the link preview's tags, 404.html the lost page alone. */
-export const fillPage = (html: string, path: string, { head, og, home, notFound }: Made) => {
+export const fillPage = (html: string, path: string, { head, homeHead, og, home, notFound }: Made) => {
   const lost = path.endsWith("404.html");
   if (!html.includes("<!--home:head-->") || !html.includes("<!--home:body-->")) throw new Error(`${path}: no <!--home:head--> or <!--home:body--> to fill`);
   if (!lost && !html.includes("<!--home:og-->")) throw new Error(`${path}: no <!--home:og--> for the link preview's picture`);
   return html
     .replace("<!--home:og-->", lost ? "" : og)
-    .replace("<!--home:head-->", head)
+    .replace("<!--home:head-->", (lost ? "" : homeHead) + head)
     .replace("<!--home:body-->", lost ? notFound : home);
 };
 

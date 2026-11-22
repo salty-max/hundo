@@ -3,10 +3,15 @@
 // only while it can be seen, and never for a reader who asks for reduced motion.
 import { AHEAD, HOLD, wireBackdrop } from "./backdrop";
 
-const URLS = ["/assets/a-backdrop-288-1.webp", "/assets/b-backdrop-288-2.webp", "/assets/c-backdrop-288-3.webp"];
+const URLS = ["/assets/a-backdrop-3840-1.webp", "/assets/b-backdrop-3840-2.webp", "/assets/c-backdrop-3840-3.webp"];
+const copies = (url: string) => ({
+  wide: [{ url: url.replace("3840", "960"), width: 960 }, { url, width: 3840 }],
+  narrow: [{ url: url.replace("3840", "mobile-960"), avif: url.replace("3840", "mobile-960").replace("webp", "avif"), width: 960 }],
+});
 
 function page(urls = URLS) {
-  document.body.innerHTML = `<div class="sky"><div class="backdrop" aria-hidden="true" data-backdrop="${urls.join(" ")}"><img class="on" src="${urls[0]}" width="288" height="96" alt="" fetchpriority="low" decoding="async"></div></div>`;
+  document.body.innerHTML = `<div class="sky"><div class="backdrop" aria-hidden="true"><picture><source type="image/avif" media="(max-width: 30rem)" sizes="548px"><source media="(max-width: 30rem)" sizes="548px"><img class="on" src="${urls[0]}" width="3840" height="1280" sizes="1120px" alt="" fetchpriority="high" decoding="async"></picture></div></div>`;
+  document.querySelector<HTMLElement>(".backdrop")!.dataset.backdrop = JSON.stringify(urls.map(copies));
 }
 const images = () => [...document.querySelectorAll<HTMLImageElement>(".backdrop img")];
 /** The banner the reader sees: the last image with .on, drawn over the ones before it. */
@@ -91,10 +96,17 @@ describe("the hero's backdrop", () => {
     expect(next.classList.contains("on")).toBe(false);
     expect(next.getAttribute("alt")).toBe("");
     expect(next.getAttribute("fetchpriority")).toBe("low");
-    expect([next.getAttribute("width"), next.getAttribute("height")]).toEqual(["288", "96"]);
+    expect([next.getAttribute("width"), next.getAttribute("height")]).toEqual(["3840", "1280"]);
+    expect(next.srcset).toBe(`${copies(URLS[1]).wide[0].url} 960w, ${URLS[1]} 3840w`);
+    expect(next.sizes).toBe("1120px");
+    const mobile = next.parentElement!.querySelector("source")!;
+    expect(mobile.srcset).toBe(`${copies(URLS[1]).narrow[0].avif} 960w`);
+    expect(next.parentElement!.querySelectorAll("source")[1].srcset).toBe(`${copies(URLS[1]).narrow[0].url} 960w`);
+    expect(mobile.sizes).toBe("548px");
+    expect(mobile.media).toBe("(max-width: 30rem)");
     expect(shown()).toBe(URLS[0]);
     // laid on top when fetched, and left there: a move would restyle it from nothing and show it without the fade
-    const moves = vi.spyOn(next.parentElement!, "append");
+    const moves = vi.spyOn(next.closest(".backdrop")!, "append");
     await vi.advanceTimersByTimeAsync(AHEAD);
     expect(shown()).toBe(URLS[1]);
     expect(moves).not.toHaveBeenCalled();
@@ -103,7 +115,9 @@ describe("the hero's backdrop", () => {
     await vi.advanceTimersByTimeAsync(HOLD - AHEAD);
     expect(images()).toEqual([next, first]);
     expect(first.classList.contains("on")).toBe(false);
+    expect(first.srcset).toBe(`${copies(URLS[2]).wide[0].url} 960w, ${URLS[2]} 3840w`);
     expect(first.getAttribute("src")).toBe(URLS[2]);
+    expect(first.getAttribute("fetchpriority")).toBe("low");
     expect(shown()).toBe(URLS[1]);
     await vi.advanceTimersByTimeAsync(AHEAD);
     expect(shown()).toBe(URLS[2]);
