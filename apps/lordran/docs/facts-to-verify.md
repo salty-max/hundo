@@ -304,6 +304,18 @@ Every entry in `data/missables.ts` has two hosts that state its condition. None 
 
 - **estus-max: do the corpse Fire Keeper Souls come back in NG+, and is each one worth exactly +1?** wikidot fire-keeper-soul (read directly) lists the four corpse souls (Parish altar, Blighttown cell, upper New Londo, Archives giant cell) and gives +7 as the cap, but says nothing about how many levels one soul adds. wikidot new-game-plus (read directly) says the flask keeps its level and most progress resets, but doesn't name these souls. So the row does no sum and says only: reinforce up to +7, the level carries over, collect the souls in NG+ too. To settle it: fextralife's Estus Flask or Fire Keeper Soul page stating one level per soul and NG+ respawn, or reinforcing once in game.
 
+**The continuous route in chapters 12 and 13 (22 Nov 2026).** Chapter 12 now says how you reach the altar (Frampt, not a warp), what the four bosses leave, that the Kiln has no bonfire before Gwyn, where the Black Knight Set lies, both of Solaire's conditions, and what NG+ takes; chapter 13 opens with where NG+ starts, puts Siegmeyer's gate talk before the second bell, keeps the Archives golem's second chance, and names the Fire Keepers. No row added. Source-checked on the live pages. Still on one host, or not on any:
+
+- **Offering the souls** (`route-kiln-door`): what each boss leaves is wikidot's alone, and the Offer souls option fextralife's; the stone door beside the altar is wikidot's altar page. Whether one pick places all four, no page says.
+- **Where NG+ starts** (`route-ng-ready`, the NG+ note): the Asylum is fextralife's NG+ page; wikidot's implies it.
+- **Resting by the Kiln** (`route-kiln-door`, `forge-kiln-farm`): no page lists a bonfire before Gwyn, and the placed Lordvessel doubles as one (both hosts). Which rest brings the Kiln knights back, no page says.
+- **The arena's bonfire** (`ending-dark-lord`): on both hosts and the Steam guide after the fight, and lighting it is the other ending; whether it shows before the fight, none says.
+- **The Crest of Artorias in NG+** (`route-ng-ready`, `cycle-ng-plus-sif`): neither NG+ page names it, but fextralife files it as a key and both say NG+ takes every key but the Master Key.
+- **Siegmeyer's gate talk** (`cycle-ng-plus-bells`, `cycle-ng-plus-siegmeyer`): both bells move him on, fextralife alone; both pages call the talk skippable, and wikidot warns that skipping it risks his next meeting. Whether killing the Bed of Chaos first changes his pit stage, neither says.
+- **Killing the Chaos Eaters first** (`ring-speckled-stoneplate`): wikidot ends his story with the ring; fextralife's table gives the ring and keeps him alive.
+- **The Fire Keepers** (`estus-max`): Anastacia, Quelaag's Sister and the Darkmoon Knightess, wikidot's soul page alone; that Quelaag's Sister is the guide's Fair Lady is the guide's own naming.
+- **Ornstein's lock-on** (`cycle-ng-plus-anor`): wikidot's boss page alone.
+
 ## Builds
 
 ### The stat-index facts, retired (21 Nov 2026)
