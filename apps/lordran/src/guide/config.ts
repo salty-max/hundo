@@ -28,8 +28,8 @@ const banners = byChapter(import.meta.glob<Banner>("./banners/chapter-*.webp", {
  * exactly when What's left is empty. The bosses, covenants, rare weapons, spells, rings, embers, maximum reinforcements, endings and
  * the expansion's spells come with game totals (facts-to-verify.md has their hosts), and so do Snuggly's trades (the game's 20, less the Pursuers spell and the Red Titanite Slab, which count as a spell and a slab, so 18) and the NPC invasions, whose lists two hosts
  * give as tables. The rest are the guide's own lists, whose goals are their rows, not a game total: the NPC quest steps, the Estus
- * souls and Titanite Slabs it sends you to, the expansion's gear, the later cycles' ways at the one-way choices, the discoveries and the loot
- * sweeps. A test pins every goal to the data, so a missing row shows up as a failing count. Route steps are directions and carry no target,
+ * souls and Titanite Slabs it sends you to, the expansion's gear, the later cycles' ways at the one-way choices, the discoveries and the
+ * equipment and keys the route picks up, each where it finds them. A test pins every goal to the data, so a missing row shows up as a failing count. Route steps are directions and carry no target,
  * and so are the later cycles' steps that only repeat something or yield an item its own row counts: an item a later cycle gives (the
  * Leo Ring, a boss soul's second or third recipe) sits in chapter 13 and counts once, there. At a one-way choice (data/choices.ts) the first cycle takes the way the
  * guide recommends and a later cycle the other, each a row that counts, so 100% takes NG+ as the endings do. Base-game spells have their own tags, so the five expansion
@@ -56,7 +56,7 @@ export const targets: BoardItem[] = [
   { tag: "invasion", goal: 7, list: "game" },
   { tag: "cycle", goal: 4, list: "guide" },
   { tag: "extra", goal: 14, list: "guide" },
-  { tag: "pickup", goal: 34, list: "guide" },
+  { tag: "pickup", goal: 41, list: "guide" },
 ];
 
 const config: GuideConfig = {
