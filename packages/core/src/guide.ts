@@ -40,6 +40,9 @@ export const chapters: Chapter[] = config.chapters.map((chapter) => ({
         quantity: extra?.quantity ?? 0,
         reference: extra?.reference,
         map: extra?.map,
+        requires: (extra?.requires ?? []).map((entry) => (Array.isArray(entry) ? entry : [entry])),
+        gives: extra?.gives,
+        place: extra?.place ?? group.location,
       }),
     ),
   })),
@@ -64,22 +67,33 @@ export const readChapter = (value: unknown, fallback = 1) => {
 export const statusOptions: [string, string][] = [
   ["all", "All statuses"],
   ["todo", "Unfinished"],
+  ["later", "Set aside"],
   ["done", "Completed"],
 ];
 
-/** A row id or a section key in this chapter, as the element id to scroll to. */
-export function guideAnchor(chapterId: number, target: string | undefined): string | undefined {
-  if (!target) return;
-  if (byId.get(target)?.chapter === chapterId) return `entry-${target}`;
-  return chapters[chapterId - 1]?.groups.find((group) => group.key === target)?.key;
+const splitInto = new Map((config.splits ?? []).map((split) => [split.from, split.into]));
+const splitFrom = new Map((config.splits ?? []).flatMap((split) => split.into.map((part) => [part, split.from] as const)));
+/** Whether an id is a split bundle's, retired for good. */
+export const isRetired = (id: string) => splitInto.has(id);
+/** The rows an id stands for: a retired bundle's parts, through any chain of splits, in order; any other id, itself. */
+export function partsOf(id: string, seen: ReadonlySet<string> = new Set()): string[] {
+  const into = splitInto.get(id);
+  if (!into || seen.has(id)) return [id];
+  return into.flatMap((part) => partsOf(part, new Set([...seen, id])));
+}
+/** The retired bundles a row was split out of, nearest first: every level of a chain. */
+export function bundlesOf(id: string): string[] {
+  const out: string[] = [];
+  for (let at = splitFrom.get(id); at && !out.includes(at); at = splitFrom.get(at)) out.push(at);
+  return out;
 }
 
-/** The next unchecked steps in guide order, starting at `fromChapter` and wrapping round. Deferred rows wait until nothing else is left. */
-export function nextUp(checks: Checks, isChapterOpen: (chapter: number) => boolean, fromChapter: number, count = 3): Row[] {
-  const order = [...chapters.filter((chapter) => chapter.id >= fromChapter), ...chapters.filter((chapter) => chapter.id < fromChapter)];
-  const left = order.filter((chapter) => isChapterOpen(chapter.id)).flatMap(chapterRows).filter((row) => checks[row.id] !== true);
-  const steps = config.defer ? left.filter((row) => !config.defer!(row)) : left;
-  return (steps.length ? steps : left).slice(0, count);
+/** A row id or a section key in this chapter, as the element id to scroll to. A split bundle's old id lands on its first part. */
+export function guideAnchor(chapterId: number, target: string | undefined): string | undefined {
+  if (!target) return;
+  const row = isRetired(target) ? partsOf(target)[0] : target;
+  if (byId.get(row)?.chapter === chapterId) return `entry-${row}`;
+  return chapters[chapterId - 1]?.groups.find((group) => group.key === target)?.key;
 }
 
 /** What "Don't miss" lists for a chapter: its missables and the recommended ways at its one-way choices, unticked, in route order. */

@@ -1,7 +1,8 @@
+import type { ReactNode } from "react";
 import { Link } from "react-router";
 import { CheckBox } from "./CheckBox";
 import { Tag } from "./ui";
-import type { Row } from "../types";
+import type { Row, Tone } from "../types";
 import { pressRowClasses, pressTextClasses } from "./press-style";
 
 // A row's small link, raised above the label that stretches over the row.
@@ -29,15 +30,17 @@ interface TickItemProps {
   ticked: boolean;
   /** The quieter second line. */
   detail: string;
-  /** A tag before it ("One-way" for the guide's way at a choice). */
-  tag?: string;
+  /** A tag before it: a category or core tag ("One-way" for the guide's way at a choice), or words in a tone ("Back in Blighttown"). */
+  tag?: string | { text: string; tone: Tone | "none" };
+  /** An action beside Jump to (Later, Back on route). */
+  action?: ReactNode;
   /** The Jump to link's accessible name. */
   jumpLabel: string;
   onToggle: () => void;
 }
 
 /** One step in a short list (Next up, Don't miss): its box, its title over a quieter line, and a link to the step in its chapter. */
-export function TickItem({ row, prefix, ticked, detail, tag, jumpLabel, onToggle }: TickItemProps) {
+export function TickItem({ row, prefix, ticked, detail, tag, action, jumpLabel, onToggle }: TickItemProps) {
   const id = `${prefix}-${row.id}`;
   return (
     <li className="relative grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 border-t border-line-soft py-2.5 first:border-t-0 phone:gap-2.5">
@@ -46,18 +49,32 @@ export function TickItem({ row, prefix, ticked, detail, tag, jumpLabel, onToggle
       <label id={`${id}-label`} className={`${pressRowClasses} grid cursor-pointer gap-0.5 leading-[1.3] after:absolute after:inset-0`} htmlFor={id}>
         <strong className={ticked ? "text-15 text-muted line-through decoration-1" : "text-15"}>{row.title}</strong>
         {tag ? (
-          // The tag beside its line, as a questline's step lays out a missable's: wrapped words stay clear of it.
-          <small className="flex items-start gap-2 text-12 text-muted">
-            <Tag tag={tag} />
-            <span className="pt-0.5">{detail}</span>
+          // The tag beside its line, as a questline's step lays out a missable's: wrapped words stay clear of it. With too little room
+          // beside a long tag ("Back in the City of Tears"), the words go under it instead of into a narrow column.
+          <small className="flex flex-wrap items-start gap-x-2 gap-y-1 text-12 text-muted">
+            {typeof tag === "string" ? <Tag tag={tag} /> : <Tag tag="" tone={tag.tone}>{tag.text}</Tag>}
+            <span className="min-w-0 grow basis-44 pt-0.5">{detail}</span>
           </small>
         ) : (
           <small className="text-12 text-muted">{detail}</small>
         )}
       </label>
-      <Link className={rowLinkClasses} to={`/guide/${row.chapter}/${row.id}`} aria-label={jumpLabel}>
-        Jump to
-      </Link>
+      {action ? (
+        <span className="relative z-1 flex items-center gap-4 phone:gap-3">
+          {action}
+          <JumpTo row={row} label={jumpLabel} />
+        </span>
+      ) : (
+        <JumpTo row={row} label={jumpLabel} />
+      )}
     </li>
+  );
+}
+
+function JumpTo({ row, label }: { row: Row; label: string }) {
+  return (
+    <Link className={rowLinkClasses} to={`/guide/${row.chapter}/${row.id}`} aria-label={label}>
+      Jump to
+    </Link>
   );
 }

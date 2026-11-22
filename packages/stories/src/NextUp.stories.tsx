@@ -41,6 +41,16 @@ export const Holding: Story = {
   },
 };
 
+/** A step set aside: it leaves the steps, and the count under them opens it, with when it comes back and Back on route. */
+export const SetAside: Story = {
+  parameters: { save: { later: { [allRows[0].id]: allRows[0].id } } },
+  play: async ({ canvas }) => {
+    const panel = canvas.getByRole("region", { name: "Next up" });
+    await userEvent.click(within(panel).getByRole("button", { name: /1 set aside/ }));
+    await expect(within(panel).getByRole("button", { name: `Back on route: ${allRows[0].title}` })).toBeVisible();
+  },
+};
+
 /** Every step ticked, every chapter shown: the list's empty note. */
 export const AllDone: Story = {
   parameters: { save: { spoilers: false, checks: Object.fromEntries(allRows.map((row) => [row.id, true as const])) } },

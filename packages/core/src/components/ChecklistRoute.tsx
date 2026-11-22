@@ -3,6 +3,7 @@ import { RouteGroup } from "./RouteGroup";
 import { Select } from "./Select";
 import { Button, ChipGroup, Empty } from "./ui";
 import { chapterRows, config, hasChoices, hasMissables, statusOptions } from "../guide";
+import { inStatus } from "../flow";
 import { useProgress } from "../store/progress";
 import { useUi } from "../store/ui";
 import { isFilter, isStatus, useKept } from "../store/place";
@@ -13,6 +14,7 @@ const routeChips: [string, string][] = [["all", "All steps"], ...(config.chips.r
 /** The chapter as collapsible route groups with category chips and a status filter. Re-mounted per target, so filters reset there. */
 export function ChecklistRoute({ chapter, target, footer }: { chapter: Chapter; target?: string; footer: ReactNode }) {
   const checks = useProgress((s) => s.data.checks);
+  const later = useProgress((s) => s.data.later);
   const openGroups = useUi((s) => s.openGroups);
   const setGroupsOpen = useUi((s) => s.setGroupsOpen);
   // Kept while the guide is open, for a reader coming back to the chapter; an address that points at an entry starts afresh, so it shows.
@@ -26,7 +28,7 @@ export function ChecklistRoute({ chapter, target, footer }: { chapter: Chapter; 
     .map((group) => ({
       ...group,
       shown: group.rows.filter(
-        (row) => (filter === "all" || row.tags.includes(filter)) && (status === "all" || (status === "done") === (checks[row.id] === true)),
+        (row) => (filter === "all" || row.tags.includes(filter)) && inStatus(status, row, { checks, later }),
       ),
     }))
     .filter((group) => group.shown.length);

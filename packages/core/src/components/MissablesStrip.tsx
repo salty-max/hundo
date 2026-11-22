@@ -2,6 +2,7 @@ import { Collapsible } from "@base-ui/react/collapsible";
 import { cva } from "class-variance-authority";
 import type { ReactNode } from "react";
 import { Icon } from "./Icon";
+import { LaterAction } from "./Later";
 import { TickItem } from "./TickItem";
 import { choiceOf, config, hasChoices, hasMissables, missablesLeft, missableWhy } from "../guide";
 import { useHeldRows } from "../useHeldRows";
@@ -56,6 +57,7 @@ function MissablesList({ chapter, empty }: { chapter: Chapter; /** What shows wh
               ticked={checks[row.id] === true}
               detail={missableWhy(row.id) ?? row.group}
               tag={choiceOf(row.id) ? "one-way" : undefined}
+              action={checks[row.id] === true ? undefined : <LaterAction row={row} />}
               jumpLabel={`Jump to “${row.title}”`}
               onToggle={hold}
             />

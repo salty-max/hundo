@@ -19,6 +19,19 @@ export interface RowExtra {
   reference?: string;
   /** Only when it differs from the group's map (data.test.ts refuses a repeat). */
   map?: MapLink;
+  /**
+   * What the row needs before it can be done, as rows: an ability, a key, an item. Every entry is needed; an entry that is a list is met
+   * by any one of its rows (`[["key-basement", "key-master"]]`: either key). Until they're ticked the row waits: Next up doesn't offer it,
+   * and the row says what it needs.
+   */
+  requires?: (string | string[])[];
+  /** What the row gives, as a row that requires it names it ("Monarch Wings"). Without it, the row's title stands in. */
+  gives?: string;
+  /**
+   * Where the row is done, when that isn't its group's `location` (a shop in another area). A row set aside for later comes back the next
+   * time the route reaches this place.
+   */
+  place?: string;
 }
 
 /** [id, tags (the first one is the primary label), title, text, extra] */
@@ -60,6 +73,12 @@ export interface Row {
   quantity: number;
   reference?: string;
   map?: MapLink;
+  /** What it needs, each entry a list of rows any one of which will do (`RowExtra.requires`); empty for most rows. */
+  requires: string[][];
+  /** What it gives, as a requirement names it (`RowExtra.gives`). */
+  gives?: string;
+  /** Where it's done: its own `place`, else its group's `location`. */
+  place?: string;
 }
 
 export interface Group {
@@ -309,6 +328,23 @@ export interface ProgressState {
   spoilers: boolean;
   chapter: number;
   extra: Extra;
+  /**
+   * Rows the reader set aside for later, each with the row they had reached then (the furthest ticked row in route order, or the row
+   * itself when that is further), which decides when it comes back. A row is in it only while unticked. Optional: an older save has none.
+   */
+  later?: Later;
+}
+
+/** A set-aside row's id → the row the reader had reached when they set it aside. */
+export type Later = Record<string, string>;
+
+/**
+ * A bundled row split into rows of its own. `from` is retired for good: never a row again. A save, a backup or another device that has
+ * it ticked (or set aside) has every one of `into` ticked (or set aside) instead.
+ */
+export interface Split {
+  from: string;
+  into: string[];
 }
 
 /** A chapter banner: the original, and in a build the smaller copies beside it as a `srcset` (banners.ts). */
@@ -469,6 +505,8 @@ export interface GuideConfig {
   banners: Record<number, Banner>;
   /** Rows "Next up" holds back until nothing else is left in the revealed chapters. */
   defer?: (row: Row) => boolean;
+  /** Bundled rows split into rows of their own, so a reader's tick on the old row ticks every part (`data/splits.ts`). */
+  splits?: Split[];
   completion: Completion;
   state: {
     /** Reads a backup saved before the shared format; returns its extra fields, or null if it is not one. */

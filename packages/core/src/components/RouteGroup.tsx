@@ -7,6 +7,7 @@ import { BuildLines } from "./BuildMark";
 import { BulkCheck } from "./BulkCheck";
 import { CheckBox } from "./CheckBox";
 import { ChoiceBlock, ChoiceChip } from "./ChoiceBlock";
+import { AsideMark, NeedsLine } from "./Later";
 import { LineChips } from "./LineChip";
 import { MapLink } from "./MapLink";
 import { rowLinkClasses } from "./TickItem";
@@ -61,6 +62,8 @@ export const RouteRow = memo(function RouteRow({ row, prefix, highlighted, origi
           {row.title}
         </label>
         {row.text && <p className="mt-1 text-15/[1.6] text-muted">{row.text}</p>}
+        <NeedsLine row={row} at="column" />
+        <AsideMark row={row} at="column" />
         <BuildLines row={row} at="column" />
       </div>
       {/* On a phone a long tag wraps under the next instead of pushing the row wider. */}

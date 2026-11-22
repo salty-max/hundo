@@ -5,6 +5,7 @@ import { Link, useLocation, useParams } from "react-router";
 import { CheckBox } from "../components/CheckBox";
 import { Contents } from "../components/Contents";
 import { Icon } from "../components/Icon";
+import { AsideMark } from "../components/Later";
 import { rowLinkClasses } from "../components/TickItem";
 import { toneClasses } from "../components/tone";
 import { pressClasses, pressRowClasses } from "../components/press-style";
@@ -245,6 +246,7 @@ function Step({ line, row, prefix, next = false, label }: StepProps) {
             <span>{why}</span>
           </p>
         )}
+        <AsideMark row={row} at="column" />
       </div>
       {/* Its name starts with what it shows ("Ch 05"), so a reader who says what they see reaches it. */}
       <Link className={rowLinkClasses} to={`/guide/${row.chapter}/${row.id}`}>

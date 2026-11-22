@@ -1,7 +1,11 @@
 // @vitest-environment node
 import { panels } from "virtual:guide/panels";
-import { allRows, brand, byId, cats, chapterRows, chapters, CHAPTER_COUNT, completion, addons, backs, buildKinds, buildOf, buildPlan, config, guideAnchor, namedBuilds, notesFor, pickRoles, picksFor, readsNotes, tasksFor, warningsFor, hasMissables, isCategory, leanings, missablesLeft, nextUp, readChapter, rowsByTag, tally, weaponTrack, whatsLeft } from "./guide";
+import { allRows, brand, byId, cats, chapterRows, chapters, CHAPTER_COUNT, completion, addons, backs, buildKinds, buildOf, buildPlan, config, guideAnchor, namedBuilds, notesFor, pickRoles, picksFor, readsNotes, tasksFor, warningsFor, hasMissables, isCategory, isRetired, leanings, missablesLeft, partsOf, readChapter, rowsByTag, tally, weaponTrack, whatsLeft } from "./guide";
+import liveIds from "virtual:guide/data/live-ids.txt?raw";
+import { nextUp } from "./flow";
+import { validateState } from "./progress-state";
 import { readerText } from "./reader-text";
+import { viewFrom } from "./sync/fields";
 import type { Row } from "./types";
 
 const everything = Object.fromEntries(allRows.map((row) => [row.id, true as const]));
@@ -452,10 +456,12 @@ describe("guide data", () => {
 
 describe("nextUp", () => {
   const open = (n: number) => n <= 2;
+  const steps = (checks: Record<string, true>, isOpen: (n: number) => boolean, from: number, count: number) =>
+    nextUp({ checks }, isOpen, from, count).items.map((item) => item.row);
 
   it("starts at the given chapter in guide order and skips checked steps", () => {
-    const [first, second] = chapterRows(chapters[0]).filter((row) => !config.defer?.(row));
-    const rows = nextUp({ [first.id]: true }, open, 1, 3);
+    const [first, second] = chapterRows(chapters[0]).filter((row) => !config.defer?.(row) && row.requires.length === 0);
+    const rows = steps({ [first.id]: true }, open, 1, 3);
     expect(rows).toHaveLength(3);
     expect(rows[0].id).toBe(second.id);
     expect(rows.every((row) => row.chapter <= 2)).toBe(true);
@@ -463,21 +469,85 @@ describe("nextUp", () => {
 
   it("never reaches into hidden chapters", () => {
     const openIds = Object.fromEntries(allRows.filter((row) => row.chapter <= 2).map((row) => [row.id, true as const]));
-    expect(nextUp(openIds, open, 1, 3)).toEqual([]);
+    expect(steps(openIds, open, 1, 3)).toEqual([]);
   });
 
   it("wraps round to earlier chapters", () => {
     const later = Object.fromEntries(allRows.filter((row) => row.chapter === 2).map((row) => [row.id, true as const]));
-    expect(nextUp(later, open, 2, 1)[0].chapter).toBe(1);
+    expect(steps(later, open, 2, 1)[0].chapter).toBe(1);
   });
 
   it("holds deferred rows back until nothing else is left", () => {
     const all = () => true;
-    expect(nextUp({}, all, 1, 50).some((row) => config.defer?.(row))).toBe(false);
+    expect(steps({}, all, 1, 50).some((row) => config.defer?.(row))).toBe(false);
     const deferred = allRows.filter((row) => config.defer?.(row));
     if (!deferred.length) return;
     const rest = Object.fromEntries(allRows.filter((row) => !config.defer?.(row)).map((row) => [row.id, true as const]));
-    expect(nextUp(rest, all, 1, 3).every((row) => config.defer?.(row))).toBe(true);
+    expect(steps(rest, all, 1, 3).every((row) => config.defer?.(row))).toBe(true);
+  });
+});
+
+describe("the guide's flow", () => {
+  const real = (id: string) => byId.has(id);
+
+  it("names real rows in every requirement, never the row itself or a retired id, and no requirement loops back", () => {
+    for (const row of allRows) {
+      for (const any of row.requires) {
+        expect(any.length, `${row.id}: an empty requirement`).toBeGreaterThan(0);
+        for (const id of any) {
+          expect(real(id), `${row.id} requires ${id}, no row`).toBe(true);
+          expect(id, `${row.id} requires itself`).not.toBe(row.id);
+        }
+      }
+    }
+    // No cycle: following requirements from any row never comes back to it.
+    const reaches = (from: string, seen = new Set<string>()): boolean =>
+      (byId.get(from)?.requires.flat() ?? []).some((id) => !seen.has(id) && (seen.add(id), id === from || reaches(id, seen)));
+    for (const row of allRows) if (row.requires.length) expect(reaches(row.id), `${row.id} requires itself through others`).toBe(false);
+  });
+
+  it("gives a place and what a row gives as words, when it has them", () => {
+    for (const [, , , , extra] of config.chapters.flatMap((chapter) => chapter.groups.flatMap((group) => group.rows))) {
+      if (extra?.place !== undefined) expect(extra.place.trim().length).toBeGreaterThan(0);
+      if (extra?.gives !== undefined) expect(extra.gives.trim().length).toBeGreaterThan(0);
+    }
+  });
+
+  it("retires every split bundle for good: never a row, in one split, every part a row or another split, no loops", () => {
+    const splits = config.splits ?? [];
+    const froms = splits.map((split) => split.from);
+    expect(new Set(froms).size, "a bundle split twice").toBe(froms.length);
+    for (const { from, into } of splits) {
+      expect(real(from), `${from} is split but is still a row`).toBe(false);
+      expect(into.length, `${from} splits into nothing`).toBeGreaterThan(0);
+      for (const part of into) expect(real(part) || froms.includes(part), `${from} splits into ${part}, no row`).toBe(true);
+      expect(partsOf(from).every(real), `${from} doesn't end in rows`).toBe(true);
+    }
+  });
+
+  it("lists every row that has ever shipped in data/live-ids.txt, and keeps every line a row or a retired bundle", () => {
+    // A rename or a dropped row comes back unticked for every reader: a line can go only through a split (data/splits.ts), which
+    // ticks its parts. A line added on a branch that never reached main may simply be deleted.
+    const lines = liveIds.split("\n").map((line) => line.trim()).filter(Boolean);
+    const listed = new Set(lines);
+    const missing = allRows.map((row) => row.id).filter((id) => !listed.has(id));
+    expect(missing, `add these lines to data/live-ids.txt:\n${missing.join("\n")}\n`).toEqual([]);
+    const gone = lines.filter((id) => !real(id) && !isRetired(id));
+    expect(gone, `rows that shipped and are gone; split them (data/splits.ts) instead:\n${gone.join("\n")}\n`).toEqual([]);
+    expect([...lines].sort(), "data/live-ids.txt is sorted, one id a line").toEqual(lines);
+  });
+
+  it("loses no tick: everything that ever shipped, ticked or set aside, loads, imports and syncs as every row", () => {
+    const lines = liveIds.split("\n").map((line) => line.trim()).filter(Boolean);
+    const rows = allRows.map((row) => row.id).sort();
+    const saved = { version: 3, guide: brand.id, checks: Object.fromEntries(lines.map((id) => [id, true])), ceiling: 1, spoilers: true, chapter: 1 };
+    expect(Object.keys(validateState(saved).checks).sort()).toEqual(rows);
+    const synced = viewFrom(Object.fromEntries(lines.map((id) => [`c:${id}`, [1, 1] as const])), validateState({ ...saved, checks: {} }));
+    expect(Object.keys(synced.checks).sort()).toEqual(rows);
+    const aside = validateState({ ...saved, checks: {}, later: Object.fromEntries(lines.map((id) => [id, id])) });
+    expect(Object.keys(aside.later ?? {}).sort()).toEqual(rows);
+    const asideSynced = viewFrom(Object.fromEntries(lines.map((id) => [`l:${id}`, [1, id] as const])), validateState({ ...saved, checks: {} }));
+    expect(Object.keys(asideSynced.later ?? {}).sort()).toEqual(rows);
   });
 });
 

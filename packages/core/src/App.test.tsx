@@ -40,7 +40,7 @@ describe("App", () => {
     await screen.findByRole("heading", { level: 1, name: first.title });
     const box = within(document.getElementById(`entry-${firstRow.id}`)!).getByRole("checkbox");
     // Another tab of the guide, on a newer build, saves: a higher version, a field, a tick on a row this build doesn't have, an extra key.
-    const newer = { ...defaultState(), version: 4, checks: { "row-from-a-newer-build": true }, later: { "row-from-a-newer-build": firstRow.id }, extra: { ...(defaultState().extra ?? {}), addedByANewerBuild: 7 } };
+    const newer = { ...defaultState(), version: 4, checks: { "row-from-a-newer-build": true }, notes: { "row-from-a-newer-build": firstRow.id }, extra: { ...(defaultState().extra ?? {}), addedByANewerBuild: 7 } };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newer));
     act(() => window.dispatchEvent(new StorageEvent("storage", { key: STORAGE_KEY, newValue: localStorage.getItem(STORAGE_KEY) })));
     expect(useProgress.getState().storageError).toBe(false);

@@ -8,6 +8,7 @@ import { ActiveFilter, Button, Callout, ChipGroup, Empty, HeadedPage } from "../
 import { allRows, CHAPTER_COUNT, cats, chapters, config, hasChoices, hasMissables, isCategory, readChapter, statusOptions, tagName, text } from "../guide";
 import { two } from "../format";
 import { useLoadable, whenIdle } from "../loadable";
+import { inStatus } from "../flow";
 import { isOpen, useProgress } from "../store/progress";
 import { isChapterFilter, isFilter, isStatus, isText, useKept, useShowing } from "../store/place";
 import { isPhone, usePhone } from "../useNarrow";
@@ -74,7 +75,7 @@ function ChecklistView() {
     (row) =>
       (filter === "all" || row.tags.includes(filter)) &&
       (effectiveChapter === "all" || row.chapter === Number(effectiveChapter)) &&
-      (status === "all" || (status === "done") === (data.checks[row.id] === true)) &&
+      inStatus(status, row, data) &&
       (!needle ||
         [row.title, row.text, row.location ?? "", row.group, ...row.tags.map(tagName)]
           .join(" ")
