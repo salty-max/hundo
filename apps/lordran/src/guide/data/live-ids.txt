@@ -165,6 +165,7 @@ pickup-iaito
 pickup-knight-shield
 pickup-light-crossbow
 pickup-lightning-spear
+pickup-mail-breaker
 pickup-morning-star
 pickup-mystery-key
 pickup-occult-club
@@ -172,12 +173,18 @@ pickup-painted-annex
 pickup-painted-tower
 pickup-red-sign-soapstone
 pickup-residence-key
+pickup-sack
 pickup-sens-scavenger
+pickup-sewer-chamber-key
 pickup-shadow-set
 pickup-shotel
+pickup-sorcerer-set
+pickup-sorcerers-catalyst
 pickup-spider-shield
 pickup-talisman
+pickup-target-shield
 pickup-thief-gear
+pickup-warrior-set
 pickup-winged-spear
 pickup-wooden-shield
 pickup-zweihander
