@@ -7,7 +7,8 @@ import { Rail } from "./Rail";
 import { TopBar } from "./TopBar";
 import { ToastHost } from "./ToastHost";
 import { TooltipHost } from "./TooltipHost";
-import { guideAnchor, readChapter } from "../guide";
+import { WhoSaysHost } from "./WhoSaysHost";
+import { guideAnchor, hasBuilds, readChapter } from "../guide";
 import { lineById } from "../questlines";
 import { isDashboardSection } from "../dashboard";
 import { useLoadable, whenIdle } from "../loadable";
@@ -192,6 +193,7 @@ export function Layout({ children }: { children: ReactNode }) {
       <DialogHost />
       <ToastHost />
       <TooltipHost />
+      {hasBuilds && <WhoSaysHost />}
       <div id="status" className="sr-only" role="status">
         {announcement}
       </div>

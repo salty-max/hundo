@@ -14,7 +14,7 @@ import chapter10 from "./data/chapter-10";
 import chapter11 from "./data/chapter-11";
 import chapter12 from "./data/chapter-12";
 import chapter13 from "./data/chapter-13";
-import { named, picks, tasks } from "./data/build-plan";
+import { named, notes, picks, tasks } from "./data/build-plan";
 import { choices } from "./data/choices";
 import { missables } from "./data/missables";
 import { questlines } from "./data/questlines";
@@ -119,6 +119,7 @@ const config: GuideConfig = {
     named,
     picks,
     tasks,
+    notes,
   },
   banners,
   completion: { board: targets, directions: ["route"] },

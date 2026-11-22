@@ -1,7 +1,7 @@
 import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { App } from "./App";
-import { addons, allRows, buildName, buildOf, byId, chapters, config, hasBuilds, leanings, namedBuilds, needsText, pickRoles, picksFor, stepNumber, tasksFor } from "./guide";
+import { addons, allRows, buildName, buildOf, byId, chapters, config, hasBuilds, inWords, leanings, namedBuilds, picksFor, readsNotes, tasksFor, whoSays } from "./guide";
 import { defaultState } from "./progress-state";
 import { BUILD_ASKED_KEY, BUILD_KEY, normalizeBuild, useBuild } from "./store/build";
 import { forgetPlaces } from "./store/place";
@@ -47,8 +47,18 @@ describe.runIf(!hasBuilds)("a guide without builds", () => {
 
 describe.runIf(hasBuilds)("a guide with builds", () => {
   // (the suite's body runs in every guide, skipped or not, so nothing here reads builds a guide may not have)
-  const task = config.builds?.tasks?.[0];
-  const pick = config.builds?.picks?.[0];
+  // A note for a named build that reads notes, with a pick under it (so a Who says so), and that build.
+  const noted = (config.builds?.notes ?? []).flatMap((note) => {
+    const build = namedBuilds.find((item) => note.for.includes(item.id) && readsNotes(item.stats));
+    return build ? [{ note, build }] : [];
+  });
+  const backed = noted.find(({ note, build }) => whoSays(note, build.stats).length > 0);
+  // A step, and a pick that reads it as a step: its leaning alone, or with another into a custom pick, whichever reads steps.
+  const stepped = (config.builds?.tasks ?? []).flatMap((task) => {
+    const picks = [[task.serves[0]], ...leanings.map((item) => [task.serves[0], item.id])].filter((ids) => new Set(ids).size === ids.length);
+    const picked = picks.find((ids) => !readsNotes(ids));
+    return picked ? [{ task, picked }] : [];
+  })[0];
   const reveal = (chapter: number) => useProgress.setState({ data: { ...defaultState(), ceiling: chapter, chapter } });
 
   it("keeps the pick under its key in the guide's order, drops what it doesn't name, keeps a leaning a later build added, and is asked once it's set", () => {
@@ -198,48 +208,52 @@ describe.runIf(hasBuilds)("a guide with builds", () => {
     expect(within(dialog).queryByRole("button", { name: "Clear build" })).toBeNull();
   });
 
-  it("shows a row's step, numbered, and its picks with who recommends them, for the pick only", async () => {
-    if (!task) return;
+  it("shows a row's note for the build, led by its name, under the row's words, for the pick only", async () => {
+    if (!backed) return;
+    const { note, build } = backed;
+    const row = byId.get(note.row)!;
+    reveal(row.chapter);
+    await open(`/guide/${row.chapter}`);
+    const step = document.getElementById(`entry-${row.id}`)!;
+    expect(within(step).queryByText(escape(note.text))).toBeNull();
+    act(() => useBuild.getState().setPicked(build.stats));
+    expect(await within(step).findByText(escape(note.text))).toBeInTheDocument();
+    expect(step).toHaveTextContent(`For your ${build.name}: ${note.text}`);
+    // No tag beside the title and no step numbers: the note is the build's only line.
+    expect(step).not.toHaveTextContent("For your build:");
+    expect(step.textContent).not.toMatch(/Step \d/);
+  });
+
+  it("names who recommends a note's picks behind its Who says so, never linking them", async () => {
+    if (!backed) return;
+    const { note, build } = backed;
+    const row = byId.get(note.row)!;
+    reveal(row.chapter);
+    act(() => useBuild.getState().setPicked(build.stats));
+    const user = userEvent.setup();
+    await open(`/guide/${row.chapter}`);
+    const step = document.getElementById(`entry-${row.id}`)!;
+    await user.click(within(step).getByRole("button", { name: `Who says so, for your ${build.name}, on “${row.title}”` }));
+    const popup = await screen.findByRole("dialog", { name: "Who says so" });
+    for (const { item, by } of whoSays(note, build.stats)) expect(popup).toHaveTextContent(`${item}: recommended by ${inWords(by)}.`);
+    for (const pick of picksFor(row.id, build.stats)) for (const [, url] of pick.guides) expect(popup.querySelector(`a[href="${url}"]`)).toBeNull();
+    await user.keyboard("{Escape}");
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Who says so" })).toBeNull());
+  });
+
+  it("shows a pick that reads steps each step serving it, with its title, for the pick only", async () => {
+    if (!stepped) return;
+    const { task, picked } = stepped;
     const row = byId.get(task.row)!;
     reveal(row.chapter);
     await open(`/guide/${row.chapter}`);
     const step = document.getElementById(`entry-${row.id}`)!;
     expect(within(step).queryByText(escape(task.text))).toBeNull();
-    act(() => useBuild.getState().setPicked([task.serves[0]]));
+    act(() => useBuild.getState().setPicked(picked));
     expect(await within(step).findByText(escape(task.text))).toBeInTheDocument();
     expect(within(step).getByText(`${task.title}.`)).toBeInTheDocument();
-    expect(step).toHaveTextContent(`Step ${stepNumber(task, [task.serves[0]])} for your build:`);
-    // The tag names the build.
-    expect(step).toHaveTextContent(`For your build: ${buildName([task.serves[0]])}`);
-    for (const item of picksFor(row.id, [task.serves[0]])) expect(step).toHaveTextContent(item.item);
-  });
-
-  it("names a pick's guides, never links them, and only for the named builds it's for", async () => {
-    if (!pick) return;
-    const row = byId.get(pick.row)!;
-    const build = namedBuilds.concat(addons).find((item) => pick.for.includes(item.id))!;
-    reveal(row.chapter);
-    act(() => useBuild.getState().setPicked(build.stats));
-    await open(`/guide/${row.chapter}`);
-    const step = document.getElementById(`entry-${row.id}`)!;
-    expect(step).toHaveTextContent(`build guides use ${pick.item}`);
-    for (const [name, url] of pick.guides) {
-      expect(step).toHaveTextContent(name);
-      expect(step.querySelector(`a[href="${url}"]`)).toBeNull();
-    }
-  });
-
-  it("says each pick's role, Core where guides keep it, and what it needs", async () => {
-    const shown = (config.builds?.picks ?? []).find((item) => item.core && item.needs) ?? pick;
-    if (!shown) return;
-    const row = byId.get(shown.row)!;
-    const build = namedBuilds.concat(addons).find((item) => shown.for.includes(item.id))!;
-    reveal(row.chapter);
-    act(() => useBuild.getState().setPicked(build.stats));
-    await open(`/guide/${row.chapter}`);
-    const step = document.getElementById(`entry-${row.id}`)!;
-    expect(step).toHaveTextContent(`${pickRoles[shown.role]}, ${shown.core ? "Core, " : ""}build guides use ${shown.item}`);
-    if (needsText(shown)) expect(step).toHaveTextContent(needsText(shown));
+    expect(step).toHaveTextContent(`For your ${buildName(picked)}: `);
+    for (const other of tasksFor(row.id, picked)) expect(step).toHaveTextContent(other.text);
   });
 
   it("says on each build's card how guides start it", async () => {
@@ -255,30 +269,51 @@ describe.runIf(hasBuilds)("a guide with builds", () => {
     }
   });
 
-  it("draws the build's weapon track on the Progress page: its start, then stages from the revealed chapters only", async () => {
-    const build = namedBuilds.find((item) => item.start?.weapon);
+  it("shows a build with notes beside an add-on without them its leanings' steps, led by the pick's whole name", async () => {
+    const noted = new Set((config.builds?.notes ?? []).flatMap((note) => note.for));
+    const pair = addons
+      .filter((addon) => !noted.has(addon.id))
+      .flatMap((addon) => namedBuilds.filter((build) => noted.has(build.id) && !addon.stats.some((stat) => build.stats.includes(stat))).map((build) => [...build.stats, ...addon.stats]))[0];
+    const task = pair && (config.builds?.tasks ?? []).find((item) => item.serves.some((id) => pair.includes(id)));
+    if (!pair || !task) return;
+    const row = byId.get(task.row)!;
+    reveal(row.chapter);
+    act(() => useBuild.getState().setPicked(pair));
+    await open(`/guide/${row.chapter}`);
+    const step = document.getElementById(`entry-${row.id}`)!;
+    expect(await within(step).findByText(`${task.title}.`)).toBeInTheDocument();
+    expect(step).toHaveTextContent(`For your ${buildName(pair)}: `);
+  });
+
+  it("draws the build's weapon track on the Progress page: its start, then its notes' stages from the revealed chapters only", async () => {
+    const build = namedBuilds.find((item) => item.start?.weapon && readsNotes(item.stats));
     if (!build) return;
     reveal(1);
     act(() => useBuild.getState().setPicked(build.stats));
     await open("/dashboard", "Your progress");
     const track = screen.getByRole("region", { name: "Main weapon" });
     expect(within(track).getByText(build.start!.weapon!)).toBeInTheDocument();
+    expect(track).toHaveTextContent(`Starting as ${build.start!.class}.`);
+    const first = (config.builds?.notes ?? []).find((note) => note.stage && note.for.includes(build.id) && byId.get(note.row)!.chapter === 1);
+    if (first) expect(within(track).getByRole("link", { name: first.stage })).toHaveAttribute("href", `/guide/1/${first.row}`);
     for (const link of within(track).queryAllByRole("link")) expect(link.getAttribute("href")).toMatch(/^\/guide\/1\//);
     expect(within(track).getByText("More shows as you reveal chapters.")).toBeInTheDocument();
   });
 
-  it("lays the build out chapter by chapter on the Progress page, revealed chapters only, ticked in place", async () => {
-    if (!task) return;
-    const row = byId.get(task.row)!;
+  it("lays the build out chapter by chapter on the Progress page, revealed chapters only, each row with its note, ticked in place", async () => {
+    const first = noted[0];
+    if (!first) return;
+    const { note, build } = first;
+    const row = byId.get(note.row)!;
     reveal(row.chapter);
-    act(() => useBuild.getState().setPicked([task.serves[0]]));
+    act(() => useBuild.getState().setPicked(build.stats));
     const user = userEvent.setup();
     await open("/dashboard", "Your progress");
-    const panel = screen.getByRole("region", { name: `Your build: ${buildName([task.serves[0]])}` });
+    const panel = screen.getByRole("region", { name: `Your build: ${build.name}` });
     expect(within(panel).getByRole("button", { name: new RegExp(`Chapter ${String(row.chapter).padStart(2, "0")}`) })).toBeInTheDocument();
     for (const later of chapters.filter((chapter) => chapter.id > row.chapter)) expect(within(panel).queryByText(escape(later.title))).toBeNull();
     const box = within(panel).getByRole("checkbox", { name: escape(row.title) });
-    expect(within(panel).getByText(escape(task.text))).toBeInTheDocument();
+    expect(within(panel).getByText(escape(note.text))).toBeInTheDocument();
     await user.click(box);
     expect(useProgress.getState().data.checks[row.id]).toBe(true);
     expect(box).toBeChecked();

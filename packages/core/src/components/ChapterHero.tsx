@@ -53,7 +53,7 @@ export function ChapterHero({ chapter, banner, children }: { chapter: Chapter; b
             <span>{chapter.region}</span>
           </div>
           <h1 className="mb-2.5 font-display text-[clamp(2.125rem,6cqi,3.875rem)] leading-[1.02] font-bold tracking-[-0.02em] phone:mb-1.5">{chapter.title}</h1>
-          <p className="max-w-112.5 text-15 leading-[1.6] phone:hidden">{chapter.intro}</p>
+          <p className="max-w-112.5 text-15/[1.6] phone:hidden">{chapter.intro}</p>
           {/* On a phone the buttons keep narrower sides: Button reads the variable. */}
           <div className="mt-4 flex flex-wrap gap-2 phone:mt-2.5 phone:[--button-px:0.625rem]">{children}</div>
         </div>

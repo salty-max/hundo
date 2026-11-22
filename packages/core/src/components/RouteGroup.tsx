@@ -3,7 +3,7 @@ import { cva } from "class-variance-authority";
 import { memo, useState } from "react";
 import { Link } from "react-router";
 import { Icon } from "./Icon";
-import { BuildBadge, BuildNote } from "./BuildMark";
+import { BuildLines } from "./BuildMark";
 import { BulkCheck } from "./BulkCheck";
 import { CheckBox } from "./CheckBox";
 import { ChoiceBlock, ChoiceChip } from "./ChoiceBlock";
@@ -60,8 +60,8 @@ export const RouteRow = memo(function RouteRow({ row, prefix, highlighted, origi
         >
           {row.title}
         </label>
-        {row.text && <p className="mt-1 text-15 leading-[1.6] text-muted">{row.text}</p>}
-        <BuildNote row={row} at="column" />
+        {row.text && <p className="mt-1 text-15/[1.6] text-muted">{row.text}</p>}
+        <BuildLines row={row} at="column" />
       </div>
       {/* On a phone a long tag wraps under the next instead of pushing the row wider. */}
       <div className="flex flex-col items-end gap-1 leading-[1.1]">
@@ -72,7 +72,6 @@ export const RouteRow = memo(function RouteRow({ row, prefix, highlighted, origi
         {row.quantity > 0 && <Quantity row={row} at="column" />}
         {row.tags.includes("missable") && <Tag tag="missable" at="column" />}
         {!inChoice && row.tags.includes("one-way") && <Tag tag="one-way" at="column" />}
-        <BuildBadge row={row} at="column" />
         {origin ? (
           <Link className={rowLinkClasses} to={`/guide/${row.chapter}/${row.id}`} aria-label={`Open “${row.title}” in chapter ${row.chapter}`}>
             Chapter {row.chapter}
