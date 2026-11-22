@@ -12,6 +12,6 @@ export default defineConfig({
   server: { proxy },
   preview: { proxy },
   build: { rollupOptions: { input: { index: "index.html", notFound: "404.html" } } },
-  // A suite's beforeAll makes the whole page from every guide's files (plugin.ts's make), as slow as any test here.
-  test: { globals: true, environment: "node", include: ["src/**/*.test.{ts,tsx}"], testTimeout: 60_000, hookTimeout: 60_000 },
+  // One real build, shared across workers; suites do not repeat the expensive banner encodes in beforeAll.
+  test: { globals: true, environment: "node", globalSetup: ["src/test/setup.ts"], include: ["src/**/*.test.{ts,tsx}"], testTimeout: 60_000, hookTimeout: 60_000 },
 });
