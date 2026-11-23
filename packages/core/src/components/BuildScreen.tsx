@@ -1,27 +1,25 @@
 import { Collapsible } from "@base-ui/react/collapsible";
 import { Fieldset } from "@base-ui/react/fieldset";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CardRadioGroup, CheckboxGroup, Switch } from "./controls";
 import { DialogDescription, DialogFooter, DialogText } from "./dialog";
 import { Icon } from "./Icon";
 import { Button } from "./ui";
 import { addons, buildName, buildOf, leaningName, leanings, namedBuilds } from "../guide";
 import { normalizeBuild, useBuild } from "../store/build";
-import { useUi, type DialogState } from "../store/ui";
+import { useUi } from "../store/ui";
 import type { NamedBuild } from "../types";
-
-type Build = Extract<NonNullable<DialogState>, { kind: "build" }>;
 
 /** How guides start a build, for its card: "Starts as a Pyromancer, with the Hand Axe". */
 const startNote = ({ start }: NamedBuild) => start && `Starts as ${start.class}${start.weapon ? `, with the ${start.weapon}` : ""}`;
 
 /**
- * The reader's build: the builds readers know by name as cards, each saying how guides start it, the add-ons that go on top of one (Pyromancy beside a melee build), and
- * the stats themselves for a pick that is no named build. Nothing is kept until Save build; Clear build drops a saved one. Opened from the
- * strip under each chapter's banner and from the Progress page, and once as the welcome, on the first tick (actions.ts), whose Just the
- * checklist keeps no build.
+ * The reader's build, for the walkthrough's build advice: the builds readers know by name as cards, each saying how it plays and how guides
+ * start it, the add-ons that go on top of one (Pyromancy beside a melee build), and the stats themselves for a pick that is no named build.
+ * Nothing is kept until Save build; Clear build drops a saved one. Opened only when the reader asks: from the strip under each chapter's
+ * banner, from Settings and from the Progress page.
  */
-export function BuildScreen({ dialog }: { dialog: Build }) {
+export function BuildScreen() {
   const saved = useBuild((s) => s.picked);
   const setPicked = useBuild((s) => s.setPicked);
   const closeDialogThen = useUi((s) => s.closeDialogThen);
@@ -42,21 +40,16 @@ export function BuildScreen({ dialog }: { dialog: Build }) {
     const base = of?.build.stats ?? [];
     setPick(normalizeBuild((on ? [...pick, ...stats] : pick.filter((id) => !stats.includes(id) || base.includes(id))).join(" ")));
   };
-  // The welcome is asked once it shows: not when it was asked for, since a dialog whose chunk can't be fetched never shows (actions.ts).
-  useEffect(() => {
-    if (dialog.welcome) useBuild.getState().markAsked();
-  }, [dialog.welcome]);
   const finish = (next: string[]) => {
     setPicked(next);
-    closeDialogThen(() => announce(next.length ? `Your build: ${buildName(next)}.` : dialog.welcome ? "No build: just the checklist." : "Build cleared."));
+    closeDialogThen(() => announce(next.length ? `Build advice: ${buildName(next)}.` : "Build cleared."));
   };
 
   return (
     <>
       <DialogDescription>
-        {dialog.welcome
-          ? "Pick the build you’re playing, and the guide points out what build guides use for it and the steps to it: what to buy, where to upgrade, who to see before they leave."
-          : "Pick the build you play. The guide marks what build guides use for it and the steps to it, in the chapters you’ve revealed."}
+        Pick the build you’re playing, and the walkthrough adds advice for it at the steps where it matters: what to buy, what to upgrade, who
+        to see before they leave.
       </DialogDescription>
       <div className="grid gap-4">
         <CardRadioGroup
@@ -99,23 +92,17 @@ export function BuildScreen({ dialog }: { dialog: Build }) {
           </DialogText>
         )}
       </div>
-      {dialog.welcome && <DialogText small>It changes no count. Change it any time from the strip under each chapter’s banner.</DialogText>}
-      {/* Held at the foot of the dialog's scrolling body, so on a phone Just the checklist is one tap away under the cards. */}
+      {/* Held at the foot of the dialog's scrolling body, so on a phone Save build is one tap away under the cards. */}
       <div className="sticky -bottom-2 -mx-2 mt-2 border-t border-line bg-surface px-2 pb-2">
-        {/* The welcome's way out keeps no build. Changing a build has no button that reads like a way out: Close and Escape keep it as it
-            was, and Clear build, apart from Save, says what it does. */}
+        {/* No button reads like a way out: Close and Escape keep the build as it was, and Clear build, apart from Save, says what it does. */}
         <DialogFooter>
           <Button look="" disabled={pick.length === 0} focusableWhenDisabled onClick={() => finish(pick)}>
             Save build
           </Button>
-          {dialog.welcome ? (
-            <Button onClick={() => finish([])}>Just the checklist</Button>
-          ) : (
-            saved.length > 0 && (
-              <span className="ms-auto">
-                <Button onClick={() => finish([])}>Clear build</Button>
-              </span>
-            )
+          {saved.length > 0 && (
+            <span className="ms-auto">
+              <Button onClick={() => finish([])}>Clear build</Button>
+            </span>
           )}
         </DialogFooter>
       </div>

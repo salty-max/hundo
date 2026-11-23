@@ -58,19 +58,20 @@ const FX = (page: string) => `https://darksouls.wiki.fextralife.com/${page}`;
 
 export const named: NamedBuild[] = [
   // No start: only Fextralife's Random Build names a Quality class (facts-to-verify.md).
-  { id: "quality", name: "Quality", stats: ["str", "dex"], blurb: "Strength and Dexterity together: weapons that grow with both." },
+  { id: "quality", name: "Quality", stats: ["str", "dex"], blurb: "Melee with weapons that grow with Strength and Dexterity alike. No spells." },
   {
     id: "strength",
     name: "Pure Strength",
     stats: ["str"],
-    blurb: "Heavy weapons that hit hard and grow with Strength.",
+    blurb: "Big, slow weapons that hit hard, and heavy armor to take the hits back.",
     start: { class: "a Bandit or a Warrior", guides: [F("dark+souls+build"), F("Royal+Tank"), gamevoyagersBandit, gamevoyagersWarrior], sources: [W("bandit"), W("warrior")] },
+    branches: [{ id: "great-club", name: "The Great Club", why: "Grows more with your Strength than the Zweihander, if you’d rather swing it.", from: "ember-large" }],
   },
   {
     id: "dexterity",
     name: "Pure Dexterity",
     stats: ["dex"],
-    blurb: "Fast blades and katanas that grow with Dexterity, bleed among them.",
+    blurb: "Quicker blades and katanas, some that make enemies bleed. No spells.",
     start: {
       class: "a Wanderer",
       weapon: "Scimitar",
@@ -79,48 +80,80 @@ export const named: NamedBuild[] = [
       lists: [fandomspot],
       sources: [W("wanderer"), W("scimitar")],
     },
+    branches: [
+      { id: "iaito", name: "The Iaito", why: "A katana one guide picks up here, at 20 Dexterity; the one guides keep comes a chapter later and needs 14.", from: "ember-large" },
+      { id: "estoc", name: "The Estoc", why: "A thrusting sword a Wanderer can use now, at 10 Strength and 12 Dexterity.", from: "ember-large" },
+      { id: "great-scythe", name: "The Great Scythe", why: "The other weapon Dexterity guides fight with, instead of the Uchigatana, kept Normal to +15.", from: "quest-shiva-shop" },
+    ],
   },
   {
     id: "sorcerer",
     name: "Sorcerer",
     stats: ["int"],
-    blurb: "Sorceries from a catalyst, growing with Intelligence.",
+    blurb: "Sorceries thrown from range with a catalyst, and a sword for close calls.",
     start: { class: "a Sorcerer", guides: [F("Magic+User+Guide"), gamevoyagersSorcerer], sources: [W("sorcerer"), W("classes")] },
+    branches: [{ id: "magic-ten", name: "Kept Magic", why: "While your Intelligence is short of 50: Magic goes on to +10, where Enchanted stops at +5.", from: "route-rickert" }],
   },
   // No start: its guides start it as a Sorcerer, a Wanderer or a Pyromancer, one host each (facts-to-verify.md).
-  { id: "magic-knight", name: "Magic Knight", stats: ["dex", "int"], blurb: "A Dexterity blade beside sorceries: buffs, and weapons that grow with Intelligence." },
+  {
+    id: "magic-knight",
+    name: "Magic Knight",
+    stats: ["dex", "int"],
+    blurb: "A quick blade up close, and sorceries for range.",
+    branches: [
+      { id: "normal", name: "Kept Normal", why: "For a Dexterity blade you’ll take to +15 and buff: a Magic weapon can’t take one.", from: "route-andre" },
+      { id: "enchanted", name: "Made Enchanted", why: "Grows faster with your Intelligence but gets less from your Dexterity than Magic does, and stops at +5.", from: "route-rickert" },
+    ],
+  },
   {
     id: "faith",
     name: "Pure Faith",
     stats: ["fth"],
-    blurb: "Miracles from a talisman: lightning, healing and buffs.",
+    blurb: "Miracles: lightning to throw, healing, and a weapon that grows with Faith.",
     start: { class: "a Cleric", guides: [F("Highland_Cleric"), steamFaith], sources: [W("cleric"), W("classes")] },
+    branches: [
+      { id: "occult", name: "Made Occult", why: "Stops at +5, but starts about level with a Divine +10 and grows more with your Faith.", from: "ember-divine" },
+      { id: "divine-ten", name: "Kept Divine", why: "On to +10 with a later ember, and it still keeps skeletons from rising.", from: "ember-divine" },
+    ],
   },
   {
     id: "paladin",
     name: "Paladin",
     stats: ["str", "fth"],
-    blurb: "Strength weapons, with miracles to heal and buff.",
+    blurb: "A hard-hitting weapon up close, with miracles to heal you and add to its damage.",
     start: {
       class: "a Cleric",
       weapon: "Mace",
-      why: "the Cleric’s own, which Paladin guides fight with from the start: to +5 at Andre, then Divine, or on the Normal path to +15",
+      why: "the Cleric’s own, which Paladin guides fight with from the start",
       guides: [F("Faith+-+Strength+Hybrid"), steamPaladin],
       sources: [W("cleric"), W("mace")],
     },
+    // No default: its two guides split on the Mace (builds take five, 23 Nov 2026), so each way says when to take it.
+    branches: [
+      { id: "normal", name: "Kept Normal", why: "If another weapon goes Divine beside it: the Mace goes on to +15 and takes a buff later, at 30 Faith.", from: "route-andre" },
+      { id: "divine", name: "Made Divine", why: "If the Mace is your only weapon: your Faith adds to its damage from the Divine Ember on, but it never takes a buff.", from: "route-andre" },
+      { id: "occult", name: "Made Occult", why: "Stops at +5, but starts about level with a Divine +10 and grows more with your Faith.", from: "ember-divine" },
+      { id: "divine-ten", name: "Kept Divine", why: "On to +10 with a later ember, and it still keeps skeletons from rising.", from: "ember-divine" },
+    ],
   },
   {
     id: "dex-faith",
     name: "Dex/Faith",
     stats: ["dex", "fth"],
-    blurb: "Fast weapons, with miracles to buff them.",
+    blurb: "Quick blades up close, with miracles to heal you and charge the blade.",
     start: { class: "a Cleric", guides: [F("Faith+-+Dex+Hybrid"), steamDexFaith], sources: [W("cleric"), W("classes")] },
+    // No one default among the blades its guides buff: the Uchigatana is on the line as the one a Cleric holds first, at 14 Dexterity.
+    branches: [
+      { id: "iaito", name: "The Iaito", why: "One of the blades guides take to +15 and buff, at 20 Dexterity; the Uchigatana needs only 14.", from: "ember-large" },
+      { id: "rapier", name: "Ricard’s Rapier", why: "The thrusting sword one guide prefers to the katana, at 20 Dexterity.", from: "quest-shiva-shop" },
+      { id: "great-scythe", name: "The Great Scythe", why: "Another blade guides take to +15 and buff, at 14 Strength and 14 Dexterity.", from: "quest-shiva-shop" },
+    ],
   },
   {
     id: "pyromancer",
     name: "Pyromancer",
     stats: ["pyro"],
-    blurb: "Fire from a flame you upgrade with souls. No casting stat.",
+    blurb: "Fire from your hand, made stronger with souls rather than levels, and an axe.",
     start: {
       class: "a Pyromancer",
       weapon: "Hand Axe",
@@ -129,6 +162,7 @@ export const named: NamedBuild[] = [
       lists: [highGround],
       sources: [W("pyromancer"), W("hand-axe"), W("fireball")],
     },
+    branches: [{ id: "chaos", name: "Made Chaos", why: "From 5 Humanity up it passes a Fire +10, but a death drops your Humanity with your souls.", from: "route-vamos" }],
   },
   { id: "pyromancy", name: "Pyromancy", stats: ["pyro"], blurb: "A flame beside any build: it needs no stat.", addon: true },
 ];
@@ -968,6 +1002,15 @@ export const tasks: BuildTask[] = [
     sources: [W("blade-of-the-darkmoon"), FX("Blade+of+the+Darkmoon"), FX("Darkmoon+Blade")],
   },
   {
+    row: "ember-large-flame",
+    serves: ["pyro"],
+    title: "Take the Large Flame Ember to Vamos",
+    quiet: ["pyromancy"],
+    path: true,
+    text: "With it he takes a Fire weapon on from +5 to +10, with Red Titanite Chunks and a Red Titanite Slab: +10 is as far as Fire goes.",
+    sources: [W("fire"), W("large-flame-ember"), W("vamos")],
+  },
+  {
     row: "reinforcement-chaos",
     serves: ["pyro"],
     title: "Take your Chaos weapon to +5",
@@ -1002,39 +1045,42 @@ export const notes: BuildNote[] = [
     "covenant-way-of-white",
     "If you didn’t start as a Cleric, what you need now is the Talisman, 1,000 souls, and Heal, 4,000; a Cleric has both. Leave Homeward, the one miracle Paladin guides add from his list, for later: it needs 18 Faith.",
   ),
-  paladin("route-andre", "Take your Mace to +5 here, with Titanite Shards at 800 souls each. That’s where its paths part: a Normal +5 weapon is what he can later make Divine.", {
+  paladin("route-andre", "Take your Mace to +5 here, with Titanite Shards at 800 souls each, and stop there for now: a Normal +5 weapon is what he can later make Divine.", {
     stage: "Mace +5",
     sources: [W("mace")],
   }),
-  paladin("ember-large", "On the Normal path this takes your Mace past +5. If you mean to make it Divine, leave it at +5: Divine starts from a Normal +5 weapon.", {
-    stage: "Mace +10, on the Normal path",
-  }),
+  paladin(
+    "ember-large",
+    "Leave your Mace at +5 for now: Divine starts from a Normal +5 weapon, and its ember comes in chapter 4, where the Mace’s fork is. Take it past +5 only if you’ve settled on keeping it Normal.",
+    { stage: "Mace +10", branch: "normal" },
+  ),
   paladin("miracle-great-magic-barrier", "Paladin guides carry Great Magic Barrier once their Faith reaches 24: one to keep for later."),
   paladin(
     "ember-divine",
-    "The fork for your Mace. Made Divine, it grows with Faith and keeps some of its Strength scaling; kept Normal, it goes on toward +15 and can take a buff from your miracles later, which a Divine weapon can’t. Paladin guides take either path.",
-    { stage: "Divine Mace", sources: [W("mace")] },
+    "Paladin guides split on your Mace here. If it’s your only weapon, make it a Divine weapon: your Faith adds to its damage from now on, though it never takes a buff. Keep it Normal if another +5 weapon goes Divine beside it: the buff miracles that suit a Normal Mace come in chapter 11, at 30 Faith.",
+    { stage: "Divine Mace", branch: "divine", sources: [W("mace"), W("sunlight-blade")] },
   ),
   paladin("extra-havel", "Paladin guides wear Havel’s Ring for heavier armor."),
   paladin("miracle-emit-force", "Emit Force is a ranged attack Paladin guides carry: an orb that bursts into a shockwave where it lands."),
   paladin(
     "ember-dark",
-    "If your Mace went Divine, it forks again here: Occult has less base magic damage but keeps what grows with Faith, and stops at +5, while a Divine weapon goes further.",
-    { stage: "Occult Mace, if you take it", sources: [W("occult")] },
+    "If your Mace went Divine, it forks again here. Occult stops at +5, but an Occult +5 Mace starts about level with a Divine +10 one and grows more with your Faith, with no ember to wait for; kept Divine, it needs a later ember to reach +10, and it still keeps skeletons from rising.",
+    { stage: "Occult Mace", branch: "occult", sources: [W("occult"), W("mace")] },
   ),
-  paladin("ember-very-large", "On the Normal path this takes your Mace on to +15, as far as it goes, and it can still take a buff from your miracles.", {
-    stage: "Mace +15, on the Normal path",
+  paladin("ember-very-large", "If your Mace stayed Normal, this takes it on to +15, as far as it goes, ready for a buff later.", {
+    stage: "Mace +15",
+    branch: "normal",
     sources: [W("divine")],
   }),
   paladin("quest-reah-pit", "Replenishment is one Paladin guides carry: it heals you slowly for a while, and needs 16 Faith."),
   paladin("quest-reah", "Of her stock, Wrath of the Gods is the one Paladin guides carry, once their Faith reaches 28."),
-  paladin("ember-large-divine", "If your Mace stayed Divine rather than Occult, this takes it on from +5 to +10.", { stage: "Divine Mace +10" }),
+  paladin("ember-large-divine", "If your Mace stayed Divine rather than Occult, this takes it on from +5 to +10.", { stage: "Divine Mace +10", branch: "divine-ten" }),
   paladin("invasion-leeroy", "Sanctus is the shield Paladin guides end on: it heals you slowly while you carry it, and needs 18 Faith."),
   paladin("quest-patches", "The Canvas Talisman is the talisman Paladin guides name: a Cleric starts with one, and anyone else can buy it here."),
   paladin(
     "boss-gwyndolin",
-    "Sunlight Blade is the buff Paladin guides put on their Normal weapon: lightning for a minute. It needs 30 Faith, and a Divine weapon can’t take it.",
-    { sources: [steamPaladin[1]] },
+    "Sunlight Blade is a buff Paladin guides put on a Normal Strength weapon: lightning on it for a minute, at 30 Faith. A Mace kept Normal takes it; a Divine or Occult one can’t, and the guide that made its Mace Divine buffs a Normal +15 heavy weapon instead.",
+    { sources: [steamPaladin[1], FX("Faith+-+Strength+Hybrid")] },
   ),
   paladin("ring-favor-protection", "Paladin guides wear the Ring of Favor and Protection to the end, for more HP, stamina and equip load."),
   paladin("ring-sun-firstborn", "Paladin guides wear the Ring of the Sun’s Firstborn for their attack miracles, which it makes a fifth stronger."),
@@ -1071,10 +1117,11 @@ export const notes: BuildNote[] = [
   ),
   pyromancer(
     "ember-chaos-flame",
-    "If you want it, Vamos turns your Fire +5 weapon Chaos with this and a Red Titanite Chunk: its damage then grows with your Humanity, up to 10.",
-    { stage: "Chaos weapon, if you take it" },
+    "A Pyromancer guide keeps its weapon Fire, on to +10 with the Large Flame Ember later in this chapter. Made Chaos with this ember and a Red Titanite Chunk, it grows with your Humanity instead, up to 10, which a death drops with your souls: it passes a Fire +10 only from 5 Humanity up.",
+    { stage: "Chaos weapon", branch: "chaos", sources: [W("chaos"), W("humanity"), FX("Pyromaniac+Build")] },
   ),
-  pyromancer("pyromancy-fire-tempest", "Fire Tempest is the late pyromancy Pyromancer guides end on: pillars of fire all around you."),
+  pyromancer("ember-large-flame", "Your Fire weapon goes on from +5 to +10 with this, as far as Fire goes.", { stage: "Fire weapon +10" }),
+  pyromancer("pyromancy-fire-tempest", "Fire Tempest is a late pyromancy a Pyromancer guide carries: pillars of fire all around you."),
   pyromancer("ring-dark-wood-grain", "Pyromancer guides wear the Dark Wood Grain Ring for a faster roll in light armor."),
 
   // Quality
@@ -1097,17 +1144,21 @@ export const notes: BuildNote[] = [
     stage: "Zweihander +5",
   }),
   strength("ember-large", "This takes the Zweihander on to +10. Raw would stop at +5 and cut what it gets from your Strength, the stat you level.", { stage: "Zweihander +10" }),
-  strength("pickup-great-club", "The Great Club is a heavier weapon some Strength guides take up: 19 Strength holds it in both hands, 28 in one.", {
-    stage: "Great Club, if you take it",
-  }),
+  strength(
+    "pickup-great-club",
+    "The Great Club grows more with your Strength than the Zweihander does; 19 Strength holds it in both hands, 28 in one. Strength guides mostly carry the Zweihander until a heavier axe later, so take the club up only if you’d rather swing it.",
+    { stage: "Great Club", branch: "great-club", sources: [W("great-club"), W("zweihander")] },
+  ),
   strength(
     "quest-shiva-shop",
     "Of his stock, the Demon’s Greataxe is the axe Strength guides end on, at +15. It costs 10,000 souls: buy it while you can shop here, and swing it once you have 31 Strength for both hands, 46 for one.",
-    { stage: "Demon’s Greataxe, at 31 Strength" },
+    { stage: "Demon’s Greataxe, to swing at 31 Strength" },
   ),
-  strength("ember-very-large", "Once you swing the Demon’s Greataxe, this takes it to +15, as far as any weapon goes; until then it can take the Zweihander there. The last level takes a Titanite Slab.", {
-    stage: "Demon’s Greataxe +15, once you swing it",
-  }),
+  strength(
+    "ember-very-large",
+    "Once you swing the Demon’s Greataxe, this takes it on to +15, as far as any weapon goes; a Zweihander you kept Normal can go there too. The last level takes a Titanite Slab.",
+    { stage: "Demon’s Greataxe +15, once you swing it" },
+  ),
   strength("ring-red-tearstone", "Strength guides wear the Red Tearstone Ring: your attack rises by half while your HP is below a fifth."),
 
   // Pure Dexterity
@@ -1115,9 +1166,14 @@ export const notes: BuildNote[] = [
     stage: "Scimitar +5",
   }),
   dexterity("ember-large", "This takes your Scimitar on to +10. Raw would stop at +5 and cut what it gets from your Dexterity, the stat you level.", { stage: "Scimitar +10" }),
-  dexterity("pickup-blighttown-iaito", "The Iaito is a katana Dexterity guides take up once their Dexterity reaches 20.", { stage: "Iaito, at 20 Dexterity" }),
+  dexterity(
+    "pickup-blighttown-iaito",
+    "The Iaito is a katana one Dexterity guide picks up here; it needs 20 Dexterity. The katana guides keep to +15 comes a chapter later and needs only 14, so you can leave this one for it.",
+    { stage: "Iaito", branch: "iaito", sources: [W("iaito-sword"), W("uchigatana")] },
+  ),
   dexterity("pickup-estoc", "The Estoc is a thrusting sword Dexterity guides carry, and a Wanderer can use it now: it needs 10 Strength and 12 Dexterity.", {
-    stage: "Estoc, if you take it",
+    stage: "Estoc",
+    branch: "estoc",
   }),
   dexterity(
     "quest-shiva-shop",
@@ -1125,20 +1181,34 @@ export const notes: BuildNote[] = [
     { stage: "Uchigatana", sources: [W("wanderer")] },
   ),
   dexterity("ember-very-large", "Your Uchigatana goes to +15 with this, as far as any weapon goes; the last level takes a Titanite Slab.", { stage: "Uchigatana +15" }),
-  dexterity("pickup-great-scythe", "Some Dexterity guides fight with the Great Scythe instead of a katana, kept Normal to +15. It needs 14 Strength and 14 Dexterity.", {
-    stage: "Great Scythe, if you take it",
-    sources: [gamevoyagersWanderer[1]],
-  }),
+  dexterity(
+    "pickup-great-scythe",
+    "The Great Scythe is the other weapon Dexterity guides fight with, kept Normal to +15: it needs the same 14 Strength and 14 Dexterity as the Uchigatana and hits a little harder, but a missed swing makes you stumble. Taking it up now means upgrading it from +0.",
+    { stage: "Great Scythe", branch: "great-scythe", sources: [gamevoyagersWanderer[1], W("great-scythe"), W("uchigatana")] },
+  ),
   dexterity(
     "rare-weapon-quelaags-furysword",
     "The Giant Blacksmith makes it from your Scimitar +10, or any +10 curved sword, for 5,000 souls: Quelaag’s Furysword is the curved sword Dexterity guides carry beside their katana, and its fire grows with your Humanity.",
-    { stage: "Quelaag’s Furysword", sources: [W("quelaag-s-furysword")] },
+    { stage: "Quelaag’s Furysword, beside your katana", sources: [W("quelaag-s-furysword")] },
   ),
   dexterity("ring-leo", "Dexterity guides wear the Leo Ring: counterattacks with a thrusting weapon hit harder."),
 
   // Melee builds together
   shared("pickup-grass-crest-shield", ["quality", "dexterity", "dex-faith"], "Guides for this build carry the Grass Crest Shield: your stamina comes back faster with it, even with your weapon in both hands."),
-  shared("route-giant-blacksmith", ["quality", "strength", "dexterity", "magic-knight", "dex-faith"], "From +10, a Normal weapon can go Lightning here: lightning damage in place of what it gets from your stats."),
+  shared(
+    "route-giant-blacksmith",
+    ["quality", "dexterity", "dex-faith"],
+    "Keep your main weapon Normal to +15. Lightning, from a +10 weapon here, matches a Normal +15’s physical damage at +5 and adds lightning, but drops what your stats add and can’t take a buff.",
+    { sources: [W("lightning"), W("claymore"), gamevoyagersWanderer[1], FX("Faith+-+Dex+Hybrid")] },
+  ),
+  strength(
+    "route-giant-blacksmith",
+    "A Strength guide makes the Zweihander Lightning here, from +10: at Lightning +5 it matches a Normal +15’s physical damage and adds as much again in lightning, though your Strength no longer adds to it. Keep it Normal only if it stays your weapon rather than the Demon’s Greataxe: a Normal weapon pulls ahead as your Strength climbs.",
+    { stage: "Lightning Zweihander", sources: [FX("dark+souls+build"), FX("Royal+Tank"), W("lightning"), W("zweihander")] },
+  ),
+  magicKnight("route-giant-blacksmith", "If you kept a blade Normal for a buff, leave it Normal: a Lightning weapon can’t take one, and drops what your Dexterity adds.", {
+    sources: [W("lightning")],
+  }),
   shared("extra-havel", ["strength", "sorcerer", "dex-faith"], "Guides for this build wear Havel’s Ring: half again as much equip load, for heavier armor."),
   shared("ring-favor-protection", ["strength", "dexterity", "faith", "dex-faith"], "Guides for this build wear the Ring of Favor and Protection to the end, for more HP, stamina and equip load."),
 
@@ -1167,40 +1237,54 @@ export const notes: BuildNote[] = [
     { stage: "Moonlight Greatsword" },
   ),
   sorcerer("sorcery-white-dragon-breath", "White Dragon Breath, a beam of crystal that leaves spikes along the ground, is one Sorcerer guides add once their Intelligence reaches 50."),
-  sorcerer("ember-large-magic", "If your Longsword stayed Magic rather than going Enchanted, this is its last stretch: +10 is as far as Magic goes.", {
-    stage: "Magic Longsword +10, if it stayed Magic",
-  }),
+  sorcerer(
+    "ember-enchanted",
+    "Enchanted grows faster with your Intelligence than Magic but stops at +5, and it takes Blue Titanite Chunks and a slab, which are rare: it’s the path for once your Intelligence nears 50. Until then the Longsword can stay Magic, since Enchanted starts from Magic +5 whenever you’re ready.",
+    { stage: "Enchanted Longsword", sources: [W("enchanted"), W("magic"), W("blue-titanite-chunk")] },
+  ),
+  sorcerer(
+    "ember-large-magic",
+    "If you still fight with the Longsword rather than the Moonlight Greatsword, this is the other way past Magic +5: on to +10, where Enchanted stops at +5 but grows faster with a high Intelligence.",
+    { stage: "Magic Longsword +10", branch: "magic-ten", sources: [W("magic"), W("enchanted")] },
+  ),
 
   // Magic Knight
   magicKnight(
     "route-andre",
-    "Take your weapon to +5 here, with Titanite Shards at 800 souls each. That’s where its paths part: a Normal +5 weapon can later be made Magic, to grow with Intelligence, or stay Normal and keep growing with your Dexterity.",
+    "Take your weapon to +5 here, with Titanite Shards at 800 souls each, and stop there for now: a Normal +5 weapon is what can later be made Magic, to grow with your Intelligence.",
     { stage: "Your weapon +5" },
   ),
-  magicKnight("ember-large", "On the Normal path this takes your weapon past +5. If you might make it Magic, leave it at +5: Magic starts from a Normal +5 weapon.", {
-    stage: "Your weapon +10, on the Normal path",
-  }),
+  magicKnight(
+    "ember-large",
+    "Leave your weapon at +5: Magic, which the next chapter offers, starts from a Normal +5 weapon. Take it past +5 only if it’s a Dexterity blade you mean to keep Normal and buff.",
+    { stage: "Your weapon +10", branch: "normal" },
+  ),
   magicKnight(
     "route-rickert",
-    "The fork for your weapon. Made Magic, it grows with Intelligence but gets less from your Dexterity, and it can’t take a buff; kept Normal, it can take a sorcery’s buff later.",
-    { stage: "Magic weapon, if you take it" },
+    "Bring your +5 weapon and a Green Titanite Shard: made Magic, as a Magic Knight guide does early, it grows with your Intelligence, though it gets less from your Dexterity and can’t take a buff. Keep it Normal only for a Dexterity blade you’ll take to +15 and buff: Griggs’s Magic Weapon already works on one at 10 Intelligence.",
+    { stage: "Magic weapon", sources: [gamevoyagersSorcerer[1], W("magic"), W("magic-weapon")] },
+  ),
+  magicKnight(
+    "ember-enchanted",
+    "If your weapon went Magic, Enchanted is a step it could take next: it grows faster with your Intelligence but gets less from your Dexterity than Magic does, and stops at +5.",
+    { stage: "Enchanted weapon", branch: "enchanted", sources: [W("enchanted")] },
   ),
   magicKnight("rare-weapon-velkas-rapier", "Velka’s Rapier, behind those planks, grows with both your Dexterity and your Intelligence and needs 16 of each: a Magic Knight guide keeps it beside its main blade.", {
-    stage: "Velka’s Rapier",
+    stage: "Velka’s Rapier, beside your main blade",
   }),
-  magicKnight("ember-very-large", "If your weapon stayed Normal, this takes it on to +15, as far as any weapon goes.", { stage: "Your weapon +15, on the Normal path" }),
-  magicKnight("sorcery-crystal-magic-weapon", "Crystal Magic Weapon is the buff Magic Knight guides lay on a Normal weapon, which a Magic one can’t take; casting it takes 25 Intelligence."),
+  magicKnight("ember-very-large", "If your weapon stayed Normal, this takes it on to +15, as far as any weapon goes.", { stage: "Your weapon +15", branch: "normal" }),
+  magicKnight(
+    "sorcery-crystal-magic-weapon",
+    "If you kept a blade Normal, Crystal Magic Weapon is the buff Magic Knight guides lay on it; casting it takes 25 Intelligence, and a Magic weapon can’t take it.",
+  ),
   magicKnight(
     "rare-weapon-seath-tail",
     "The Moonlight Greatsword is what Magic Knight guides end on: its damage grows with your Intelligence, which it needs 28 of, with 16 Strength, or 11 in both hands.",
     { stage: "Moonlight Greatsword" },
   ),
-  magicKnight("ember-large-magic", "If your weapon went Magic and stayed so rather than going Enchanted, this is its last stretch: +10 is as far as Magic goes.", {
-    stage: "Magic weapon +10, if it stayed Magic",
-  }),
+  magicKnight("ember-large-magic", "If your weapon went Magic, this takes it on to +10, as far as Magic goes.", { stage: "Magic weapon +10" }),
 
   // Sorcerer and Magic Knight together
-  shared("ember-enchanted", ["sorcerer", "magic-knight"], "If your weapon went Magic, it forks here: Enchanted grows faster with Intelligence but stops at +5, while Magic goes on to +10 later."),
   shared(
     "quest-logans-cell",
     ["sorcerer", "magic-knight"],
@@ -1211,16 +1295,25 @@ export const notes: BuildNote[] = [
     ["sorcerer", "magic-knight"],
     "Guides for this build carry Homing Crystal Soulmass to the end. It costs 30,000 souls, and casting it takes 24 Intelligence.",
   ),
-  shared(
+  sorcerer(
     "pickup-tin-crystallization-catalyst",
-    ["sorcerer", "magic-knight"],
-    "The Tin Crystallization Catalyst he drops hits hardest of any catalyst at high Intelligence, but halves your casts. Guides for this build carry it; it needs 32 Intelligence.",
-  ),
-  shared(
-    "pickup-logans-catalyst",
-    ["sorcerer", "magic-knight"],
-    "Logan’s Catalyst is the one guides for this build cast with when casts count: it keeps them all, where the Tin halves them. It needs 24 Intelligence, though below 40 other catalysts cast harder.",
+    "The Tin Crystallization Catalyst he drops hits hardest of any catalyst from 40 Intelligence, but halves your casts: a Sorcerer guide casts with it while its casts still last the fight, and switches to Logan’s Catalyst when they don’t. It needs 32 Intelligence.",
     { sources: [W("tin-crystallization-catalyst")] },
+  ),
+  magicKnight(
+    "pickup-tin-crystallization-catalyst",
+    "The Tin Crystallization Catalyst hits hardest of any catalyst from 40 Intelligence but halves your casts, so Magic Knight guides keep it for fights against other players and cast with Logan’s Catalyst otherwise. It needs 32 Intelligence.",
+    { sources: [W("tin-crystallization-catalyst")] },
+  ),
+  sorcerer(
+    "pickup-logans-catalyst",
+    "Logan’s Catalyst keeps all your casts, where the Tin halves them: the one to cast with when the Tin runs you short. It needs 24 Intelligence, though below 40 other catalysts cast harder.",
+    { sources: [W("tin-crystallization-catalyst"), W("logan-s-catalyst")] },
+  ),
+  magicKnight(
+    "pickup-logans-catalyst",
+    "Logan’s Catalyst is the one Magic Knight guides cast with: it keeps all your casts, where the Tin halves them. It needs 24 Intelligence, though below 40 other catalysts cast harder.",
+    { sources: [W("tin-crystallization-catalyst"), W("logan-s-catalyst")] },
   ),
 
   // Pure Faith
@@ -1241,12 +1334,12 @@ export const notes: BuildNote[] = [
   faith("miracle-emit-force", "Pure Faith guides carry Emit Force, a ranged orb that bursts into a shockwave where it lands."),
   faith(
     "ember-dark",
-    "Here your Divine Claymore +5 can become an Occult weapon, the path Pure Faith guides end on: less base magic damage, but what grows with your Faith stays, and it stops at +5.",
-    { stage: "Occult Claymore" },
+    "Here your Divine Claymore +5 can become an Occult weapon, or stay Divine for +10 later; Pure Faith guides take both. An Occult +5 Claymore starts about level with a Divine +10 one and grows more with your Faith, the stat you level most, with no ember to wait for; Divine keeps skeletons from rising.",
+    { stage: "Occult Claymore", branch: "occult", sources: [W("claymore"), W("occult")] },
   ),
   faith("quest-reah-pit", "Replenishment, her thanks, is one Pure Faith guides carry: it heals you slowly for a while, and needs 16 Faith."),
   faith("quest-reah", "Of her stock, Wrath of the Gods is the one Pure Faith guides carry once their Faith reaches 28: a shockwave around you that knocks most enemies down."),
-  faith("ember-large-divine", "If your Claymore stayed Divine rather than going Occult, this takes it on from +5 to +10.", { stage: "Divine Claymore +10, if it stayed Divine" }),
+  faith("ember-large-divine", "If your Claymore stayed Divine rather than going Occult, this takes it on from +5 to +10.", { stage: "Divine Claymore +10", branch: "divine-ten" }),
   faith("covenant-sunlight", "Great Lightning Spear, for the 10 medals, is the spear Pure Faith guides end on; it needs 30 Faith."),
   faith(
     "quest-darkmoon-rank",
@@ -1255,7 +1348,7 @@ export const notes: BuildNote[] = [
   ),
   faith(
     "boss-gwyndolin",
-    "Sunlight Blade is lightning on a Normal weapon for a minute, at 30 Faith. Your Divine or Occult Claymore can’t take it, so Pure Faith guides that carry it keep a Normal weapon for it.",
+    "Sunlight Blade puts lightning on a Normal weapon for a minute, at 30 Faith. A Divine or Occult Claymore can’t take it, so a weapon kept Normal beside it is what takes the buff.",
     { sources: [W("divine"), W("occult")] },
   ),
   faith("ring-sun-firstborn", "Pure Faith guides wear the Ring of the Sun’s Firstborn: your attack miracles hit a fifth harder."),
@@ -1268,7 +1361,11 @@ export const notes: BuildNote[] = [
     stage: "Your weapon +5",
   }),
   dexFaith("ember-large", "This takes your weapon on to +10, to carry you while your Dexterity climbs toward a katana’s needs; Raw would stop at +5.", { stage: "Your weapon +10" }),
-  dexFaith("pickup-blighttown-iaito", "The Iaito is one of the katanas Dex/Faith guides take to +15 and buff, once their Dexterity reaches 20.", { stage: "Iaito, at 20 Dexterity" }),
+  dexFaith(
+    "pickup-blighttown-iaito",
+    "The Iaito is one of the blades Dex/Faith guides take to +15 and buff, at 20 Dexterity, twelve levels from a Cleric’s 8. A katana that needs only 14 comes a chapter later.",
+    { stage: "Iaito", branch: "iaito", sources: [W("iaito-sword"), W("uchigatana"), W("cleric")] },
+  ),
   dexFaith(
     "quest-shiva-shop",
     "Of his stock, the Uchigatana is the katana Dex/Faith guides keep Normal to +15 and buff, since a Divine weapon can’t take a buff: 5,000 souls, and it needs 14 Dexterity.",
@@ -1277,15 +1374,22 @@ export const notes: BuildNote[] = [
   dexFaith("ember-very-large", "Your Uchigatana goes on to +15 with this, as far as any weapon goes, and stays a weapon your buffs can take. The last level takes a Titanite Slab.", {
     stage: "Uchigatana +15",
   }),
-  dexFaith("pickup-great-scythe", "The Great Scythe is one Dex/Faith guides take to +15 and buff instead of a katana; it needs 14 Strength and 14 Dexterity.", {
-    stage: "Great Scythe, if you take it",
-  }),
+  dexFaith(
+    "pickup-great-scythe",
+    "The Great Scythe is one Dex/Faith guides take to +15 and buff instead of a katana; it needs 14 Strength and 14 Dexterity. Taking it up now means upgrading it from +0.",
+    { stage: "Great Scythe", branch: "great-scythe" },
+  ),
   dexFaith("quest-darkmoon-rank", "Darkmoon Blade is the buff Dex/Faith guides end on: magic damage on your weapon for a minute, once your Faith reaches 30."),
   dexFaith(
     "boss-gwyndolin",
-    "Sunlight Blade is the other buff Dex/Faith guides carry: lightning on your weapon for a minute, at 30 Faith. It won’t stack with Darkmoon Blade.",
+    "Sunlight Blade is the other buff Dex/Faith guides carry: lightning on your weapon for a minute, at 30 Faith, and strong against dragons. It won’t stack with Darkmoon Blade.",
+    { sources: [W("sunlight-blade")] },
   ),
-  dexFaith("pickup-ricards-rapier", "Ricard’s Rapier is a thrusting sword Dex/Faith guides take to +15 and buff; it needs 20 Dexterity.", { stage: "Ricard’s Rapier, if you take it" }),
+  dexFaith(
+    "pickup-ricards-rapier",
+    "Ricard’s Rapier is another blade Dex/Faith guides take to +15 and buff, a thrusting sword one of them prefers to the katana; it needs 20 Dexterity to the Uchigatana’s 14.",
+    { stage: "Ricard’s Rapier", branch: "rapier" },
+  ),
 
   // Pure Faith and Dex/Faith together
   shared(
@@ -1303,7 +1407,7 @@ export const notes: BuildNote[] = [
   pyromancy("covenant-chaos-servant", "Great Chaos Fireball is a pyromancy that guides with a flame beside their weapon keep."),
   pyromancy("quest-quelaana", "Guides with a flame beside their weapon take two of hers: Great Combustion, a close burst for 5,000 souls, and Great Fireball, thrown at range, for 20,000."),
   pyromancy("route-vamos", "A Fire weapon stops growing with Strength or Dexterity: if yours grows with a stat your build levels, leave it as it is."),
-  pyromancy("pyromancy-fire-tempest", "Some guides with a flame beside their weapon end on Fire Tempest: pillars of fire all around you."),
+  pyromancy("pyromancy-fire-tempest", "Fire Tempest is a late pyromancy some guides with a flame beside their weapon carry: pillars of fire all around you."),
   shared(
     "pyromancy-power-within",
     ["pyromancy", "dex-faith"],

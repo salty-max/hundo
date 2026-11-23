@@ -21,7 +21,7 @@ function Holder(args: ComponentProps<typeof CheckboxGroup>) {
 const meta = {
   title: "Core/CheckboxGroup",
   component: CheckboxGroup,
-  args: { label: "Your build", choices: leanings, value: ["dex", "fth"], onChange: () => {} },
+  args: { label: "Stats", choices: leanings, value: ["dex", "fth"], onChange: () => {} },
   render: (args) => <Holder {...args} />,
   decorators: [(Story) => <div style={{ maxWidth: 460 }}><Story /></div>],
 } satisfies Meta<typeof CheckboxGroup>;
@@ -35,7 +35,7 @@ export const NoneTicked: Story = { args: { value: [] } };
 /** The group is named by its legend, and each box by its words. */
 export const Named: Story = {
   play: async ({ canvas }) => {
-    const group = canvas.getByRole("group", { name: "Your build" });
+    const group = canvas.getByRole("group", { name: "Stats" });
     await expect(group).toBeVisible();
     await expect(canvas.getAllByRole("checkbox")).toHaveLength(leanings.length);
     await expect(canvas.getByRole("checkbox", { name: "Dexterity" })).toBeChecked();

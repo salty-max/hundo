@@ -2,8 +2,8 @@ import { create } from "zustand";
 
 export type DialogState =
   | { kind: "settings" }
-  /** The reader's build. `welcome`: asked once, on the first tick in a guide with builds (actions.ts). */
-  | { kind: "build"; welcome?: boolean }
+  /** The reader's build, for the walkthrough's build advice: opened only when the reader asks. */
+  | { kind: "build" }
   | { kind: "sync" }
   | { kind: "confirm"; title: string; explanation: string; label: string; danger?: boolean; onConfirm: () => void }
   | null;

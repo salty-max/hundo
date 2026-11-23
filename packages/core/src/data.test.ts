@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { panels } from "virtual:guide/panels";
-import { allRows, brand, byId, cats, chapterRows, chapters, CHAPTER_COUNT, completion, addons, backs, buildKinds, buildOf, buildPlan, config, guideAnchor, namedBuilds, notesFor, pickRoles, picksFor, readsNotes, tasksFor, warningsFor, hasMissables, isCategory, isRetired, leanings, missablesLeft, partsOf, readChapter, rowsByTag, tally, weaponTrack, whatsLeft } from "./guide";
+import { allRows, brand, byId, cats, chapterRows, chapters, CHAPTER_COUNT, completion, addons, backs, buildKinds, buildOf, buildPlan, config, guideAnchor, namedBuilds, notesFor, pickRoles, picksFor, readsNotes, tasksFor, warningsFor, hasMissables, isCategory, isRetired, leanings, missablesLeft, partsOf, readChapter, rowsByTag, tally, trackStages, weaponTrack, whatsLeft, type TrackFork, type TrackItem, type TrackStage } from "./guide";
 import liveIds from "virtual:guide/data/live-ids.txt?raw";
 import { nextUp } from "./flow";
 import { validateState } from "./progress-state";
@@ -169,8 +169,9 @@ describe("guide data", () => {
       expect(weapon, `${build.id}: a weapon, not only a smith`).toBe(true);
       expect((config.builds?.tasks ?? []).some((task) => task.serves.some((id) => build.stats.includes(id))), `${build.id}: a step`).toBe(true);
       if (!readsNotes(build.stats)) continue;
-      const weapons = weaponTrack(() => true, build.stats).filter((stage) => "start" in stage || picksFor(stage.row.id, build.stats).some((pick) => pick.kind === "weapon"));
-      expect(weapons.length, `${build.id}: a weapon on its track, not only a smith`).toBeGreaterThan(0);
+      const track = weaponTrack(() => true, build.stats);
+      const weapons = trackStages(track?.line ?? []).filter((stage) => picksFor(stage.row.id, build.stats).some((pick) => pick.kind === "weapon"));
+      expect(Boolean(track?.start) || weapons.length > 0, `${build.id}: a weapon on its track, not only a smith`).toBe(true);
     }
   });
 
@@ -277,6 +278,7 @@ describe("guide data", () => {
         expect(note.for.length, `${note.row}: a stage names one build's weapon`).toBe(1);
         expect(builds.get(note.for[0])?.addon, `${note.row}: an add-on has no weapon track`).toBeUndefined();
       }
+      if (note.branch) expect(note.stage, `${note.row}: a branch is a stage's`).toBeDefined();
     }
     // Every weapon or path pick and every path step a build with notes has is a stage of its track.
     for (const build of namedBuilds.filter((item) => notes.some((note) => note.for.includes(item.id)))) {
@@ -285,6 +287,36 @@ describe("guide data", () => {
         ...tasks.filter((task) => task.path && task.serves.some((id) => build.stats.includes(id)) && !task.quiet?.includes(build.id)).map((task) => task.row),
       ]);
       for (const row of rows) expect(notes.some((note) => note.row === row && note.for.includes(build.id) && note.stage), `${build.id}: a stage on ${row}`).toBe(true);
+    }
+  });
+
+  // A fork guides split on is drawn as a branch off the stage it leaves (types.ts BuildBranch), never as the next stage of one line.
+  it("hangs each branch of a build's weapon track off one of its stages, before its first, one level deep, each with its stages", () => {
+    const notes = config.builds?.notes ?? [];
+    const at = (row: string) => allRows.findIndex((item) => item.id === row);
+    for (const build of config.builds?.named ?? []) {
+      const branches = build.branches ?? [];
+      if (branches.length) expect(build.addon, `${build.id}: an add-on has no weapon track`).toBeUndefined();
+      expect(new Set(branches.map((branch) => branch.id)).size, `${build.id}: branch ids are unique`).toBe(branches.length);
+      const staged = notes.filter((note) => note.stage && note.for.includes(build.id));
+      for (const note of staged) if (note.branch) expect(branches.map((branch) => branch.id), `${note.row}: ${note.branch}`).toContain(note.branch);
+      for (const branch of branches) {
+        const where = `${build.id}: ${branch.id}`;
+        expect(branch.id, where).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/);
+        expect(branch.name.trim(), where).not.toBe("");
+        expect(branch.why.trim().length, where).toBeGreaterThan(10);
+        const stages = staged.filter((note) => note.branch === branch.id);
+        expect(stages.length, `${where}: a stage on it`).toBeGreaterThan(0);
+        const from = staged.find((note) => note.row === branch.from);
+        expect(from, `${where}: leaves from a stage of the build`).toBeDefined();
+        expect(at(branch.from), `${where}: leaves before its first stage`).toBeLessThan(Math.min(...stages.map((note) => at(note.row))));
+        // One level deep: off the line, or off a branch that is off the line, and then a single stage.
+        if (from?.branch) {
+          const parent = branches.find((item) => item.id === from.branch);
+          expect(staged.find((note) => note.row === parent?.from)?.branch, `${where}: one level deep`).toBeUndefined();
+          expect(stages.length, `${where}: a branch off a branch is one stage`).toBe(1);
+        }
+      }
     }
   });
 
@@ -422,12 +454,13 @@ describe("guide data", () => {
       ...(config.builds?.picks ?? []).flatMap((pick) => [pick.item, ...pick.guides.map(([name]) => name), ...(pick.lists ?? []).map(([name]) => name)]),
       ...(config.builds?.tasks ?? []).flatMap((task) => [task.title, task.text, task.before]),
       ...(config.builds?.notes ?? []).flatMap((note) => [note.text, note.stage]),
+      ...(config.builds?.named ?? []).flatMap((build) => (build.branches ?? []).flatMap((branch) => [branch.name, branch.why])),
     ];
     for (const value of shown) {
       if (value !== undefined) expect(text.has(value), value).toBe(true);
     }
-    // Nor a build's id, which names a build in the data and never to a reader.
-    const buildIds = new Set((config.builds?.named ?? []).map((build) => build.id));
+    // Nor a build's id or a branch's, which name them in the data and never to a reader.
+    const buildIds = new Set((config.builds?.named ?? []).flatMap((build) => [build.id, ...(build.branches ?? []).map((branch) => branch.id)]));
     expect(found.filter(([path, value]) => /sources|reference/.test(path) || /^https?:/.test(value) || byId.has(value) || buildIds.has(value))).toEqual([]);
   });
 
@@ -568,29 +601,63 @@ describe("the build plan", () => {
     }
   });
 
-  it("draws a build's weapon track from its start and its notes' stages, revealed chapters only, in route order, and nothing for a pick that reads steps", () => {
+  it("draws a build's weapon track from its start and its notes' stages, revealed chapters only, each line in route order with its forks in place, and nothing for a pick that reads steps", () => {
+    const stageOf = (item: TrackItem | undefined) => (item && "stage" in item ? item.stage : undefined);
+    const lines = (items: TrackItem[]): TrackItem[][] => [items, ...items.flatMap((item) => ("fork" in item ? item.fork.branches.flatMap((branch) => lines(branch.line)) : []))];
+    const forksOf = (items: TrackItem[]): TrackFork[] => items.flatMap((item) => ("fork" in item ? [item.fork, ...item.fork.branches.flatMap((branch) => forksOf(branch.line))] : []));
     for (const build of namedBuilds) {
-      for (const ceiling of [1, 3, CHAPTER_COUNT]) {
+      // Whether a branch is the other way to a default is the build's, the same at every reveal: what the fully revealed track says.
+      const whole = weaponTrack(() => true, build.stats);
+      const other = new Map(forksOf(whole?.line ?? []).flatMap((fork) => fork.branches.map((branch) => [branch.branch.id, fork.alternative] as const)));
+      for (const ceiling of [1, 2, 3, 5, 8, CHAPTER_COUNT]) {
         const track = weaponTrack((n) => n <= ceiling, build.stats);
         if (!readsNotes(build.stats)) {
-          expect(track, `${build.id}: reads steps`).toEqual([]);
+          expect(track, `${build.id}: reads steps`).toBeNull();
           continue;
         }
-        if (build.start?.weapon) expect(track[0], build.id).toEqual({ start: build.start });
-        const rows = track.flatMap((stage) => ("row" in stage ? [stage.row] : []));
-        for (const row of rows) expect(row.chapter, `${build.id}: ${row.id}`).toBeLessThanOrEqual(ceiling);
-        const order = rows.map((row) => allRows.indexOf(row));
-        expect(order, build.id).toEqual([...order].sort((a, b) => a - b));
-        for (const stage of track) {
-          if (!("note" in stage)) continue;
-          expect(stage.note.stage, `${build.id}: ${stage.row.id}`).toBeTruthy();
-          expect(stage.note.for, `${build.id}: ${stage.row.id}`).toContain(build.id);
-          expect([...Object.values(pickRoles), ""], `${build.id}: ${stage.row.id}`).toContain(stage.word);
+        expect(track!.start, build.id).toEqual(build.start?.weapon ? build.start : undefined);
+        for (const line of lines(track!.line)) {
+          const order = line.flatMap((item) => ("stage" in item ? [allRows.indexOf(item.stage.row)] : []));
+          expect(order, build.id).toEqual([...order].sort((a, b) => a - b));
+          // A fork follows the stage it's placed after, leaves one stage, its branches start after that stage and before the line's next
+          // one, and it's the other way to a default exactly when the line goes on past the stage it leaves, revealed or not.
+          line.forEach((item, i) => {
+            if (!("fork" in item)) return;
+            const before = stageOf(line[i - 1]);
+            const next = line.slice(i + 1).map(stageOf).find(Boolean);
+            expect(before, `${build.id}: a fork after a stage`).toBeDefined();
+            for (const { branch, from, line: way } of item.fork.branches) {
+              const first = allRows.indexOf(stageOf(way[0])!.row);
+              expect(from.row.id, `${build.id}: ${branch.id}`).toBe(branch.from);
+              expect(allRows.indexOf(before!.row), `${build.id}: ${branch.id}`).toBeLessThan(first);
+              if (next) expect(allRows.indexOf(next.row), `${build.id}: ${branch.id}`).toBeGreaterThan(first);
+            }
+            expect(new Set(item.fork.branches.map(({ from }) => from.row.id)).size, `${build.id}: a fork leaves one stage`).toBe(1);
+            for (const { branch } of item.fork.branches) expect(item.fork.alternative, `${build.id}: ${branch.id} at ${ceiling}`).toBe(other.get(branch.id));
+            // A branch drawn as its one stage has nothing else on it, in any chapter: no stage, and no branch off it, goes undrawn.
+            for (const { branch, single, line: way } of item.fork.branches) if (single) expect(way.length, `${build.id}: ${branch.id} at ${ceiling}`).toBe(1);
+            const hidden = (build.branches ?? []).filter((branch) => branch.from === item.fork.branches[0].from.row.id && !item.fork.branches.some((drawn) => drawn.branch === branch));
+            expect(item.fork.more, `${build.id}: ${ceiling}`).toBe(!item.fork.alternative && hidden.length > 0);
+          });
         }
+        const drawn: TrackStage[] = trackStages(track!.line);
+        for (const { row, note } of drawn) {
+          expect(row.chapter, `${build.id}: ${row.id}`).toBeLessThanOrEqual(ceiling);
+          expect(note.stage, `${build.id}: ${row.id}`).toBeTruthy();
+          expect(note.for, `${build.id}: ${row.id}`).toContain(build.id);
+        }
+        if (ceiling === CHAPTER_COUNT)
+          for (const line of lines(track!.line)) {
+            const stages = line.map(stageOf).filter(Boolean);
+            for (const item of line) if ("fork" in item) expect(item.fork.alternative, build.id).toBe(item.fork.branches[0].from.row.id !== stages[stages.length - 1]!.row.id);
+          }
+        // Every stage revealed is drawn, once: none lost to a branch whose stage it leaves from is hidden.
+        const revealed = (config.builds?.notes ?? []).filter((note) => note.stage && note.for.includes(build.id) && byId.get(note.row)!.chapter <= ceiling);
+        expect(drawn.map(({ note }) => note).sort((a, b) => a.row.localeCompare(b.row)), build.id).toEqual([...revealed].sort((a, b) => a.row.localeCompare(b.row)));
       }
     }
     const custom = leanings.flatMap((a) => leanings.map((b) => [a.id, b.id])).find(([a, b]) => a !== b && !buildOf([a, b]));
-    if (custom) expect(weaponTrack(() => true, custom)).toEqual([]);
+    if (custom) expect(weaponTrack(() => true, custom)).toBeNull();
     // An add-on changes no build's weapon: the track is the named build's alone (checked once a guide has an add-on's notes).
     for (const addon of addons) {
       for (const build of namedBuilds.filter((item) => !addon.stats.some((stat) => item.stats.includes(stat)))) {

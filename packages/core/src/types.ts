@@ -193,6 +193,26 @@ export interface NamedBuild {
   addon?: true;
   /** How guides start it, where two hosts agree on it: never on an add-on (data.test.ts). */
   start?: BuildStart;
+  /** The ways its weapon can go off its weapon track's main line, where guides split (`BuildBranch`). */
+  branches?: BuildBranch[];
+}
+
+/**
+ * A way a named build's weapon can go off its weapon track's main line: the other side of a fork guides split on (Normal or Divine, the
+ * Uchigatana or the Great Scythe). The main line is what guides default to, where two independent hosts back a default; where none does,
+ * each way is a branch off the same stage and its `why` says what the choice turns on. The track draws it off the stage it leaves from, at
+ * its first stage's place in route order; its stages are the build's notes that name it (`BuildNote.branch`). One level deep: a branch
+ * off a branch is one stage (data.test.ts).
+ */
+export interface BuildBranch {
+  /** Lowercase letters, digits and hyphens, what a note's `branch` names: "normal". Data only, never saved. */
+  id: string;
+  /** The way, as its heading on the track: "Kept Normal". A branch of one stage shows its stage's name instead. */
+  name: string;
+  /** When to take it, in the guide's voice: a game fact or what guides do ("If the Mace is your only weapon: …"). Never "best". */
+  why: string;
+  /** The row of the stage it leaves from, on the main line or on another branch: a row with a staged note for the build. */
+  from: string;
 }
 
 /**
@@ -286,6 +306,8 @@ export interface BuildNote {
    * path step for the build, and only on a note for one build, since a stage names one build's weapon.
    */
   stage?: string;
+  /** The branch of the build's weapon track the stage is on, by id (`NamedBuild.branches`); none, the main line. Only with `stage`. */
+  branch?: string;
   /** https pages for any fact in `text` that the row's picks and steps don't already source. */
   sources?: string[];
 }
@@ -476,7 +498,7 @@ export interface GuideConfig {
   /** Chained side quests, on the Questlines page. */
   questlines: Questlines;
   /**
-   * The builds the guide can point toward: the leanings a reader picks under Your build, the builds readers know by name, what build guides
+   * The builds the guide can point toward: the leanings a reader picks for Build advice, the builds readers know by name, what build guides
    * use for each and the steps each takes. A lens over the checklist, never a count. A guide without it shows nothing of builds.
    */
   builds?: {

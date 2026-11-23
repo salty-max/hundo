@@ -144,7 +144,7 @@ export function RadioGroup({ label, choices, value, onChange }: RadioGroupProps)
 
 interface CardRadioGroupProps {
   label: string;
-  /** Each card: its title, its line (hidden on a phone), an optional note under it (kept on a phone), and its chips. */
+  /** Each card: its title, its line, an optional note under it, and its chips (hidden on a phone, where the line says what they would). */
   choices: { value: string; title: string; text: string; note?: string; chips: string[] }[];
   /** "" for none chosen. */
   value: string;
@@ -152,8 +152,9 @@ interface CardRadioGroupProps {
 }
 
 /**
- * One of several choices that each need a line to explain: a grid of cards (three across in a wide dialog, two on a phone, where the line
- * goes and the chips stay). Tab enters the group once and the arrow keys move between cards; each card is its whole target.
+ * One of several choices that each need a line to explain: a grid of cards (three across in a wide dialog, one column on a phone, where
+ * the line stays, since it's what a reader new to the choice reads, and the chips go). Tab enters the group once and the arrow keys move
+ * between cards; each card is its whole target.
  */
 export function CardRadioGroup({ label, choices, value, onChange }: CardRadioGroupProps) {
   const labelId = useId();
@@ -166,7 +167,7 @@ export function CardRadioGroup({ label, choices, value, onChange }: CardRadioGro
         aria-labelledby={labelId}
         value={value}
         onValueChange={(next) => onChange(String(next))}
-        className="grid grid-cols-[repeat(auto-fill,minmax(12.5rem,1fr))] gap-2 phone:grid-cols-2"
+        className="grid grid-cols-[repeat(auto-fill,minmax(12.5rem,1fr))] gap-2 phone:grid-cols-1"
       >
         {choices.map((choice) => (
           <label
@@ -185,7 +186,7 @@ export function CardRadioGroup({ label, choices, value, onChange }: CardRadioGro
                 {choice.title}
               </strong>
             </span>
-            <span id={`${labelId}-${choice.value}-text`} className="text-13/normal text-muted phone:hidden">
+            <span id={`${labelId}-${choice.value}-text`} className="text-13/normal text-muted">
               {choice.text}
             </span>
             {choice.note && (
@@ -193,7 +194,7 @@ export function CardRadioGroup({ label, choices, value, onChange }: CardRadioGro
                 {choice.note}
               </span>
             )}
-            <span id={`${labelId}-${choice.value}-chips`} className="flex flex-wrap gap-1">
+            <span id={`${labelId}-${choice.value}-chips`} className="flex flex-wrap gap-1 phone:hidden">
               {choice.chips.map((chip) => (
                 <span key={chip} className="rounded-tag border border-soft-line px-1.5 py-0.5 text-11 font-extrabold text-soft-ink">
                   {chip}
