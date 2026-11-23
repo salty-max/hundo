@@ -548,7 +548,7 @@ export const picks: BuildPick[] = [
     sources: [W("moonlight-greatsword")],
   },
   {
-    row: "quest-logan-finish",
+    row: "pickup-tin-crystallization-catalyst",
     for: ["sorcerer", "magic-knight"],
     kind: "catalyst",
     item: "Tin Crystallization Catalyst",
@@ -569,7 +569,7 @@ export const picks: BuildPick[] = [
     sources: [W("white-dragon-breath")],
   },
   {
-    row: "quest-logan-study",
+    row: "pickup-logans-catalyst",
     for: ["sorcerer", "magic-knight"],
     kind: "catalyst",
     item: "Logan’s Catalyst",
@@ -1212,12 +1212,12 @@ export const notes: BuildNote[] = [
     "Guides for this build carry Homing Crystal Soulmass to the end. It costs 30,000 souls, and casting it takes 24 Intelligence.",
   ),
   shared(
-    "quest-logan-finish",
+    "pickup-tin-crystallization-catalyst",
     ["sorcerer", "magic-knight"],
     "The Tin Crystallization Catalyst he drops hits hardest of any catalyst at high Intelligence, but halves your casts. Guides for this build carry it; it needs 32 Intelligence.",
   ),
   shared(
-    "quest-logan-study",
+    "pickup-logans-catalyst",
     ["sorcerer", "magic-knight"],
     "Logan’s Catalyst is the one guides for this build cast with when casts count: it keeps them all, where the Tin halves them. It needs 24 Intelligence, though below 40 other catalysts cast harder.",
     { sources: [W("tin-crystallization-catalyst")] },
