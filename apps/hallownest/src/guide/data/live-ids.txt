@@ -1,4 +1,5 @@
 achievement-pure-completion
+arcane-egg-birthplace
 arcane-egg-seer
 arcane-egg-shade-cloak
 boss-broken-vessel
@@ -160,6 +161,7 @@ hallownest-seal-well
 kings-idol-cliffs
 kings-idol-deepnest-zote
 kings-idol-dung-defender
+kings-idol-glade
 kings-idol-great-hopper
 kings-idol-grubfather
 kings-idol-peak-cornifer

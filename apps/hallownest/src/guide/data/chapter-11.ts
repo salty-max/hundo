@@ -5,8 +5,8 @@ export default {
   title: "The Grimm Troupe and Colosseum",
   region: "Howling Cliffs · Dirtmouth · Kingdom’s Edge",
   teaser: "Colosseum",
-  intro: "Clear the Colosseum’s three trials, then light the Nightmare Lantern and take the Grimm Troupe’s story to one of its two ends. Finish with the last Nail upgrades and Salubra’s Blessing.",
-  sources: [["Steam guide ch 10–29 · the Lantern, every flame, the Colosseum and the Troupe’s end", "https://steamcommunity.com/sharedfiles/filedetails/?id=3005043947"], ["Hollow Knight wiki · the Grimm Troupe quest, both endings and Brumm’s room", "https://hollowknight.wiki/w/Grimm_Troupe_(Quest)"], ["Hollow Knight wiki · Colosseum of Fools: the way in, trial fees and rewards", "https://hollowknight.wiki/w/Colosseum_of_Fools"]],
+  intro: "Clear the Colosseum’s three trials, then take the Grimm Troupe’s story to one of its two ends. Finish with the last Nail upgrades.",
+  sources: [["Steam guide ch 10–29 · every flame, the Colosseum and the Troupe’s end", "https://steamcommunity.com/sharedfiles/filedetails/?id=3005043947"], ["Hollow Knight wiki · the Grimm Troupe quest, both endings and Brumm’s room", "https://hollowknight.wiki/w/Grimm_Troupe_(Quest)"], ["Hollow Knight wiki · Colosseum of Fools: the way in, trial fees and rewards", "https://hollowknight.wiki/w/Colosseum_of_Fools"]],
   groups: [
     {
       title: "The three arena trials",
@@ -37,15 +37,14 @@ export default {
       ],
     },
     {
-      title: "Finish the Nail, the smith’s story and Salubra’s Blessing",
-      location: "City of Tears · Greenpath · Forgotten Crossroads",
-      sources: [["Hollow Knight wiki · Nailsmith: upgrade costs, his request, the move to Sheo’s", "https://hollowknight.wiki/w/Nailsmith"], ["Hollow Knight wiki · Sheo’s hut and the Great Slash condition", "https://hollowknight.wiki/w/Nailmaster_Sheo"], ["Hollow Knight wiki · Salubra’s Blessing and what lowers the charm count", "https://hollowknight.wiki/w/Salubra%27s_Blessing"], ["Hollow Knight wiki · Salubra’s shop in the Crossroads", "https://hollowknight.wiki/w/Charm_Lover_Salubra"], ["Steam guide ch 28–29 · the Pure Nail, the smith’s choice and the Blessing", "https://steamcommunity.com/sharedfiles/filedetails/?id=3005043947"]],
+      title: "Finish the Nail and the smith’s story",
+      location: "City of Tears · Greenpath",
+      sources: [["Hollow Knight wiki · Nailsmith: upgrade costs, his request, the move to Sheo’s", "https://hollowknight.wiki/w/Nailsmith"], ["Hollow Knight wiki · Sheo’s hut and the Great Slash condition", "https://hollowknight.wiki/w/Nailmaster_Sheo"], ["Steam guide ch 28–29 · the Pure Nail and the smith’s choice", "https://steamcommunity.com/sharedfiles/filedetails/?id=3005043947"]],
       compact: true,
       rows: [
         ["forge-coiled-nail", ["forge"], "Upgrade to the Coiled Nail", "Take 2,000 Geo and 2 Pale Ore to the Nailsmith once you have the Channelled Nail."],
         ["forge-pure-nail", ["forge"], "Upgrade to the Pure Nail", "The last upgrade costs 4,000 Geo and 3 Pale Ore."],
         ["quest-nailsmith-sheo", ["quest"], "Visit the Nailsmith and Sheo together", "Once the Pure Nail is done, he asks you to strike him down: walk away instead. With Great Slash learned, rest at a bench or ride a Stag, then find him in Sheo’s hut in Greenpath and talk to him (Happy Couple)."],
-        ["pickup-salubra-blessing", ["pickup"], "Buy Salubra’s Blessing at 40 charms", "With all 40 charms and every notch Salubra sells, go back to her shop in the Forgotten Crossroads and buy her Blessing for 800 Geo. It adds nothing to the game’s own percentage, but the bar counts it. A Fragile charm Divine is holding doesn’t count toward the 40, and after a banishment you’re one short until Nymm gives you Carefree Melody."],
       ],
     },
   ],
