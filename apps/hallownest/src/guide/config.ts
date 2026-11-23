@@ -18,6 +18,7 @@ import { choices } from "./data/choices";
 import { missables } from "./data/missables";
 import { questlines } from "./data/questlines";
 import { sources } from "./data/sources";
+import { splits } from "./data/splits";
 
 const banners = byChapter(import.meta.glob<Banner>("./banners/chapter-*.webp", { eager: true, query: "?banner", import: "default" }));
 
@@ -54,11 +55,11 @@ export const targets: BoardItem[] = [
   { tag: "stag", goal: 11, list: "game" },
   { tag: "root", goal: 15, list: "game" },
   { tag: "simple-key", goal: 4, list: "game" },
-  // The relics go in chapter by chapter where the route picks each up: a guide list (its goal its rows) until the line holds the
-  // game's total (14 Wanderer's Journals, 17 Hallownest Seals, 8 King's Idols, 4 Arcane Eggs). The Seals are all in since chapter 8, the Wanderer's Journals since chapter 9, the Arcane Eggs since chapter 10.
+  // The relics, each where the route picks it up: all four lines hold the game's totals (14 Wanderer's Journals, 17 Hallownest Seals,
+  // 8 King's Idols, 4 Arcane Eggs), the last of them complete in chapter 11.
   { tag: "hallownest-seal", goal: 17, list: "game" },
   { tag: "wanderers-journal", goal: 14, list: "game" },
-  { tag: "kings-idol", goal: 7, list: "guide" },
+  { tag: "kings-idol", goal: 8, list: "game" },
   { tag: "arcane-egg", goal: 4, list: "game" },
   { tag: "ending", goal: 5, list: "game" },
   { tag: "dream-boss", goal: 5, list: "game" },
@@ -66,7 +67,7 @@ export const targets: BoardItem[] = [
   { tag: "pickup", goal: 8, list: "guide" },
   { tag: "challenge", goal: 4, list: "guide" },
   { tag: "achievement", goal: 1, list: "guide" },
-  { tag: "quest", goal: 44, list: "guide" },
+  { tag: "quest", goal: 56, list: "guide" },
 ];
 
 const config: GuideConfig = {
@@ -140,6 +141,7 @@ const config: GuideConfig = {
   missables,
   choices,
   questlines,
+  splits,
   banners,
   completion: { board: targets, directions: ["route"] },
   state: {},
@@ -150,7 +152,7 @@ const config: GuideConfig = {
       "100% is every target on the board, each item counted once: the game’s own completion with all four free content packs, and the Grubs, maps, endings, quest steps and the rest it leaves out. What your save should read is under Check against the game.",
     boardTitle: "Completion targets",
     boardNote:
-      "Every target counts, each item once, so 100% is exactly when What’s left is empty. The first sixteen are the game’s own completion, which weighs them differently (equipment counts twice, and Mask Shards and Vessel Fragments count only as whole masks and vessels), so its figure, in Check against the game, differs from this bar. Grubs, notches, Pale Ore, maps, stations, Roots, keys, endings and dream rematches count here too, and so do the relics Lemm buys, as the guide adds them chapter by chapter, and so do the guide’s own lists: key pickups, six bosses outside the game’s percentage, the challenges, Pure Completion and the quest steps.",
+      "Every target counts, each item once, so 100% is exactly when What’s left is empty. The first sixteen are the game’s own completion, which weighs them differently (equipment counts twice, and Mask Shards and Vessel Fragments count only as whole masks and vessels), so its figure, in Check against the game, differs from this bar. Grubs, notches, Pale Ore, maps, stations, Roots, keys, endings and dream rematches count here too, and so do the relics Lemm buys, and so do the guide’s own lists: key pickups, six bosses outside the game’s percentage, the challenges, Pure Completion and the quest steps.",
     nextUpDone: "Everything revealed is checked. Reveal the next chapter or check the totals on the Progress page.",
     backupBlurb: "Export a copy of your checks and spoiler settings.",
   },

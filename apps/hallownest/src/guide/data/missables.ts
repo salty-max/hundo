@@ -3,7 +3,7 @@ import type { Missable } from "@hundo/core/types";
 const steam = "https://steamcommunity.com/sharedfiles/filedetails/?id=3005043947";
 const fextralifeTroupe = "https://hollowknight.wiki.fextralife.com/The+Grimm+Troupe+(Quest)";
 
-/** What can be lost for good, in route order. None of it costs a point of the game's own completion, but eight of the nine are board rows a save can't get back once it has gone past them (four quest steps, the two endings, the Lifeblood chamber's Arcane Egg and the Beast's Den Seal), so the bar needs them; the Troupe's finale is on the board too and is the same either way. The Nailsmith's request is a one-way choice (choices.ts), not a missable. */
+/** What can be lost for good, in route order. None of it costs a point of the game's own completion, but ten of the eleven are board rows a save can't get back once it has gone past them (six quest steps, three of them Divine's, the two endings, the Lifeblood chamber's Arcane Egg and the Beast's Den Seal), so the bar needs them; the Troupe's finale is on the board too and is the same either way. The Nailsmith's request is a one-way choice (choices.ts), not a missable. */
 export const missables: Missable[] = [
   {
     id: "quest-zote-greenpath",
@@ -36,8 +36,18 @@ export const missables: Missable[] = [
     sources: ["https://hollowknight.wiki/w/Endings_(Hollow_Knight)", "https://hollowknight.wiki.fextralife.com/Endings"],
   },
   {
-    id: "quest-divine",
-    why: "Buy the Unbreakable upgrades before you banish the Troupe: Divine leaves with the Troupe, and a charm she holds is left in Dirtmouth, still Fragile.",
+    id: "quest-divine-greed",
+    why: "Buy Unbreakable Greed before you banish the Troupe: Divine leaves with the Troupe, and a charm she holds is left in Dirtmouth, still Fragile.",
+    sources: ["https://hollowknight.wiki/w/Divine", fextralifeTroupe],
+  },
+  {
+    id: "quest-divine-heart",
+    why: "Buy Unbreakable Heart before you banish the Troupe: Divine leaves with the Troupe, and a charm she holds is left in Dirtmouth, still Fragile.",
+    sources: ["https://hollowknight.wiki/w/Divine", fextralifeTroupe],
+  },
+  {
+    id: "quest-divine-strength",
+    why: "Buy Unbreakable Strength before you banish the Troupe: Divine leaves with the Troupe, and a charm she holds is left in Dirtmouth, still Fragile.",
     sources: ["https://hollowknight.wiki/w/Divine", fextralifeTroupe],
   },
   {

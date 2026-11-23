@@ -53,7 +53,8 @@ export const questlines = {
       "steps": [
         "quest-zote-greenpath",
         "quest-zote-deepnest",
-        "quest-zote-arena",
+        "quest-zote-colosseum",
+        "quest-zote-home",
         "dream-boss-grey-prince-zote"
       ]
     },
@@ -63,7 +64,7 @@ export const questlines = {
       "steps": [
         "quest-bretta-rescue",
         "mask-shard-bretta",
-        "quest-zote-arena",
+        "quest-zote-home",
         "dream-boss-grey-prince-zote"
       ]
     },
@@ -75,7 +76,9 @@ export const questlines = {
         "charm-fragile-heart",
         "charm-fragile-greed",
         "charm-fragile-strength",
-        "quest-divine"
+        "quest-divine-greed",
+        "quest-divine-heart",
+        "quest-divine-strength"
       ]
     },
     {
@@ -191,10 +194,21 @@ export const questlines = {
       "steps": [
         "quest-nightmare-lantern",
         "charm-grimmchild",
-        "quest-grimm-flames-one",
+        "quest-grimm-novice-peak",
+        "quest-grimm-novice-storerooms",
+        "quest-grimm-novice-greenpath",
+        "quest-grimm-novices-shown",
+        "quest-grimm-master-pass",
+        "quest-grimm-master-grounds",
+        "quest-grimm-master-edge",
         "boss-troupe-master-grimm",
         "notch-grimm-notch",
-        "quest-divine",
+        "quest-grimm-nightmare-basin",
+        "quest-grimm-nightmare-hive",
+        "quest-grimm-brumm",
+        "quest-divine-greed",
+        "quest-divine-heart",
+        "quest-divine-strength",
         "troupe-finale-grimm-finale"
       ]
     },
