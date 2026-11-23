@@ -140,7 +140,9 @@ grub-waterways-ceiling
 grub-waterways-isma
 hallownest-seal-city-rafters
 hallownest-seal-fungal-pools
+hallownest-seal-resting-crypt
 hallownest-seal-sanctum
+hallownest-seal-seer
 hallownest-seal-well
 map-ancient-basin
 map-city-of-tears
@@ -192,6 +194,7 @@ pantheon-artist
 pantheon-knight
 pantheon-master
 pantheon-sage
+pickup-elegant-key
 pickup-hunter-journal
 pickup-lantern
 pickup-lifeblood-egg
@@ -263,12 +266,14 @@ route-abyss-door
 route-aspid-arena
 route-basin-descent
 route-beasts-den
+route-blue-lake
 route-city-gate
 route-city-lift
 route-cliffs-entry
 route-colosseum-entry
 route-crossroads-return
 route-crossroads-shaft
+route-crypt-west
 route-dirtmouth-lift
 route-dirtmouth-well
 route-east-city
@@ -295,10 +300,13 @@ route-palace-left
 route-palace-right
 route-pass
 route-pass-start
+route-peak-bench
 route-peak-entry
+route-peak-toll
 route-salubra
 route-sanctum-climb
 route-sanctum-exit
+route-shade-soul-lemm
 route-tower-door
 route-void-heart
 route-watcher-spire
@@ -341,6 +349,8 @@ vessel-fragment-stag-nest
 wanderers-journal-fungal-shaft
 wanderers-journal-greenpath-stag
 wanderers-journal-mantis-village
+wanderers-journal-peak-crawlers
+wanderers-journal-resting-crypt
 wanderers-journal-storerooms
 warrior-dream-elder-hu
 warrior-dream-galien

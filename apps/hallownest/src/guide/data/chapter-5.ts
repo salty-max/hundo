@@ -55,12 +55,10 @@ export default {
     {
       title: "Back to Crystal Peak with Monarch Wings",
       location: "Crystal Peak · Dirtmouth",
-      sources: [["Steam guide ch 12 · the Dirtmouth lift, the mimic Grub and the upper Grub", "https://steamcommunity.com/sharedfiles/filedetails/?id=3005043947"], ["The lift above Dirtmouth", "https://hollowknight.wiki/w/Dirtmouth"], ["Crystal Peak Grubs and mimics", "https://hollowknight.wiki/w/Grub"]],
+      sources: [["Steam guide ch 12 · the upper Grub past the Crystal Guardian’s bench", "https://steamcommunity.com/sharedfiles/filedetails/?id=3005043947"], ["The lift above Dirtmouth", "https://hollowknight.wiki/w/Dirtmouth"], ["Crystal Peak Grubs", "https://hollowknight.wiki/w/Grub"]],
       compact: true,
       rows: [
-        ["route-dirtmouth-lift", ["route"], "Open the Crystal Peak lift back to Dirtmouth", "In Dirtmouth, climb the cliff at the west end of town and launch Crystal Heart from the top to fly east. When the mine lift comes into view, double-jump onto its side, climb over and pull the lever up there. From then on the lift above the locked door past the graveyard runs between Dirtmouth and Crystal Peak."],
-        ["grub-peak-mimic", ["grub"], "Free the real Grub behind the Crystal Peak mimic", "Just inside the mines from the lift, get over the first gap, then fall through the floor to the lowest point of that room. The Grub waiting there is a mimic that attacks when freed, and a Dream Nail strike gives it away; the real jar is behind the breakable wall at its back."],
-        ["grub-peak-upper", ["grub"], "Free the Grub east of the Crystal Guardian’s bench", "The jar is at the far end of a cramped, crowded room east of the Crystal Guardian’s bench, on the way up toward the summit. Head right from the bench room; in the next room, double-jump from its top to the high ledge and carry on right along the bottom. Shade Soul thins out the enemies in the narrow room before they reach you."],
+        ["grub-peak-upper", ["grub"], "Free the Grub east of the Crystal Guardian’s bench", "Ride the lift from Dirtmouth up into Crystal Peak (chapter 4 opened it) to the Crystal Guardian’s bench. The jar is at the far end of a cramped, crowded room east of it, on the way up toward the summit. Head right from the bench room; in the next room, double-jump from its top to the high ledge and carry on right along the bottom. Shade Soul thins out the enemies in the narrow room before they reach you."],
       ],
     },
     {
