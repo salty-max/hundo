@@ -167,12 +167,14 @@ pickup-darksword
 pickup-demons-catalyst
 pickup-depths-greataxe
 pickup-depths-weapons
+pickup-dingy-set
 pickup-doll
 pickup-eagle-shield
 pickup-eastern-set
 pickup-elite-knight-set
 pickup-enchanted-falchion
 pickup-estoc
+pickup-f2-west-key
 pickup-falchion
 pickup-firelink-graveyard
 pickup-giant-cell-key
