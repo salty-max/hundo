@@ -423,7 +423,7 @@ export const picks: BuildPick[] = [
     sources: [W("red-tearstone-ring")],
   },
   {
-    row: "extra-ricard",
+    row: "pickup-ricards-rapier",
     for: ["dex-faith"],
     kind: "weapon",
     item: "Ricard’s Rapier",
@@ -1285,7 +1285,7 @@ export const notes: BuildNote[] = [
     "boss-gwyndolin",
     "Sunlight Blade is the other buff Dex/Faith guides carry: lightning on your weapon for a minute, at 30 Faith. It won’t stack with Darkmoon Blade.",
   ),
-  dexFaith("extra-ricard", "Ricard’s Rapier is a thrusting sword Dex/Faith guides take to +15 and buff; it needs 20 Dexterity.", { stage: "Ricard’s Rapier, if you take it" }),
+  dexFaith("pickup-ricards-rapier", "Ricard’s Rapier is a thrusting sword Dex/Faith guides take to +15 and buff; it needs 20 Dexterity.", { stage: "Ricard’s Rapier, if you take it" }),
 
   // Pure Faith and Dex/Faith together
   shared(
