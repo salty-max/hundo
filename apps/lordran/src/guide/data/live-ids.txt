@@ -139,8 +139,11 @@ pickup-anor-medals
 pickup-anor-mimics
 pickup-anor-twinkling-chest
 pickup-antiquated-set
+pickup-archive-prison-extra-key
 pickup-basement-key
 pickup-beatrices-catalyst
+pickup-big-hat
+pickup-big-hats-set
 pickup-black-bow-of-pharis
 pickup-black-cleric-set
 pickup-black-iron-set
@@ -156,6 +159,8 @@ pickup-claymore
 pickup-composite-bow
 pickup-crimson-set
 pickup-crystal-halberd
+pickup-crystal-knight-shield
+pickup-crystalline-set
 pickup-dark-set
 pickup-darksword
 pickup-depths-greataxe
@@ -164,9 +169,12 @@ pickup-doll
 pickup-eagle-shield
 pickup-eastern-set
 pickup-elite-knight-set
+pickup-enchanted-falchion
 pickup-estoc
 pickup-falchion
 pickup-firelink-graveyard
+pickup-giant-cell-key
+pickup-giant-door-key
 pickup-gold-pine-resin
 pickup-grass-crest-shield
 pickup-great-club
@@ -183,7 +191,9 @@ pickup-knight-set
 pickup-knight-shield
 pickup-light-crossbow
 pickup-lightning-spear
+pickup-logans-catalyst
 pickup-longbow
+pickup-maiden-set
 pickup-mail-breaker
 pickup-morning-star
 pickup-mystery-key
@@ -205,6 +215,7 @@ pickup-scythe
 pickup-sens-scavenger
 pickup-server
 pickup-set-of-favor
+pickup-set-of-the-channelers
 pickup-sewer-chamber-key
 pickup-shadow-set
 pickup-shotel
@@ -215,9 +226,11 @@ pickup-sorcerers-catalyst
 pickup-spider-shield
 pickup-spider-shield-valley
 pickup-stone-set
+pickup-symbol-of-avarice
 pickup-talisman
 pickup-target-shield
 pickup-thief-gear
+pickup-tin-crystallization-catalyst
 pickup-wanderer-set
 pickup-warrior-set
 pickup-watchtower-basement-key
