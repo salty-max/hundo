@@ -139,11 +139,16 @@ grub-waterways-bench
 grub-waterways-ceiling
 grub-waterways-isma
 hallownest-seal-city-rafters
+hallownest-seal-fog-canyon-west
 hallownest-seal-fungal-pools
+hallownest-seal-greenpath-acid
+hallownest-seal-grubfather
 hallownest-seal-resting-crypt
 hallownest-seal-sanctum
 hallownest-seal-seer
 hallownest-seal-well
+kings-idol-dung-defender
+kings-idol-peak-cornifer
 map-ancient-basin
 map-city-of-tears
 map-crossroads
@@ -274,6 +279,7 @@ route-colosseum-entry
 route-crossroads-return
 route-crossroads-shaft
 route-crypt-west
+route-dirtmouth-ch5
 route-dirtmouth-lift
 route-dirtmouth-well
 route-east-city
@@ -292,6 +298,7 @@ route-hot-spring
 route-howling-wraiths-return
 route-iseldas-shop
 route-junk-pit
+route-lemm-relics-5
 route-mantis-outskirts
 route-moss-knight
 route-palace-ascent
@@ -311,6 +318,7 @@ route-tower-door
 route-void-heart
 route-watcher-spire
 route-waterways-hatch
+route-waterways-west
 route-world-sense
 simple-key-basin
 simple-key-city
@@ -346,7 +354,9 @@ vessel-fragment-seer-vessel
 vessel-fragment-sly-first
 vessel-fragment-sly-second
 vessel-fragment-stag-nest
+wanderers-journal-basin-bridge
 wanderers-journal-fungal-shaft
+wanderers-journal-greenpath-bubbles
 wanderers-journal-greenpath-stag
 wanderers-journal-mantis-village
 wanderers-journal-peak-crawlers
