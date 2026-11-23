@@ -27,7 +27,7 @@ const banners = byChapter(import.meta.glob<Banner>("./banners/chapter-*.webp", {
  * What's left is empty. The first sixteen are the game's own completion (its 112%, term by term). The rest is what the game's
  * percentage doesn't count: the collections a full save also holds (Grubs, notches, Pale Ore, maps, stations, Roots, keys, relics), the
  * endings and dream rematches, and the guide's own lists (key pickups, the six bosses outside the percentage, the
- * challenges, Pure Completion and the quest steps), whose goals are their rows, not a game total. Route steps are directions and
+ * challenges, three achievements and the quest steps), whose goals are their rows, not a game total. Route steps are directions and
  * carry no target. The game's own figure is the Check against the game panel's (`points.ts`), not the bar's. A test pins every
  * goal to the data.
  */
@@ -66,7 +66,7 @@ export const targets: BoardItem[] = [
   { tag: "other-boss", goal: 6, list: "guide" },
   { tag: "pickup", goal: 8, list: "guide" },
   { tag: "challenge", goal: 4, list: "guide" },
-  { tag: "achievement", goal: 1, list: "guide" },
+  { tag: "achievement", goal: 3, list: "guide" },
   { tag: "quest", goal: 56, list: "guide" },
 ];
 
@@ -119,7 +119,7 @@ const config: GuideConfig = {
     pantheon: ["Completion Pantheons", "Pantheon", "sword", "amber"],
     ending: ["Endings", "Ending", "book", "violet"],
     challenge: ["Optional challenges", "Challenge", "ribbon", "violet"],
-    achievement: ["Pure Completion", "Achievement", "ribbon", "amber"],
+    achievement: ["Achievements", "Achievement", "ribbon", "amber"],
   },
   chips: {
     checklist: [
@@ -152,7 +152,7 @@ const config: GuideConfig = {
       "100% is every target on the board, each item counted once: the game’s own completion with all four free content packs, and the Grubs, maps, endings, quest steps and the rest it leaves out. What your save should read is under Check against the game.",
     boardTitle: "Completion targets",
     boardNote:
-      "Every target counts, each item once, so 100% is exactly when What’s left is empty. The first sixteen are the game’s own completion, which weighs them differently (equipment counts twice, and Mask Shards and Vessel Fragments count only as whole masks and vessels), so its figure, in Check against the game, differs from this bar. Grubs, notches, Pale Ore, maps, stations, Roots, keys, endings and dream rematches count here too, and so do the relics Lemm buys, and so do the guide’s own lists: key pickups, six bosses outside the game’s percentage, the challenges, Pure Completion and the quest steps.",
+      "Every target counts, each item once, so 100% is exactly when What’s left is empty. The first sixteen are the game’s own completion, which weighs them differently (equipment counts twice, and Mask Shards and Vessel Fragments count only as whole masks and vessels), so its figure, in Check against the game, differs from this bar. Grubs, notches, Pale Ore, maps, stations, Roots, keys, endings and dream rematches count here too, and so do the relics Lemm buys, and so do the guide’s own lists: key pickups, six bosses outside the game’s percentage, the challenges, three achievements and the quest steps.",
     nextUpDone: "Everything revealed is checked. Reveal the next chapter or check the totals on the Progress page.",
     backupBlurb: "Export a copy of your checks and spoiler settings.",
   },
