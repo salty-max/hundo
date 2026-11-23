@@ -157,6 +157,7 @@ hallownest-seal-sanctum
 hallownest-seal-seer
 hallownest-seal-watcher-knights
 hallownest-seal-well
+kings-idol-cliffs
 kings-idol-deepnest-zote
 kings-idol-dung-defender
 kings-idol-great-hopper
@@ -292,6 +293,7 @@ route-broken-lift
 route-city-gate
 route-city-lift
 route-cliffs-entry
+route-cliffs-greenpath
 route-colosseum-entry
 route-crossroads-return
 route-crossroads-shaft
@@ -376,6 +378,7 @@ vessel-fragment-sly-first
 vessel-fragment-sly-second
 vessel-fragment-stag-nest
 wanderers-journal-basin-bridge
+wanderers-journal-cliffs
 wanderers-journal-edge-camp
 wanderers-journal-edge-dive
 wanderers-journal-edge-entrance
