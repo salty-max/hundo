@@ -146,7 +146,7 @@ export default {
         ["forge-channelled-nail", ["forge"], "Upgrade to the Channelled Nail", "Then go to the Nailsmith: the Channelled Nail costs 800 Geo and one Pale Ore.", { place: "City of Tears" }],
         ["boss-flukemarm", ["boss", "other-boss"], "Defeat Flukemarm under the Waterways", "Back down the hatch below Lemm’s shop to the Waterways bench. Break the loose floor in the corridor just under it with a dive, go down as far as the tunnels allow, then west; where the tunnel starts to rise, carry straight on through a hidden wall into her cave. The little worms on the way refill your Soul. She spits Flukefeys two at a time; the Channelled Nail kills each with one hit, so clear them and hit her between spawns."],
         ["charm-flukenest", ["charm"], "Collect Flukenest after Flukemarm", "She leaves the charm on the top-left ledge when she falls."],
-        ["route-waterways-west", ["route"], "Leave the Waterways by Cornifer’s door", "Climb back up and go west to Cornifer’s room: the door its lever opened, at the bottom left, comes out in the Fungal Wastes by a bench. Go left and drop down to the Dashmaster statue, where chapter 6 begins."],
+        ["route-waterways-west", ["route"], "Leave the Waterways by Cornifer’s door", "Climb back up and go west to Cornifer’s room: the door its lever opened, at the bottom left, comes out in the Fungal Wastes. Climb into the next room up, to the bench chapter 3 called the nearest to the Mantis Village: chapter 6 begins there."],
       ],
     },
   ],
