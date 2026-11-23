@@ -184,8 +184,10 @@ pickup-halberd
 pickup-havel-set
 pickup-havel-trove
 pickup-heavy-crossbow
+pickup-holy-set
 pickup-hunter-set
 pickup-iaito
+pickup-ivory-talisman
 pickup-key-new-londo
 pickup-knight-set
 pickup-knight-shield
@@ -193,6 +195,7 @@ pickup-light-crossbow
 pickup-lightning-spear
 pickup-logans-catalyst
 pickup-longbow
+pickup-mace
 pickup-maiden-set
 pickup-mail-breaker
 pickup-morning-star
@@ -202,6 +205,7 @@ pickup-occult-club
 pickup-painted-annex
 pickup-painted-tower
 pickup-painting-guardian-set
+pickup-paladin-set
 pickup-parrying-dagger
 pickup-partizan
 pickup-pharis-hat
@@ -220,6 +224,7 @@ pickup-sewer-chamber-key
 pickup-shadow-set
 pickup-shotel
 pickup-silver-knight-set
+pickup-skull-lantern
 pickup-sniper-crossbow
 pickup-sorcerer-set
 pickup-sorcerers-catalyst
@@ -435,6 +440,7 @@ route-burg-barrels
 route-burg-bonfire
 route-burg-rooftop
 route-catacomb-bridges
+route-catacomb-ledges
 route-catacomb-necromancers
 route-chasm-spells
 route-crow-nest
