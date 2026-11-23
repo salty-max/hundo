@@ -23,14 +23,6 @@ export default {
       ],
     },
     {
-      title: "Fights on the return trip",
-      location: "Fungal Wastes",
-      sources: [["Elder Hu’s rings", "https://hollowknight.wiki/w/Elder_Hu"]],
-      rows: [
-        ["warrior-dream-elder-hu", ["warrior-dream"], "Defeat Elder Hu on the eastern Fungal Wastes route", "Hu’s memorial is in the eastern Fungal Wastes, near the ways into the Mantis Village and the City of Tears. He slams rows of rings into the ground with gaps between them: stand in a gap, then strike while he floats low. 100 Essence."],
-      ],
-    },
-    {
       title: "The Hive",
       location: "The Hive · Kingdom’s Edge",
       sources: [["Hive Knight’s attacks", "https://hollowknight.wiki/w/Hive_Knight"], ["Hiveblood below the arena", "https://hollowknight.wiki/w/Hiveblood"]],

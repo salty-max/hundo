@@ -26,11 +26,8 @@ export default {
       map: ["ScriptersWar", "https://scripterswar.com/hollowknight/map"],
       compact: true,
       rows: [
-        ["root-fungal-fog", ["root"], "Clear the Fungal Wastes Root near Fog Canyon", "Strike the Fungal Wastes Root on the Fog Canyon side and gather its 20 Essence."],
-        ["root-greenpath", ["root"], "Clear the Greenpath Root", "Strike the Greenpath Root and gather its 44 Essence."],
         ["root-hive", ["root"], "Clear the Hive Root", "Strike the Hive’s Root and gather its 20 Essence."],
         ["root-cliffs", ["root"], "Clear the Howling Cliffs Root", "Strike the Howling Cliffs Root and gather its 46 Essence."],
-        ["root-gardens", ["root"], "Clear the Queen’s Gardens Root", "Strike the Queen’s Gardens Root and gather its 29 Essence."],
         ["root-glade", ["root"], "Clear the Spirits’ Glade Root", "The Seer opens the Glade at 200 Essence. Its Root is in the top right corner: strike it and gather its 34 Essence."],
       ],
     },
@@ -42,7 +39,6 @@ export default {
         ["dream-boss-failed-champion", ["dream-boss"], "Defeat Failed Champion above False Knight’s arena", "Above False Knight’s old arena in the Crossroads, break the wall to find his body with two Maggots beside it. Strike the body with the Dream Nail and win for 300 Essence."],
         ["dream-boss-soul-tyrant", ["dream-boss"], "Defeat Soul Tyrant in the Soul Sanctum", "Go back to Soul Master’s body in the Soul Sanctum and strike it with the Dream Nail. Beat Soul Tyrant for 300 Essence."],
         ["dream-boss-white-defender", ["dream-boss"], "Defeat White Defender below Dung Defender’s arena", "With the three Dreamers gone, return to Dung Defender’s arena in the Royal Waterways. Under the floating platform at its right end, dive through the floor with Desolate Dive or Descending Dark. Dream Nail the sleeping Defender in the room on the left and win for 300 Essence."],
-        ["mask-shard-seer-mask", ["mask-shard"], "Claim the Seer’s Mask Shard at 1,500 Essence", "At 1,500 Essence the Seer gives you a Mask Shard."],
         ["dream-milestone-seer-awoken", ["dream-milestone"], "Awaken the Dream Nail at 1,800 Essence", "At 1,800 Essence the Seer awakens your Dream Nail, which the White Palace needs. The seven Warrior Dreams and the dream bosses are the big sources; if she says you’re short, strike more Roots."],
         ["dream-milestone-seer-final", ["dream-milestone"], "Hear the Seer’s final words at 2,400 Essence", "Come back at 2,400 Essence and hear her last story; she fades away after it. The seven Warrior Dreams (1,100) and Lost Kin, Failed Champion, Soul Tyrant and White Defender (1,300) come to 2,400 between them, and the Roots hold 482 more."],
       ],
@@ -71,7 +67,6 @@ export default {
       sources: [["Hollow Knight wiki · Grub rewards by count, and the Collector’s Map", "https://hollowknight.wiki/w/Grub"], ["Hollow Knight wiki · the Grubfather’s room", "https://hollowknight.wiki/w/Grubfather"], ["Steam guide ch 25 · claiming the Grubfather’s rewards", "https://steamcommunity.com/sharedfiles/filedetails/?id=3005043947"]],
       compact: true,
       rows: [
-        ["pale-ore-grubfather-ore", ["pale-ore"], "Claim Pale Ore at 31 rescues", "At 31 Grubs he gives a Pale Ore. He drops his rewards on the floor, so pick everything up before you go."],
         ["charm-grubberfly-elegy", ["charm"], "Claim Grubberfly’s Elegy at all 46 rescues", "Free all 46 Grubs, using the Collector’s Map to find the jars you’ve missed, and his last reward is Grubberfly’s Elegy."],
       ],
     },
