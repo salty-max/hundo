@@ -1,4 +1,6 @@
+achievement-keen-hunter
 achievement-pure-completion
+achievement-true-hunter
 arcane-egg-birthplace
 arcane-egg-seer
 arcane-egg-shade-cloak
@@ -323,12 +325,14 @@ route-dirtmouth-well
 route-east-city
 route-edge-tram
 route-edge-tunnel
+route-flower-godseeker
 route-fog-first-trip
 route-fungal-entry
 route-fungal-loop
 route-gardens-entry
 route-gardens-greenpath
 route-goams
+route-godhome-upper
 route-greenpath-climb
 route-greenpath-entry
 route-greenpath-lower
@@ -338,6 +342,7 @@ route-hot-spring
 route-howling-wraiths-return
 route-iseldas-shop
 route-junk-pit
+route-junk-pit-city
 route-lemm-last
 route-lemm-memorial
 route-lemm-relics-5

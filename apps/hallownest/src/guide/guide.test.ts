@@ -107,10 +107,10 @@ describe("Hollow Knight completion", () => {
 
 describe("achievements", () => {
   // Hollow Knight keeps its own list, so a reader sees its achievements: on Switch, which has none, the game shows them as Feats
-  // (facts-to-verify.md). The guide tracks one, Pure Completion, which every platform's list has.
+  // (facts-to-verify.md). The guide tracks three: Pure Completion, Keen Hunter and True Hunter.
   it("shows the game's own achievements, backed by their sources", () => {
     expect(config.achievements?.sources.length).toBeGreaterThanOrEqual(2);
-    expect(rowsByTag("achievement").map((row) => row.id)).toEqual(["achievement-pure-completion"]);
+    expect(rowsByTag("achievement").map((row) => row.id)).toEqual(["achievement-pure-completion", "achievement-keen-hunter", "achievement-true-hunter"]);
   });
 });
 
