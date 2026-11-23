@@ -3,7 +3,7 @@ import type { Missable } from "@hundo/core/types";
 const steam = "https://steamcommunity.com/sharedfiles/filedetails/?id=3005043947";
 const fextralifeTroupe = "https://hollowknight.wiki.fextralife.com/The+Grimm+Troupe+(Quest)";
 
-/** What can be lost for good, in route order. None of it costs a point of the game's own completion, but seven of the eight are board rows a save can't get back once it has gone past them (four quest steps, the two endings and the Arcane Egg), so the bar needs them; the Troupe's finale is on the board too and is the same either way. The Nailsmith's request is a one-way choice (choices.ts), not a missable. */
+/** What can be lost for good, in route order. None of it costs a point of the game's own completion, but eight of the nine are board rows a save can't get back once it has gone past them (four quest steps, the two endings, the Arcane Egg and the Beast's Den Seal), so the bar needs them; the Troupe's finale is on the board too and is the same either way. The Nailsmith's request is a one-way choice (choices.ts), not a missable. */
 export const missables: Missable[] = [
   {
     id: "quest-zote-greenpath",
@@ -19,6 +19,11 @@ export const missables: Missable[] = [
     id: "quest-cloth-basin",
     why: "Meet Cloth here before you beat the boss of a much later garden: after that, she can’t be met here and her story goes elsewhere.",
     sources: ["https://hollowknight.wiki/w/Cloth", steam],
+  },
+  {
+    id: "hallownest-seal-beasts-den",
+    why: "Let the den’s bench trap carry you in before you beat Herrah: beat her without ever having been trapped, and this Seal can’t be reached again.",
+    sources: ["https://scripterswar.com/hollowknight/map", "https://steamcommunity.com/sharedfiles/filedetails/?id=936948247"],
   },
   {
     id: "pickup-lifeblood-egg",

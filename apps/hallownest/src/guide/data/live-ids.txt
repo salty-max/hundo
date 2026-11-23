@@ -138,15 +138,19 @@ grub-tower-near
 grub-waterways-bench
 grub-waterways-ceiling
 grub-waterways-isma
+hallownest-seal-beasts-den
 hallownest-seal-city-rafters
+hallownest-seal-deepnest-maze
 hallownest-seal-fog-canyon-west
 hallownest-seal-fungal-pools
 hallownest-seal-greenpath-acid
 hallownest-seal-grubfather
+hallownest-seal-mantis-treasure
 hallownest-seal-resting-crypt
 hallownest-seal-sanctum
 hallownest-seal-seer
 hallownest-seal-well
+kings-idol-deepnest-zote
 kings-idol-dung-defender
 kings-idol-peak-cornifer
 map-ancient-basin
@@ -279,6 +283,7 @@ route-colosseum-entry
 route-crossroads-return
 route-crossroads-shaft
 route-crypt-west
+route-deepnest-tram
 route-dirtmouth-ch5
 route-dirtmouth-lift
 route-dirtmouth-well

@@ -26,9 +26,7 @@ export default {
       map: ["ScriptersWar", "https://scripterswar.com/hollowknight/map"],
       compact: true,
       rows: [
-        ["root-deepnest", ["root"], "Clear the Deepnest Root", "Strike the Deepnest Root and gather its 45 Essence."],
         ["root-fungal-fog", ["root"], "Clear the Fungal Wastes Root near Fog Canyon", "Strike the Fungal Wastes Root on the Fog Canyon side and gather its 20 Essence."],
-        ["root-fungal-mantis", ["root"], "Clear the Fungal Wastes Root above Mantis Village", "Strike the Fungal Wastes Root above Mantis Village and gather its 18 Essence."],
         ["root-greenpath", ["root"], "Clear the Greenpath Root", "Strike the Greenpath Root and gather its 44 Essence."],
         ["root-hive", ["root"], "Clear the Hive Root", "Strike the Hive’s Root and gather its 20 Essence."],
         ["root-cliffs", ["root"], "Clear the Howling Cliffs Root", "Strike the Howling Cliffs Root and gather its 46 Essence."],
@@ -45,7 +43,6 @@ export default {
         ["dream-boss-failed-champion", ["dream-boss"], "Defeat Failed Champion above False Knight’s arena", "Above False Knight’s old arena in the Crossroads, break the wall to find his body with two Maggots beside it. Strike the body with the Dream Nail and win for 300 Essence."],
         ["dream-boss-soul-tyrant", ["dream-boss"], "Defeat Soul Tyrant in the Soul Sanctum", "Go back to Soul Master’s body in the Soul Sanctum and strike it with the Dream Nail. Beat Soul Tyrant for 300 Essence."],
         ["dream-boss-white-defender", ["dream-boss"], "Defeat White Defender below Dung Defender’s arena", "With the three Dreamers gone, return to Dung Defender’s arena in the Royal Waterways. Under the floating platform at its right end, dive through the floor with Desolate Dive or Descending Dark. Dream Nail the sleeping Defender in the room on the left and win for 300 Essence."],
-        ["quest-seer-dreamgate", ["quest"], "Learn Dreamgate at 900 Essence", "At 900 Essence the Seer teaches Dreamgate: set a gate with the Dream Nail where you stand, and warp back to it later for 1 Essence a trip. A warp breaks a Delicate Flower you’re carrying."],
         ["mask-shard-seer-mask", ["mask-shard"], "Claim the Seer’s Mask Shard at 1,500 Essence", "At 1,500 Essence the Seer gives you a Mask Shard."],
         ["dream-milestone-seer-awoken", ["dream-milestone"], "Awaken the Dream Nail at 1,800 Essence", "At 1,800 Essence the Seer awakens your Dream Nail, which the White Palace needs. The seven Warrior Dreams and the dream bosses are the big sources; if she says you’re short, strike more Roots."],
         ["dream-milestone-seer-final", ["dream-milestone"], "Hear the Seer’s final words at 2,400 Essence", "Come back at 2,400 Essence and hear her last story; she fades away after it. The seven Warrior Dreams (1,100) and Lost Kin, Failed Champion, Soul Tyrant and White Defender (1,300) come to 2,400 between them, and the Roots hold 482 more."],
