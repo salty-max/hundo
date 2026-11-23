@@ -26,8 +26,6 @@ export default {
       map: ["ScriptersWar", "https://scripterswar.com/hollowknight/map"],
       compact: true,
       rows: [
-        ["root-hive", ["root"], "Clear the Hive Root", "Strike the Hive’s Root and gather its 20 Essence."],
-        ["root-cliffs", ["root"], "Clear the Howling Cliffs Root", "Strike the Howling Cliffs Root and gather its 46 Essence."],
         ["root-glade", ["root"], "Clear the Spirits’ Glade Root", "The Seer opens the Glade at 200 Essence. Its Root is in the top right corner: strike it and gather its 34 Essence."],
       ],
     },
