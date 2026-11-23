@@ -163,6 +163,7 @@ pickup-crystal-knight-shield
 pickup-crystalline-set
 pickup-dark-set
 pickup-darksword
+pickup-demons-catalyst
 pickup-depths-greataxe
 pickup-depths-weapons
 pickup-doll
@@ -175,6 +176,7 @@ pickup-falchion
 pickup-firelink-graveyard
 pickup-giant-cell-key
 pickup-giant-door-key
+pickup-gold-hemmed-black-set
 pickup-gold-pine-resin
 pickup-grass-crest-shield
 pickup-great-club
@@ -220,6 +222,7 @@ pickup-sens-scavenger
 pickup-server
 pickup-set-of-favor
 pickup-set-of-the-channelers
+pickup-set-of-thorns
 pickup-sewer-chamber-key
 pickup-shadow-set
 pickup-shotel
@@ -231,6 +234,7 @@ pickup-sorcerers-catalyst
 pickup-spider-shield
 pickup-spider-shield-valley
 pickup-stone-set
+pickup-sunlight-maggot
 pickup-symbol-of-avarice
 pickup-talisman
 pickup-target-shield
