@@ -57,6 +57,7 @@ export const targets: BoardItem[] = [
   // The relics go in chapter by chapter where the route picks each up: a guide list (its goal its rows) until the last chapter with a
   // relic, which makes all four the game's totals (14 Wanderer's Journals, 17 Hallownest Seals, 8 King's Idols, 4 Arcane Eggs).
   { tag: "hallownest-seal", goal: 1, list: "guide" },
+  { tag: "wanderers-journal", goal: 1, list: "guide" },
   { tag: "ending", goal: 5, list: "game" },
   { tag: "dream-boss", goal: 5, list: "game" },
   { tag: "other-boss", goal: 6, list: "guide" },
@@ -96,6 +97,7 @@ const config: GuideConfig = {
     pickup: ["Special pickups", "Pickup", "chest", "mint"],
     "simple-key": ["Simple Keys", "Key", "chest", "amber"],
     "hallownest-seal": ["Hallownest Seals", "Hallownest Seal", "stamp", "sky"],
+    "wanderers-journal": ["Wanderer’s Journals", "Wanderer’s Journal", "book", "clay"],
     charm: ["Charms", "Charm", "gem", "violet"],
     notch: ["Earned Charm Notches", "Charm Notch", "gem", "clay"],
     spell: ["Spells", "Spell", "flask", "violet"],

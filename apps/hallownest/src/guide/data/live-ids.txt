@@ -263,6 +263,7 @@ route-city-gate
 route-city-lift
 route-cliffs-entry
 route-colosseum-entry
+route-crossroads-return
 route-crossroads-shaft
 route-dirtmouth-lift
 route-dirtmouth-well
@@ -271,12 +272,16 @@ route-edge-tunnel
 route-fog-first-trip
 route-gardens-entry
 route-goams
+route-greenpath-climb
+route-greenpath-entry
+route-greenpath-lower
 route-hive-door
 route-hive-map
 route-hot-spring
 route-howling-wraiths-return
 route-iseldas-shop
 route-junk-pit
+route-moss-knight
 route-palace-ascent
 route-palace-entry
 route-palace-left
@@ -324,6 +329,7 @@ vessel-fragment-seer-vessel
 vessel-fragment-sly-first
 vessel-fragment-sly-second
 vessel-fragment-stag-nest
+wanderers-journal-greenpath-stag
 warrior-dream-elder-hu
 warrior-dream-galien
 warrior-dream-gorb
