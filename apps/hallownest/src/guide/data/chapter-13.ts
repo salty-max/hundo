@@ -13,7 +13,7 @@ export default {
       location: "City of Tears",
       sources: [["Hollow Knight wiki · Pale Ore: all six in the game", "https://hollowknight.wiki/w/Pale_Ore"], ["Fextralife · Pale Ore", "https://hollowknight.wiki.fextralife.com/Pale+Ore"], ["Hollow Knight wiki · the Nailsmith: upgrade costs and Purity", "https://hollowknight.wiki/w/Nailsmith"]],
       rows: [
-        ["quest-nailsmith-purity", ["quest"], "Strike the Nailsmith down", "On the new save, bring him all six Pale Ore and 7,050 Geo over his four upgrades (250, 800, 2,000 and 4,000). When the Pure Nail is done and he asks you to strike him down, do it: he falls into the water below, and you get Purity."],
+        ["quest-nailsmith-purity", ["quest"], "Strike the Nailsmith down", "On the new save, bring him all six Pale Ore (this guide takes them in chapters 5, 5, 5, 6, 8 and 11) and 7,050 Geo over his four upgrades (250, 800, 2,000 and 4,000). When the Pure Nail is done and he asks you to strike him down, do it, and you get Purity."],
       ],
     },
   ],
