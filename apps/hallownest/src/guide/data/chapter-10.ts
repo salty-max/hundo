@@ -30,7 +30,6 @@ export default {
         ["root-greenpath", ["root"], "Clear the Greenpath Root", "Strike the Greenpath Root and gather its 44 Essence."],
         ["root-hive", ["root"], "Clear the Hive Root", "Strike the Hive’s Root and gather its 20 Essence."],
         ["root-cliffs", ["root"], "Clear the Howling Cliffs Root", "Strike the Howling Cliffs Root and gather its 46 Essence."],
-        ["root-edge", ["root"], "Clear the Kingdom’s Edge Root", "Strike the Kingdom’s Edge Root and gather its 51 Essence, the most any Root holds."],
         ["root-gardens", ["root"], "Clear the Queen’s Gardens Root", "Strike the Queen’s Gardens Root and gather its 29 Essence."],
         ["root-glade", ["root"], "Clear the Spirits’ Glade Root", "The Seer opens the Glade at 200 Essence. Its Root is in the top right corner: strike it and gather its 34 Essence."],
       ],
