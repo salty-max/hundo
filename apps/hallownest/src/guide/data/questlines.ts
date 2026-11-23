@@ -22,6 +22,7 @@ export const questlines = {
         "quest-quirrel-temple",
         "quest-lake-quirrel",
         "quest-quirrel-station",
+        "quest-quirrel-mantis",
         "quest-quirrel-monument",
         "quest-quirrel-deepnest",
         "quest-quirrel-archives",
