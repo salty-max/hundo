@@ -52,11 +52,11 @@ export const targets: BoardItem[] = [
   { tag: "dlc-gear", goal: 8, list: "guide" },
   { tag: "trade", goal: 18, list: "game" },
   { tag: "estus", goal: 5, list: "guide" },
-  { tag: "forge", goal: 6, list: "guide" },
+  { tag: "forge", goal: 7, list: "guide" },
   { tag: "invasion", goal: 7, list: "game" },
   { tag: "cycle", goal: 4, list: "guide" },
   { tag: "extra", goal: 14, list: "guide" },
-  { tag: "pickup", goal: 109, list: "guide" },
+  { tag: "pickup", goal: 110, list: "guide" },
 ];
 
 const config: GuideConfig = {

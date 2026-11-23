@@ -96,6 +96,7 @@ extra-ricard
 extra-township-carvings
 extra-valley-dragon
 forge-blue-slab-cave
+forge-chasm-slab
 forge-kalameet-slab
 forge-kiln-farm
 forge-red-slab
@@ -182,6 +183,7 @@ pickup-grass-crest-shield
 pickup-great-club
 pickup-great-scythe
 pickup-greatsword
+pickup-guardian-set
 pickup-halberd
 pickup-havel-set
 pickup-havel-trove
@@ -479,6 +481,7 @@ route-portal
 route-reach-anor-londo
 route-reach-lordran
 route-rickert
+route-royal-wood-second
 route-seath-intro
 route-second-bell
 route-sens-boulders
