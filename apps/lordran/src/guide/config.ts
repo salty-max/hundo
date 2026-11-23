@@ -56,7 +56,7 @@ export const targets: BoardItem[] = [
   { tag: "invasion", goal: 7, list: "game" },
   { tag: "cycle", goal: 4, list: "guide" },
   { tag: "extra", goal: 14, list: "guide" },
-  { tag: "pickup", goal: 114, list: "guide" },
+  { tag: "pickup", goal: 118, list: "guide" },
 ];
 
 const config: GuideConfig = {
