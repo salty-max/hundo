@@ -142,6 +142,7 @@ pickup-black-cleric-set
 pickup-black-sorcerer-set
 pickup-blighttown-iaito
 pickup-broken-pendant
+pickup-butcher-knife
 pickup-caduceus-round-shield
 pickup-cage-key
 pickup-catacomb-lucerne
@@ -151,7 +152,9 @@ pickup-crystal-halberd
 pickup-depths-greataxe
 pickup-depths-weapons
 pickup-doll
+pickup-eagle-shield
 pickup-estoc
+pickup-falchion
 pickup-firelink-graveyard
 pickup-gold-pine-resin
 pickup-grass-crest-shield
@@ -162,6 +165,7 @@ pickup-havel-set
 pickup-havel-trove
 pickup-heavy-crossbow
 pickup-iaito
+pickup-key-new-londo
 pickup-knight-shield
 pickup-light-crossbow
 pickup-lightning-spear
@@ -171,6 +175,7 @@ pickup-mystery-key
 pickup-occult-club
 pickup-painted-annex
 pickup-painted-tower
+pickup-pyromancer-set
 pickup-red-sign-soapstone
 pickup-residence-key
 pickup-sack
@@ -184,7 +189,9 @@ pickup-spider-shield
 pickup-talisman
 pickup-target-shield
 pickup-thief-gear
+pickup-wanderer-set
 pickup-warrior-set
+pickup-whip
 pickup-winged-spear
 pickup-wooden-shield
 pickup-zweihander
@@ -378,6 +385,7 @@ route-ash-lake-fire
 route-asylum-leave
 route-asylum-return
 route-asylum-start
+route-blighttown-underside
 route-burg-barrels
 route-burg-bonfire
 route-burg-rooftop
