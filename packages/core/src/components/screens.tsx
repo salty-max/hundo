@@ -6,9 +6,10 @@ import { SelectImpl as Select } from "./select-impl";
 import { DialogDescription, DialogFooter, DialogSeparator, DialogStatus, DialogText } from "./dialog";
 import { StorageWarning } from "./StorageWarning";
 import { Button } from "./ui";
-import { brand, byId, chapters, readChapter, text } from "../guide";
+import { brand, buildName, byId, chapters, hasBuilds, readChapter, text } from "../guide";
 import { exportProgress } from "../backup";
 import { validateState } from "../progress-state";
+import { useBuild } from "../store/build";
 import { isOpen, useProgress } from "../store/progress";
 import { useSyncStatus } from "../store/sync";
 import { canKeepAwake, useAwake } from "../store/awake";
@@ -20,6 +21,27 @@ import { useUi, type DialogState } from "../store/ui";
 import type { ProgressState } from "../types";
 
 type Screens = NonNullable<DialogState>;
+
+/**
+ * Build advice, in a guide with builds: the reader's build and the way to choose or change it. Always here, so a reader who said No thanks
+ * to the strip's invitation has a way back. Outside the settings' form, like Sync devices: it opens its own dialog, and unsaved settings
+ * go with this one.
+ */
+function BuildAdvice() {
+  const picked = useBuild((s) => s.picked);
+  const openDialog = useUi((s) => s.openDialog);
+  return (
+    <>
+      <DialogText>
+        <strong>Build advice: {picked.length ? buildName(picked) : "none"}.</strong>{" "}
+        {picked.length ? "The walkthrough adds advice for it at the steps where it matters." : "Pick a build, and the walkthrough adds advice for it at the steps where it matters."}
+      </DialogText>
+      <DialogFooter>
+        <Button onClick={() => openDialog({ kind: "build" })}>{picked.length ? "Change build" : "Choose build"}</Button>
+      </DialogFooter>
+    </>
+  );
+}
 
 /** A question that needs an answer. */
 export function ConfirmScreen({ dialog }: { dialog: Extract<Screens, { kind: "confirm" }> }) {
@@ -161,6 +183,12 @@ export function SettingsScreen() {
         </DialogFooter>
       </form>
       <DialogSeparator />
+      {hasBuilds && (
+        <>
+          <BuildAdvice />
+          <DialogSeparator />
+        </>
+      )}
       <DialogText>
         {text.backupBlurb} Importing replaces the current progress{synced ? ", here and on every device you sync with" : ""}.
       </DialogText>

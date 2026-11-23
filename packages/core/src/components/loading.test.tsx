@@ -7,10 +7,7 @@ import { ToastHost } from "./ToastHost";
 import { WhoSaysTrigger } from "./BuildMark";
 import { WhoSaysHost } from "./WhoSaysHost";
 import { chunks } from "./chunks";
-import { changeChecks } from "../actions";
-import { allRows, hasBuilds } from "../guide";
 import { loadable } from "../loadable";
-import { useBuild } from "../store/build";
 import { defaultState } from "../progress-state";
 import { useProgress } from "../store/progress";
 import { useTheme } from "../store/theme";
@@ -234,30 +231,6 @@ describe("the dialog while its chunk loads", () => {
     renderHost();
     act(() => useUi.getState().openDialog({ kind: "settings" }));
     await waitFor(() => expect(useUi.getState().toast?.message).toMatch(/Check your connection/));
-  });
-});
-
-describe.runIf(hasBuilds)("the build welcome while the dialog's chunk loads", () => {
-  it("isn't spent when its chunk can't be fetched: the failure's toast stays, and the next tick asks again", async () => {
-    const importer = vi.fn<() => Promise<DialogModule>>().mockRejectedValueOnce(new Error("offline"));
-    importer.mockImplementation(() => vi.importActual<DialogModule>("./DialogFrames"));
-    chunks.dialog = loadable(importer);
-    useBuild.setState({ picked: [], asked: false });
-    render(
-      <MemoryRouter>
-        <DialogHost />
-      </MemoryRouter>,
-    );
-
-    act(() => changeChecks([allRows[0].id], true, "Checked one."));
-    await waitFor(() => expect(importer).toHaveBeenCalledTimes(1));
-    await waitFor(() => expect(useUi.getState().dialog).toBeNull());
-    expect(useBuild.getState().asked).toBe(false);
-    expect(useUi.getState().toast?.message).toMatch(/^Couldn't open that/);
-
-    act(() => changeChecks([allRows[1].id], true, "Checked another."));
-    expect(await screen.findByRole("dialog", { name: "How are you playing?" })).toBeInTheDocument();
-    expect(useBuild.getState().asked).toBe(true);
   });
 });
 

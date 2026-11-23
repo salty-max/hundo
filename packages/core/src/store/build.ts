@@ -9,9 +9,10 @@ import { brand, leanings, retiredLeanings } from "../guide";
 export const BUILD_KEY = `${brand.storagePrefix}.build`;
 
 /**
- * Whether the guide has asked this device's reader for a build (the welcome on the first tick): set once they pick or skip, and never
- * cleared, so the welcome never comes back. A key apart from the pick's, which a tab still on an older build removes whenever it saves its
- * settings with no pick: an empty pick couldn't say "asked". The time it was set, in ms since the epoch.
+ * Whether the guide has asked this device's reader for a build and they answered: set once they save one or say No thanks to the strip's
+ * invitation (or, before 23 Nov 2026, closed the welcome on their first tick), and never cleared, so the invitation never comes back.
+ * A key apart from the pick's, which a tab still on an older build removes whenever it saves its settings with no pick: an empty pick
+ * couldn't say "asked". The time it was set, in ms since the epoch.
  */
 export const BUILD_ASKED_KEY = `${brand.storagePrefix}.build-asked`;
 
@@ -34,10 +35,10 @@ const readAsked = () => get(BUILD_ASKED_KEY) !== null || (get(BUILD_KEY) ?? "").
 
 interface BuildStore {
   picked: string[];
-  /** The guide has asked for a build (or the reader picked one), so the welcome stays away. */
+  /** The reader answered the guide's invitation (or picked a build), so the strip's invitation stays away. */
   asked: boolean;
   setPicked: (picked: string[]) => void;
-  /** The welcome was shown: whatever the reader does with it, it's answered. */
+  /** No thanks to the strip's invitation: answered, and not asked again. */
   markAsked: () => void;
   /** Re-read after another tab changed the pick. */
   sync: (value: unknown) => void;

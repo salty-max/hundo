@@ -70,7 +70,8 @@ const PAIRS: [string, string, number][] = [
   ["--on-primary", "--primary", 4.5],
   ["--on-accent", "--accent", 4.5],
   ["--soft-ink", "--soft", 4.5],
-  // The build's Main weapon track: titles and its quieter lines on the soft card (BuildPanel.tsx).
+  // The build's weapon milestones: titles and its quieter lines on the soft card, a stage's dot in the guide's colour, and the way off a
+  // default dashed in the muted tint (BuildPanel.tsx).
   ["--ink", "--soft", 4.5],
   ["--muted", "--soft", 4.5],
   ["--primary", "--soft", 3],

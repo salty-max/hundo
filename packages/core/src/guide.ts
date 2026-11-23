@@ -1,6 +1,6 @@
 import config from "virtual:guide/config";
 import { pct } from "./format";
-import type { BuildGuide, BuildKind, BuildNote, BuildPick, BuildStart, BuildTask, Chapter, Checks, Choice, LeftItem, NamedBuild, PickRole, Row } from "./types";
+import type { BuildBranch, BuildGuide, BuildKind, BuildNote, BuildPick, BuildStart, BuildTask, Chapter, Checks, Choice, LeftItem, NamedBuild, PickRole, Row } from "./types";
 
 export { config };
 export const { brand, categories: cats, completion, text } = config;
@@ -250,32 +250,104 @@ export function buildPlan(isChapterOpen: (chapter: number) => boolean, picked: r
     .filter((part) => part.rows.length > 0);
 }
 
-/**
- * A stage of a build's weapon track: how guides start it, or a row's note that names the weapon as the row leaves it, with the role of the
- * row's weapon or path pick for the build as a word ("Upgrade"), or no word for a smith's stage, whose name says it.
- */
-export type TrackStage = { start: BuildStart } | { row: Row; note: BuildNote; word: string };
+/** A stage of a build's weapon track: a row's note that names the weapon as the row leaves it. */
+export interface TrackStage {
+  row: Row;
+  note: BuildNote;
+}
 
 /**
- * The build's weapon track: the weapon its start names, then each note that names a stage of it, in route order, from the revealed chapters
- * only. Nothing is said of what hidden chapters hold, not even how much. The stages are the named build's own, never an add-on's: Pyromancy
- * beside a Quality build doesn't put the Fire path in its weapon's track. Empty for a pick that reads steps.
+ * One way off a stage of the track: the stage it leaves from, and the stages along it that are revealed. `single`: it's one stage in all,
+ * with no branch off it, so it's drawn as that stage; any other keeps its name and why over its line however much of it is revealed.
  */
-export function weaponTrack(isChapterOpen: (chapter: number) => boolean, picked: readonly string[]): TrackStage[] {
-  const of = buildOf(picked);
-  if (!of || !readsNotes(picked)) return [];
-  const own = of.build.id;
-  const stages: TrackStage[] = of.build.start?.weapon ? [{ start: of.build.start }] : [];
-  for (const row of allRows) {
-    if (!isChapterOpen(row.chapter)) continue;
-    for (const note of notesByRow.get(row.id) ?? []) {
-      if (!note.stage || !note.for.includes(own)) continue;
-      const pick = (picksByRow.get(row.id) ?? []).find((item) => item.for.includes(own) && (item.kind === "weapon" || item.kind === "path"));
-      stages.push({ row, note, word: pick ? pickRoles[pick.role] : "" });
-    }
-  }
-  return stages;
+export interface TrackBranch {
+  branch: BuildBranch;
+  from: TrackStage;
+  line: TrackItem[];
+  single: boolean;
 }
+
+/**
+ * The branches that leave one stage of a line at one place. `alternative`: the line goes on past that stage, in any chapter, so the line
+ * is what guides default to and each branch is the other way; otherwise the line ends at that stage and its branches are equal ways, the
+ * choice said in their whys. It's the build's, not the reveal's: a branch reads as the other way to a default whose next stage is still
+ * hidden, never as the line. `more`: an equal way off the same stage isn't revealed yet, so the ways drawn aren't all of them.
+ */
+export interface TrackFork {
+  branches: TrackBranch[];
+  alternative: boolean;
+  more: boolean;
+}
+
+export type TrackItem = { stage: TrackStage } | { fork: TrackFork };
+
+/** The build's weapon track: how guides start it, then its main line, stages and forks in route order. */
+export interface WeaponTrack {
+  start?: BuildStart;
+  line: TrackItem[];
+}
+
+const routeIndex = new Map(allRows.map((row, index) => [row.id, index]));
+
+/**
+ * The build's weapon track: the weapon its start names, then the stages its notes name, from the revealed chapters only, as a main line
+ * with the build's branches off it. A branch is drawn at its first stage's place in route order on the line it leaves (never above a
+ * stage that comes before it), and branches at one place make one fork. Nothing is said of what hidden chapters hold, not even how much:
+ * a branch with no stage revealed isn't drawn. The stages are the named build's own, never an add-on's: Pyromancy beside a Quality build
+ * doesn't put the Fire path in its weapon's track. It holds what guides recommend, never what the reader has done, so no tick moves it.
+ * Null for a pick that reads steps.
+ */
+export function weaponTrack(isChapterOpen: (chapter: number) => boolean, picked: readonly string[]): WeaponTrack | null {
+  const of = buildOf(picked);
+  if (!of || !readsNotes(picked)) return null;
+  const own = of.build;
+  const branches = own.branches ?? [];
+  const every = allRows.flatMap((row) => (notesByRow.get(row.id) ?? []).filter((note) => note.stage && note.for.includes(own.id)).map((note) => ({ row, note })));
+  const staged = every.filter(({ row }) => isChapterOpen(row.chapter));
+  // A branch of one stage in all, with no branch off it: drawn as that stage.
+  const isSingle = (id: string) => {
+    const own = every.filter(({ note }) => note.branch === id);
+    return own.length === 1 && !branches.some((branch) => branch.from === own[0].row.id);
+  };
+  // Whether a line goes on past a stage, in any chapter: what makes a branch off it the other way to a default.
+  const goesOn = (id: string | undefined, from: string) => {
+    const line = every.filter(({ note }) => note.branch === id);
+    return line.findIndex(({ row }) => row.id === from) < line.length - 1;
+  };
+  const first = (line: TrackItem[]) => routeIndex.get((line[0] as { stage: TrackStage }).stage.row.id) ?? 0;
+  const lineOf = (id: string | undefined, seen: ReadonlySet<string>): TrackItem[] => {
+    const stages = staged.filter(({ note }) => note.branch === id);
+    // Each branch leaving one of these stages, with what's revealed of it, at the count of this line's stages that come before it.
+    const leaving = branches
+      .filter((branch) => !seen.has(branch.id) && stages.some(({ row }) => row.id === branch.from))
+      .map((branch) => ({
+        branch,
+        from: stages.find(({ row }) => row.id === branch.from)!,
+        line: lineOf(branch.id, new Set([...seen, branch.id])),
+        single: isSingle(branch.id),
+      }))
+      .filter((item) => item.line.length > 0)
+      .sort((a, b) => first(a.line) - first(b.line));
+    const items: TrackItem[] = [];
+    stages.forEach((stage, i) => {
+      items.push({ stage });
+      const here = leaving.filter((item) => stages.filter(({ row }) => (routeIndex.get(row.id) ?? 0) < first(item.line)).length === i + 1);
+      // One fork per stage they leave, in the order of their first branches.
+      for (const from of [...new Set(here.map((item) => item.from))]) {
+        const off = here.filter((item) => item.from === from);
+        const alternative = goesOn(id, from.row.id);
+        const more = !alternative && branches.some((branch) => branch.from === from.row.id && !seen.has(branch.id) && !leaving.some((item) => item.branch === branch));
+        items.push({ fork: { branches: off, alternative, more } });
+      }
+    });
+    return items;
+  };
+  return { start: own.start?.weapon ? own.start : undefined, line: lineOf(undefined, new Set()) };
+}
+
+/** A track's stages, in the order it draws them: each line before what follows its fork. For tests and counts. */
+export const trackStages = (items: readonly TrackItem[]): TrackStage[] =>
+  items.flatMap((item) => ("stage" in item ? [item.stage] : item.fork.branches.flatMap((branch) => trackStages(branch.line))));
 
 /** How much one entry adds toward a category: the configured quantity category by amount, everything else by one. */
 export const worth = (row: Row, tag: string) => (tag === config.quantity ? row.quantity : 1);

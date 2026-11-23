@@ -36,7 +36,7 @@ describe.skipIf(noted.size === 0)("builds whose notes aren't all written", () =>
     for (const build of written) expect(readsNotes(build.stats), build.id).toEqual([build.id]);
     for (const build of unwritten) {
       expect(readsNotes(build.stats), build.id).toBeNull();
-      expect(weaponTrack(() => true, build.stats), build.id).toEqual([]);
+      expect(weaponTrack(() => true, build.stats), build.id).toBeNull();
       const rows = serving(build.stats);
       expect(rows.length, build.id).toBeGreaterThan(0);
       for (const row of rows) {
