@@ -70,15 +70,13 @@ export default {
     },
     {
       title: "Grubs that need revisits",
-      location: "Howling Cliffs · Greenpath · The Hive · Royal Waterways",
+      location: "Howling Cliffs · The Hive · Royal Waterways",
       note: "The Collector’s Map marks the jars still waiting, which helps on a late sweep.",
-      sources: [["Steam guide ch 10, 13, 21 and 22 · return-trip jars", "https://steamcommunity.com/sharedfiles/filedetails/?id=3005043947"], ["Grub locations and requirements", "https://hollowknight.wiki/w/Grub"]],
+      sources: [["Steam guide ch 10, 21 and 22 · return-trip jars", "https://steamcommunity.com/sharedfiles/filedetails/?id=3005043947"], ["Grub locations and requirements", "https://hollowknight.wiki/w/Grub"]],
       map: ["ScriptersWar", "https://scripterswar.com/hollowknight/map"],
       compact: true,
       rows: [
         ["grub-cliffs-baldur", ["grub"], "Free the Grub hidden above the Baldur Shell cave", "This jar lies under the Cliffs path near the Greenpath connection, behind a breakable wall. From where the Baldur Shell lay, jump up into the opening overhead behind you and climb all the way up; the wall is on your left."],
-        ["grub-greenpath-obble", ["grub"], "Free the Grub past the Obbles in lower Greenpath", "In lower Greenpath, east past the Thorns of Agony detour, a long hall is full of floating Obbles. The jar sits low in the right-hand corner of the next room."],
-        ["grub-greenpath-pilgrims", ["grub"], "Free the Grub beyond Massive Moss Charger", "West of the Massive Moss Charger’s arena, work round the next room into another long corridor; the jar is about halfway along it."],
         ["grub-hive-ceiling", ["grub"], "Free the Grub in the high Hive passage", "A hidden hallway above the Hive’s big cavern, the one before Hive Knight’s arena, leads to this jar. From the top of the cavern, follow the path right into the next room and drop to the second ledge below its entrance. Cling to the left wall and, from about halfway up it, charge Crystal Heart; cancel just short of the hole above and double-jump in."],
         ["grub-waterways-ceiling", ["grub"], "Free the Grub over the southeastern Waterways passage", "This jar is reachable only from Kingdom’s Edge. From the tunnel between the Tram and the Hive, climb the shaft above and the hall over it, and go up through its ceiling exit into the Royal Waterways. Head right; the moment the ceiling opens above you, jump straight up and the jar is to your upper left."],
         ["grub-hive-waterways", ["grub"], "Reach the Hive’s sealed Grub from the Waterways", "Back in that Waterways corridor, follow it right to its end and break the loose floor with Desolate Dive or Descending Dark. A narrow passage below drops you into a sealed-off corner of the Hive with the jar. The wiki lists Isma’s Tear among what this jar needs, which you have by now."],

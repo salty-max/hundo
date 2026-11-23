@@ -37,7 +37,7 @@ describe("Hollow Knight completion", () => {
 
   it("counts the game's sixteen and the rest", () => {
     expect(gameTags.every((tag) => targets.some((target) => target.tag === tag))).toBe(true);
-    for (const tag of ["grub", "notch", "pale-ore", "map", "stag", "root", "simple-key", "hallownest-seal", "ending", "dream-boss", "other-boss", "pickup", "challenge", "achievement", "quest"]) {
+    for (const tag of ["grub", "notch", "pale-ore", "map", "stag", "root", "simple-key", "hallownest-seal", "wanderers-journal", "ending", "dream-boss", "other-boss", "pickup", "challenge", "achievement", "quest"]) {
       expect(beyondTags, tag).toContain(tag);
     }
   });
