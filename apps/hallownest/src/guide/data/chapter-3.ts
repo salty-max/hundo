@@ -33,7 +33,7 @@ export default {
     {
       title: "Leg Eater, Cloth and Hornet’s room",
       location: "Fungal Wastes",
-      note: "Leg Eater’s three charms cost 1,200 Geo in all, 20% less while you wear a charm you’ll find in chapter 5. Buy what you can now, or set them aside: they come back when the route next passes Leg Eater, in chapter 9, by when you’ll have the discount.",
+      note: "Leg Eater’s three charms cost 1,200 Geo in all, 20% less while you wear a charm you’ll find in chapter 5. Buy what you can now, or leave them: chapter 8 passes Leg Eater again, by when you’ll have the discount.",
       sources: [["Steam guide ch 3 · Leg Eater, Cloth and Hornet’s room", steam], ["Steam guide ch 18 · buying the Fragile charms with the discount", steam], ["fextralife · Leg Eater’s fee, the chained gate and Cloth", fxlFungal], ["ludo.guide · the room below Hornet’s and the bouncy corridor’s Grub", ludoFungal], ["VGKami · the Grub up the bouncy corridor and the shortcut lever", vgkFungal], ["fextralife · Leg Eater’s three charms, their prices and the 20% discount", "https://hollowknight.wiki.fextralife.com/Leg+Eater"], ["Wiki · Leg Eater’s fee, repairs and discount", "https://hollowknight.wiki/w/Leg_Eater"], ["Wiki · Cloth, and when she leaves", "https://hollowknight.wiki/w/Cloth"], ["Wiki · Grub locations", "https://hollowknight.wiki/w/Grub"]],
       rows: [
         ["quest-leg-eater", ["quest"], "Meet Leg Eater and see his charm stock", "Right of the Ogres, a tall shaft climbs to the Crossroads. Partway up it, an exit on its right leads to Leg Eater’s camp and a bench. Pay him 86 Geo to see his Fragile charms, which break when you die and which he repairs for a fee. The shaft’s lower-left way on, toward Fog Canyon, needs a later ability (chapter 8)."],

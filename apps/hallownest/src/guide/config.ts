@@ -54,16 +54,16 @@ export const targets: BoardItem[] = [
   { tag: "stag", goal: 11, list: "game" },
   { tag: "root", goal: 15, list: "game" },
   { tag: "simple-key", goal: 4, list: "game" },
-  // The relics go in chapter by chapter where the route picks each up: a guide list (its goal its rows) until the last chapter with a
-  // relic, which makes all four the game's totals (14 Wanderer's Journals, 17 Hallownest Seals, 8 King's Idols, 4 Arcane Eggs).
-  { tag: "hallownest-seal", goal: 14, list: "guide" },
+  // The relics go in chapter by chapter where the route picks each up: a guide list (its goal its rows) until the line holds the
+  // game's total (14 Wanderer's Journals, 17 Hallownest Seals, 8 King's Idols, 4 Arcane Eggs). The Seals are all in since chapter 8.
+  { tag: "hallownest-seal", goal: 17, list: "game" },
   { tag: "wanderers-journal", goal: 13, list: "guide" },
-  { tag: "kings-idol", goal: 4, list: "guide" },
+  { tag: "kings-idol", goal: 5, list: "guide" },
   { tag: "arcane-egg", goal: 2, list: "guide" },
   { tag: "ending", goal: 5, list: "game" },
   { tag: "dream-boss", goal: 5, list: "game" },
   { tag: "other-boss", goal: 6, list: "guide" },
-  { tag: "pickup", goal: 8, list: "guide" },
+  { tag: "pickup", goal: 9, list: "guide" },
   { tag: "challenge", goal: 4, list: "guide" },
   { tag: "achievement", goal: 1, list: "guide" },
   { tag: "quest", goal: 44, list: "guide" },

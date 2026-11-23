@@ -123,7 +123,7 @@ export default {
         ["boss-brooding-mawlek", ["boss", "percent-boss"], "Defeat Brooding Mawlek in the west Crossroads", "Back in the main shaft, break the cracked door below the Greenpath exit and work through the spiked corridors beyond to the Mawlek’s den. Its blobs arc toward whichever side of the room you’re on, and it slashes if you crowd it. It leaves a Mask Shard when it dies."],
         ["mask-shard-brooding-mawlek", ["mask-shard"], "Take the Mask Shard from Brooding Mawlek", "Pick up the shard that forms where Brooding Mawlek falls."],
         ["root-ancestral-mound", ["root"], "Clear the Ancestral Mound Root", "Go up into the Ancestral Mound, off the room before the False Knight’s hall. Climb to its top left and double-jump to open the way right to its Whispering Root: 42 Essence.", { requires: ["equipment-monarch-wings", "dream-milestone-dream-nail"] }],
-        ["notch-salubra-twenty-five", ["notch"], "Buy Salubra’s twenty-five-charm Notch", "Once you own 25 charms, buy her last notch for 1,400 Geo. Short of charms or Geo, set it aside: Leg Eater’s three come back in chapter 9."],
+        ["notch-salubra-twenty-five", ["notch"], "Buy Salubra’s twenty-five-charm Notch", "Once you own 25 charms, buy her last notch for 1,400 Geo. Short of charms or Geo, set it aside: Leg Eater’s three come back in chapter 8."],
       ],
     },
     {
