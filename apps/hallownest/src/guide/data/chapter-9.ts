@@ -43,7 +43,7 @@ export default {
     },
     {
       title: "Return pickups across the kingdom",
-      location: "Howling Cliffs · The Abyss · The Hive · Dirtmouth",
+      location: "Howling Cliffs · Ancient Basin · The Abyss · The Hive · Dirtmouth",
       sources: [["Lifeblood door: the count, the egg and the seal", "https://hollowknight.wiki/w/Lifeblood_Core"], ["Lifeblood Chamber on the Abyss’s west wall", "https://hollowknight.wiki/w/The_Abyss_(Hollow_Knight)"], ["Joni’s 40% and Fragile Heart", "https://hollowknight.wiki/w/Joni%27s_Blessing"], ["Lifeblood doesn’t heal back", "https://hollowknight.wiki/w/Lifeblood"], ["Mask Shard locations", "https://hollowknight.wiki/w/Mask_Shard_(Hollow_Knight)"], ["Stag Nest opens with every other station", "https://hollowknight.wiki/w/Fast_Travel_(Hollow_Knight)"], ["Stag Nest Vessel Fragment", "https://hollowknight.wiki/w/Vessel_Fragment"]],
       compact: true,
       rows: [
@@ -59,16 +59,14 @@ export default {
     },
     {
       title: "Grubs that need revisits",
-      location: "Howling Cliffs · The Hive · Royal Waterways",
+      location: "Howling Cliffs · The Hive",
       note: "The Collector’s Map marks the jars still waiting, which helps on a late sweep.",
-      sources: [["Steam guide ch 10, 21 and 22 · return-trip jars", "https://steamcommunity.com/sharedfiles/filedetails/?id=3005043947"], ["Grub locations and requirements", "https://hollowknight.wiki/w/Grub"]],
+      sources: [["Steam guide ch 10 and 21 · return-trip jars", "https://steamcommunity.com/sharedfiles/filedetails/?id=3005043947"], ["Grub locations and requirements", "https://hollowknight.wiki/w/Grub"]],
       map: ["ScriptersWar", "https://scripterswar.com/hollowknight/map"],
       compact: true,
       rows: [
         ["grub-cliffs-baldur", ["grub"], "Free the Grub hidden above the Baldur Shell cave", "This jar lies under the Cliffs path near the Greenpath connection, behind a breakable wall. From where the Baldur Shell lay, jump up into the opening overhead behind you and climb all the way up; the wall is on your left."],
         ["grub-hive-ceiling", ["grub"], "Free the Grub in the high Hive passage", "A hidden hallway above the Hive’s big cavern, the one before Hive Knight’s arena, leads to this jar. From the top of the cavern, follow the path right into the next room and drop to the second ledge below its entrance. Cling to the left wall and, from about halfway up it, charge Crystal Heart; cancel just short of the hole above and double-jump in."],
-        ["grub-waterways-ceiling", ["grub"], "Free the Grub over the southeastern Waterways passage", "This jar is reachable only from Kingdom’s Edge. From the tunnel between the Tram and the Hive, climb the shaft above and the hall over it, and go up through its ceiling exit into the Royal Waterways. Head right; the moment the ceiling opens above you, jump straight up and the jar is to your upper left."],
-        ["grub-hive-waterways", ["grub"], "Reach the Hive’s sealed Grub from the Waterways", "Back in that Waterways corridor, follow it right to its end and break the loose floor with Desolate Dive or Descending Dark. A narrow passage below drops you into a sealed-off corner of the Hive with the jar. The wiki lists Isma’s Tear among what this jar needs, which you have by now."],
       ],
     },
   ],

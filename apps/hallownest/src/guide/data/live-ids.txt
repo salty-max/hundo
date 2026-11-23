@@ -1,4 +1,6 @@
 achievement-pure-completion
+arcane-egg-seer
+arcane-egg-shade-cloak
 boss-broken-vessel
 boss-brooding-mawlek
 boss-collector
@@ -145,13 +147,16 @@ hallownest-seal-fog-canyon-west
 hallownest-seal-fungal-pools
 hallownest-seal-greenpath-acid
 hallownest-seal-grubfather
+hallownest-seal-kings-station
 hallownest-seal-mantis-treasure
 hallownest-seal-resting-crypt
 hallownest-seal-sanctum
 hallownest-seal-seer
+hallownest-seal-watcher-knights
 hallownest-seal-well
 kings-idol-deepnest-zote
 kings-idol-dung-defender
+kings-idol-great-hopper
 kings-idol-peak-cornifer
 map-ancient-basin
 map-city-of-tears
@@ -276,6 +281,7 @@ route-aspid-arena
 route-basin-descent
 route-beasts-den
 route-blue-lake
+route-broken-lift
 route-city-gate
 route-city-lift
 route-cliffs-entry
@@ -288,6 +294,7 @@ route-dirtmouth-ch5
 route-dirtmouth-lift
 route-dirtmouth-well
 route-east-city
+route-edge-tram
 route-edge-tunnel
 route-fog-first-trip
 route-fungal-entry
@@ -303,6 +310,7 @@ route-hot-spring
 route-howling-wraiths-return
 route-iseldas-shop
 route-junk-pit
+route-lemm-memorial
 route-lemm-relics-5
 route-mantis-outskirts
 route-moss-knight
@@ -360,11 +368,16 @@ vessel-fragment-sly-first
 vessel-fragment-sly-second
 vessel-fragment-stag-nest
 wanderers-journal-basin-bridge
+wanderers-journal-edge-camp
+wanderers-journal-edge-dive
+wanderers-journal-edge-entrance
 wanderers-journal-fungal-shaft
 wanderers-journal-greenpath-bubbles
 wanderers-journal-greenpath-stag
+wanderers-journal-kings-station
 wanderers-journal-mantis-village
 wanderers-journal-peak-crawlers
+wanderers-journal-pleasure-house
 wanderers-journal-resting-crypt
 wanderers-journal-storerooms
 warrior-dream-elder-hu

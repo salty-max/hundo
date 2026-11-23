@@ -56,9 +56,10 @@ export const targets: BoardItem[] = [
   { tag: "simple-key", goal: 4, list: "game" },
   // The relics go in chapter by chapter where the route picks each up: a guide list (its goal its rows) until the last chapter with a
   // relic, which makes all four the game's totals (14 Wanderer's Journals, 17 Hallownest Seals, 8 King's Idols, 4 Arcane Eggs).
-  { tag: "hallownest-seal", goal: 12, list: "guide" },
-  { tag: "wanderers-journal", goal: 8, list: "guide" },
-  { tag: "kings-idol", goal: 3, list: "guide" },
+  { tag: "hallownest-seal", goal: 14, list: "guide" },
+  { tag: "wanderers-journal", goal: 13, list: "guide" },
+  { tag: "kings-idol", goal: 4, list: "guide" },
+  { tag: "arcane-egg", goal: 2, list: "guide" },
   { tag: "ending", goal: 5, list: "game" },
   { tag: "dream-boss", goal: 5, list: "game" },
   { tag: "other-boss", goal: 6, list: "guide" },
@@ -100,6 +101,7 @@ const config: GuideConfig = {
     "hallownest-seal": ["Hallownest Seals", "Hallownest Seal", "stamp", "sky"],
     "wanderers-journal": ["Wanderer’s Journals", "Wanderer’s Journal", "book", "clay"],
     "kings-idol": ["King’s Idols", "King’s Idol", "star", "amber"],
+    "arcane-egg": ["Arcane Eggs", "Arcane Egg", "gem", "sky"],
     charm: ["Charms", "Charm", "gem", "violet"],
     notch: ["Earned Charm Notches", "Charm Notch", "gem", "clay"],
     spell: ["Spells", "Spell", "flask", "violet"],
