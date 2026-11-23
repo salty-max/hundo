@@ -140,6 +140,7 @@ pickup-anor-mimics
 pickup-anor-twinkling-chest
 pickup-antiquated-set
 pickup-basement-key
+pickup-beatrices-catalyst
 pickup-black-bow-of-pharis
 pickup-black-cleric-set
 pickup-black-iron-set
@@ -152,8 +153,11 @@ pickup-caduceus-round-shield
 pickup-cage-key
 pickup-catacomb-lucerne
 pickup-claymore
+pickup-composite-bow
 pickup-crimson-set
 pickup-crystal-halberd
+pickup-dark-set
+pickup-darksword
 pickup-depths-greataxe
 pickup-depths-weapons
 pickup-doll
@@ -188,6 +192,7 @@ pickup-occult-club
 pickup-painted-annex
 pickup-painted-tower
 pickup-painting-guardian-set
+pickup-parrying-dagger
 pickup-partizan
 pickup-pharis-hat
 pickup-plank-shield
@@ -218,6 +223,7 @@ pickup-warrior-set
 pickup-watchtower-basement-key
 pickup-whip
 pickup-winged-spear
+pickup-witch-set
 pickup-wooden-shield
 pickup-xanthous-set
 pickup-zweihander
@@ -436,6 +442,8 @@ route-izalith-fire
 route-kiln-door
 route-lordvessel
 route-lower-shortcuts
+route-new-londo-lower
+route-new-londo-outside
 route-new-londo-shortcut
 route-ng-ready
 route-painted-bridge-house
