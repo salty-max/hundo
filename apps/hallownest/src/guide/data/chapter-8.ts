@@ -70,13 +70,12 @@ export default {
     },
     {
       title: "The western return and the Tower of Love jars",
-      location: "Forgotten Crossroads · Fog Canyon · Queen’s Gardens · Tower of Love",
+      location: "Fog Canyon · Queen’s Gardens · Tower of Love",
       note: "The Collector’s Map marks the jars still waiting, which helps on a late sweep.",
-      sources: [["Steam guide ch 18, 19 and 23 · Crossroads, Fog Canyon, Gardens and Collector jars", "https://steamcommunity.com/sharedfiles/filedetails/?id=3005043947"], ["Grub locations and requirements", "https://hollowknight.wiki/w/Grub"]],
+      sources: [["Steam guide ch 18, 19 and 23 · Fog Canyon, Gardens and Collector jars", "https://steamcommunity.com/sharedfiles/filedetails/?id=3005043947"], ["Grub locations and requirements", "https://hollowknight.wiki/w/Grub"]],
       map: ["ScriptersWar", "https://scripterswar.com/hollowknight/map"],
       compact: true,
       rows: [
-        ["grub-crossroads-acid", ["grub"], "Free the Grub across Cornifer’s acid passage", "Near the Crossroads’ way down to Fog Canyon, this jar waits on the far side of an acid pool. From the room where you first met Cornifer, take the lower-left exit and cross the pool at its end; no ability is needed."],
         ["grub-fog-superdash", ["grub"], "Return for the Fog Canyon super-dash Grub", "This jar is hidden across the room of the Teacher’s Archives. Take the lowest exit on the left of Fog Canyon’s tall shaft and cross the room beyond. As you enter the Archives’ room after it, charge Crystal Heart from its east ledge to shoot across to the jar’s hiding place."],
         ["grub-gardens-hidden", ["grub"], "Free the Grub behind the Gardens Geo rock", "Two rooms west of the Gardens bench and one up is a room with a Mantis gauntlet. Win it and climb to the room’s upper half: the jar is tucked away behind a Geo deposit."],
         ["grub-gardens-upper", ["grub"], "Free the Grub above the narrow Gardens passage", "In the room above the gauntlet, leave by the left-hand path at the top. Past a giant dead bug the corridor tightens; a hidden way leads up there, beside the one down, and the jar is at its top."],
