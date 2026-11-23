@@ -148,8 +148,10 @@ pickup-big-hats-set
 pickup-black-bow-of-pharis
 pickup-black-cleric-set
 pickup-black-iron-set
+pickup-black-knight-set
 pickup-black-sorcerer-set
 pickup-blighttown-iaito
+pickup-brass-set
 pickup-brigand-set
 pickup-broken-pendant
 pickup-butcher-knife
@@ -163,6 +165,7 @@ pickup-crystal-halberd
 pickup-crystal-knight-shield
 pickup-crystalline-set
 pickup-dark-set
+pickup-darkmoon-talisman
 pickup-darksword
 pickup-demons-catalyst
 pickup-depths-greataxe
