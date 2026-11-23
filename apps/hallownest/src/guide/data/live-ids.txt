@@ -138,6 +138,9 @@ grub-tower-near
 grub-waterways-bench
 grub-waterways-ceiling
 grub-waterways-isma
+hallownest-seal-city-rafters
+hallownest-seal-fungal-pools
+hallownest-seal-sanctum
 hallownest-seal-well
 map-ancient-basin
 map-city-of-tears
@@ -229,6 +232,7 @@ quest-nightmare-lantern
 quest-quirrel-archives
 quest-quirrel-deepnest
 quest-quirrel-lake
+quest-quirrel-mantis
 quest-quirrel-monument
 quest-quirrel-station
 quest-quirrel-temple
@@ -270,6 +274,8 @@ route-dirtmouth-well
 route-east-city
 route-edge-tunnel
 route-fog-first-trip
+route-fungal-entry
+route-fungal-loop
 route-gardens-entry
 route-goams
 route-greenpath-climb
@@ -281,6 +287,7 @@ route-hot-spring
 route-howling-wraiths-return
 route-iseldas-shop
 route-junk-pit
+route-mantis-outskirts
 route-moss-knight
 route-palace-ascent
 route-palace-entry
@@ -290,6 +297,8 @@ route-pass
 route-pass-start
 route-peak-entry
 route-salubra
+route-sanctum-climb
+route-sanctum-exit
 route-tower-door
 route-void-heart
 route-watcher-spire
@@ -329,7 +338,10 @@ vessel-fragment-seer-vessel
 vessel-fragment-sly-first
 vessel-fragment-sly-second
 vessel-fragment-stag-nest
+wanderers-journal-fungal-shaft
 wanderers-journal-greenpath-stag
+wanderers-journal-mantis-village
+wanderers-journal-storerooms
 warrior-dream-elder-hu
 warrior-dream-galien
 warrior-dream-gorb
