@@ -5,15 +5,14 @@ export default {
   title: "Deepnest and the Tram",
   region: "Fungal Wastes · Deepnest · Beast’s Den",
   teaser: "Deepnest",
-  intro: "Buy the Lumafly Lantern first: much of Deepnest is pitch black. Beat the Mantis Lords for the way in, then find the Tram Pass and climb the Beast’s Den.",
+  intro: "Carry the Lumafly Lantern from chapter 4: much of Deepnest is pitch black. Beat the Mantis Lords for the way in, then find the Tram Pass and climb the Beast’s Den.",
   sources: [["Steam guide ch 4, 17 and 20 · Deepnest, the Mantis Lords, the Failed Tramway and the den", "https://steamcommunity.com/sharedfiles/filedetails/?id=3005043947"], ["Deepnest layout, dark rooms and sub-areas", "https://hollowknight.wiki/w/Deepnest"], ["Tram access", "https://hollowknight.wiki/w/Tram_Pass"]],
   groups: [
     {
       title: "Enter Deepnest from the Mantis Village",
-      location: "Dirtmouth · Mantis Village · Deepnest",
+      location: "Mantis Village · Deepnest",
       sources: [["Steam guide ch 17 and 20 · the Mantis Lords, Mark of Pride, the Failed Tramway, Zote and Nosk", "https://steamcommunity.com/sharedfiles/filedetails/?id=3005043947"], ["Cornifer in Deepnest", "https://hollowknight.wiki/w/Cornifer"]],
       rows: [
-        ["pickup-lantern", ["pickup"], "Buy the Lumafly Lantern from Sly before Deepnest", "Before Deepnest, buy the Lumafly Lantern from Sly in Dirtmouth for 1,800 Geo. Much of Deepnest is pitch black without it. It also lets you pay the toll gate between the Crossroads and Crystal Peak, and a dream fight in a dark shrine later can’t be started without it.", {"reference": "https://hollowknight.wiki/w/Lumafly_Lantern"}],
         ["boss-mantis-lords", ["boss", "percent-boss"], "Defeat the Mantis Lords", "Open the way down with the lever in the north-east of Mantis Village, then work down the big room below, pulling levers along its left side, to the throne room at the bottom. Challenge the lords there. One fights alone first; when she yields, the other two come at you together and more often. Be off the ground when a lance dash sweeps the floor, and watch for blades thrown from the walls. Beaten, all three bow and open the lower door into Deepnest.", {"reference": "https://hollowknight.wiki/w/Mantis_Lords"}],
         ["charm-mark-of-pride", ["charm"], "Open the Mantis treasure room for Mark of Pride", "Once the lords bow, climb back up and loop round to the arena’s right-hand exit, pulling levers to open the gates as you go. The room beyond, north-east of the arena, holds three chests: Mark of Pride is in one, Geo and a Hallownest Seal in the others.", {"reference": "https://hollowknight.wiki/w/Mark_of_Pride"}],
         ["map-deepnest", ["map"], "Buy Cornifer’s Deepnest map", "Cornifer waits near whichever entrance you came in by, and here he’s too frightened to hum, so look for him there. The map costs 38 Geo. He leaves once you reach the Hot Spring, though Iselda sells it too."],
