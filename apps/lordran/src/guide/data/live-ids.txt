@@ -132,6 +132,7 @@ miracle-sunlight-blade
 miracle-sunlight-spear
 miracle-vow-of-silence
 miracle-wrath-of-the-gods
+pickup-annex-key
 pickup-anor-demon-titanite
 pickup-anor-entry-chests
 pickup-anor-medals
@@ -141,6 +142,7 @@ pickup-antiquated-set
 pickup-basement-key
 pickup-black-bow-of-pharis
 pickup-black-cleric-set
+pickup-black-iron-set
 pickup-black-sorcerer-set
 pickup-blighttown-iaito
 pickup-brigand-set
@@ -165,6 +167,7 @@ pickup-gold-pine-resin
 pickup-grass-crest-shield
 pickup-great-club
 pickup-great-scythe
+pickup-greatsword
 pickup-halberd
 pickup-havel-set
 pickup-havel-trove
@@ -180,11 +183,14 @@ pickup-longbow
 pickup-mail-breaker
 pickup-morning-star
 pickup-mystery-key
+pickup-notched-whip
 pickup-occult-club
 pickup-painted-annex
 pickup-painted-tower
+pickup-painting-guardian-set
 pickup-partizan
 pickup-pharis-hat
+pickup-plank-shield
 pickup-pyromancer-set
 pickup-red-sign-soapstone
 pickup-residence-key
@@ -192,9 +198,12 @@ pickup-ricards-rapier
 pickup-sack
 pickup-scythe
 pickup-sens-scavenger
+pickup-server
+pickup-set-of-favor
 pickup-sewer-chamber-key
 pickup-shadow-set
 pickup-shotel
+pickup-silver-knight-set
 pickup-sniper-crossbow
 pickup-sorcerer-set
 pickup-sorcerers-catalyst
@@ -210,6 +219,7 @@ pickup-watchtower-basement-key
 pickup-whip
 pickup-winged-spear
 pickup-wooden-shield
+pickup-xanthous-set
 pickup-zweihander
 pyromancy-acid-surge
 pyromancy-black-flame
@@ -420,6 +430,7 @@ route-firelink-bells
 route-firelink-estus
 route-first-bell
 route-giant-blacksmith
+route-great-hollow
 route-ingward
 route-izalith-fire
 route-kiln-door
@@ -427,6 +438,8 @@ route-lordvessel
 route-lower-shortcuts
 route-new-londo-shortcut
 route-ng-ready
+route-painted-bridge-house
+route-painted-first-building
 route-painted-well
 route-painting
 route-parish-entry
