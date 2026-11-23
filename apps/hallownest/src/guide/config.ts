@@ -24,7 +24,7 @@ const banners = byChapter(import.meta.glob<Banner>("./banners/chapter-*.webp", {
 /**
  * The completion board, and what 100% is: every target counts, each item once, up to its goal, so the bar reads 100 exactly when
  * What's left is empty. The first sixteen are the game's own completion (its 112%, term by term). The rest is what the game's
- * percentage doesn't count: the collections a full save also holds (Grubs, notches, Pale Ore, maps, stations, Roots, keys), the
+ * percentage doesn't count: the collections a full save also holds (Grubs, notches, Pale Ore, maps, stations, Roots, keys, relics), the
  * endings and dream rematches, and the guide's own lists (key pickups, the six bosses outside the percentage, the
  * challenges, Pure Completion and the quest steps), whose goals are their rows, not a game total. Route steps are directions and
  * carry no target. The game's own figure is the Check against the game panel's (`points.ts`), not the bar's. A test pins every
@@ -54,6 +54,9 @@ export const targets: BoardItem[] = [
   { tag: "stag", goal: 11, list: "game" },
   { tag: "root", goal: 15, list: "game" },
   { tag: "simple-key", goal: 4, list: "game" },
+  // The relics go in chapter by chapter where the route picks each up: a guide list (its goal its rows) until the last chapter with a
+  // relic, which makes all four the game's totals (14 Wanderer's Journals, 17 Hallownest Seals, 8 King's Idols, 4 Arcane Eggs).
+  { tag: "hallownest-seal", goal: 1, list: "guide" },
   { tag: "ending", goal: 5, list: "game" },
   { tag: "dream-boss", goal: 5, list: "game" },
   { tag: "other-boss", goal: 6, list: "guide" },
@@ -92,6 +95,7 @@ const config: GuideConfig = {
     equipment: ["Equipment upgrades", "Equipment", "ribbon", "sky"],
     pickup: ["Special pickups", "Pickup", "chest", "mint"],
     "simple-key": ["Simple Keys", "Key", "chest", "amber"],
+    "hallownest-seal": ["Hallownest Seals", "Hallownest Seal", "stamp", "sky"],
     charm: ["Charms", "Charm", "gem", "violet"],
     notch: ["Earned Charm Notches", "Charm Notch", "gem", "clay"],
     spell: ["Spells", "Spell", "flask", "violet"],
@@ -140,7 +144,7 @@ const config: GuideConfig = {
       "100% is every target on the board, each item counted once: the game’s own completion with all four free content packs, and the Grubs, maps, endings, quest steps and the rest it leaves out. What your save should read is under Check against the game.",
     boardTitle: "Completion targets",
     boardNote:
-      "Every target counts, each item once, so 100% is exactly when What’s left is empty. The first sixteen are the game’s own completion, which weighs them differently (equipment counts twice, and Mask Shards and Vessel Fragments count only as whole masks and vessels), so its figure, in Check against the game, differs from this bar. Grubs, notches, Pale Ore, maps, stations, Roots, keys, endings and dream rematches count here too, and so do the guide’s own lists: key pickups, six bosses outside the game’s percentage, the challenges, Pure Completion and the quest steps.",
+      "Every target counts, each item once, so 100% is exactly when What’s left is empty. The first sixteen are the game’s own completion, which weighs them differently (equipment counts twice, and Mask Shards and Vessel Fragments count only as whole masks and vessels), so its figure, in Check against the game, differs from this bar. Grubs, notches, Pale Ore, maps, stations, Roots, keys, endings and dream rematches count here too, and so do the relics Lemm buys, as the guide adds them chapter by chapter, and so do the guide’s own lists: key pickups, six bosses outside the game’s percentage, the challenges, Pure Completion and the quest steps.",
     nextUpDone: "Everything revealed is checked. Reveal the next chapter or check the totals on the Progress page.",
     backupBlurb: "Export a copy of your checks and spoiler settings.",
   },

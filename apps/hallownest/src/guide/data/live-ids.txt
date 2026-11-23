@@ -138,6 +138,7 @@ grub-tower-near
 grub-waterways-bench
 grub-waterways-ceiling
 grub-waterways-isma
+hallownest-seal-well
 map-ancient-basin
 map-city-of-tears
 map-crossroads
@@ -255,13 +256,16 @@ root-peak
 root-resting
 root-waterways
 route-abyss-door
+route-aspid-arena
 route-basin-descent
 route-beasts-den
 route-city-gate
 route-city-lift
 route-cliffs-entry
 route-colosseum-entry
+route-crossroads-shaft
 route-dirtmouth-lift
+route-dirtmouth-well
 route-east-city
 route-edge-tunnel
 route-fog-first-trip
@@ -278,6 +282,7 @@ route-palace-entry
 route-palace-left
 route-palace-right
 route-pass
+route-pass-start
 route-peak-entry
 route-salubra
 route-tower-door
