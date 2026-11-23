@@ -196,6 +196,7 @@ pickup-heavy-crossbow
 pickup-holy-set
 pickup-hunter-set
 pickup-iaito
+pickup-iron-and-sun-set
 pickup-ivory-talisman
 pickup-key-new-londo
 pickup-knight-set
@@ -242,6 +243,9 @@ pickup-spider-shield
 pickup-spider-shield-valley
 pickup-stone-set
 pickup-sunlight-maggot
+pickup-sunlight-shield
+pickup-sunlight-straight-sword
+pickup-sunlight-talisman
 pickup-symbol-of-avarice
 pickup-talisman
 pickup-target-shield
