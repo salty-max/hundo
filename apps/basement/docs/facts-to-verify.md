@@ -18,7 +18,7 @@ The fandom wiki is a fork of wiki.gg, so the two count as one source. isaacguru.
 | Claim | Where it stands | What would settle it |
 | --- | --- | --- |
 | The reassurance: nothing can be lost for good | Neither source says it in so many words: the wiki's Achievement Tips treat every streak as one to try again, and the route guide plans deaths as costing only a run | A host that says no secret is missable |
-| PAY TO PLAY's Repentance+ condition | The wiki's version tags drop the 10 Tinted Rocks and keep "beat Isaac as Cain"; a search summary of the Repentance+ patch notes said the reverse. The row names both | The challenge list on a save that has done one and not the other |
+| PAY TO PLAY's Repentance+ condition | The wiki's version tags drop the 10 Tinted Rocks and keep "beat Isaac as Cain"; a search summary of the Repentance+ patch notes said the reverse. The row says to beat Isaac as Cain, and to break 10 tinted rocks too if the challenge stays locked | The challenge list on a save that has done one and not the other |
 | Item Descriptions (#641): beat Mom with Repentance+ | The wiki says so on two pages; PlayNews agrees but refused a raw fetch | A new save: beat Mom, look in the options |
 | Greed mode and Daily Runs open from the start | No page names an unlock for either | A new save |
 | The Stats → Secrets page on consoles | Confirmed on PC only; consoles track the secrets (the wiki gives #328 a Switch and PS4 condition, tboi gives #354 a console count) | A console screenshot of the page |
@@ -36,6 +36,8 @@ The fandom wiki is a fork of wiki.gg, so the two count as one source. isaacguru.
 
 - **Chapters 1 to 4:** #155 Angels, #158 The Tank, #159 Solar System, #160 Suicide King, #161 Cat Got Your Tongue, #162 Demo Man, #163 Cursed!, #165 The Family Man, #166 Purist, #228 2 new pills, #234 Blue Womb, #265 XXXXXXXXL, #266 SPEED!, #269 Have a Heart, #270 I RULE!, #271 BRAINS!, #272 PRIDE DAY!, #273 Onan's Streak, #274 The Guardian, #277 Backasswards, #278 Aprils fool, #279 Pokey Mans, #280 Ultra Hard, #281 PONG, #328 Mr. Resetter!, #331 Laz Bleeds More!, #332 Maggy Now Holds a Pill!, #333 Charged Key, #334 Samson Feels Healthy!, #340 Apollyon, #342 Burning Basement, #348 The gate is open!, #359 Wooden Cross, #370 Filigree Feather, #508 Bloody Mary, #641 Item Descriptions. The challenge rows agree with isaacguru's challenge table, which copies the wiki's, so it doesn't count.
 - **Chapters 5 to 8:** #199 Lilith, #242 Lucky Pennies, #243 Special Hanging Shopkeepers, #245 Cain holds Paperclip, #246 Everything is Terrible 2!!!, #247 Special Shopkeepers, #248 Eve now holds Razor Blade, #275 Generosity, #320 New Area, #357 Lil Delirium, #405 Jacob and Esau, #510 Isaac's Awakening, #511 Seeing Double, #513 Hot Potato, #514 Cantripped!, #515 Red Redemption, #516 DELETE THIS, #635 A Strange Door.
+- **Chapters 9 to 12:** #170 Shadow Baby, #171 Glass Baby, #172 Wrapped Baby, #173 Begotten Baby, #174 Dead Baby, #175 -0- Baby, #176 Glitch Baby, #177 Fighting Baby, #191 Keeper now holds... A Penny!, #205 Cry Baby, #206 Red Baby, #207 Green Baby, #208 Brown Baby, #209 Blue Baby, #210 Lil' Baby, #211 Rage Baby, #212 Black Baby, #213 Long Baby, #214 Yellow Baby, #215 White Baby, #216 Big Baby, #217 Noose Baby, #223 Goat Head Baby, #235 1001%, #236 Keeper holds Wooden Nickel, #237 Keeper holds Store Key, #240 Sticky Nickels, #241 Super Greed Baby, #252 Hive Baby, #253 Buddy Baby, #254 Colorful Baby, #255 Whore Baby, #256 Cracked Baby, #257 Dripping Baby, #259 Sucky Baby, #260 Dark Baby, #261 Picky Baby, #262 Revenge Baby, #263 Belial Baby, #264 Sale Baby, #317 Mort Baby, #319 Apollyon Baby, #339 1000000%, #402 Bone Baby, #403 Bound Baby, #524 The Fool, #593 Corrupted Data, #601 Mega Chest, #605 Charming Poop, #606 Horse Pill, #607 Crane Game, #608 Hell Game, #609 Wooden Chest, #611 Haunted Chest, #612 Fool's Gold, #614 Rotten Beggar, #616 Confessional, #617 Golden Trinket.
+- **Chapters 13 and 14:** #17 Something Cute, #142 Krampus, #157 Darkness Falls, #164 Glass Cannon, #227 2 new pills, #267 Blue Bomber, #268 PAY TO PLAY, #321 Once More with Feeling!, #343 Flooded Caves, #344 Dank Depths, #345 Scarred Womb, #346 Something wicked this way comes!, #347 Something wicked this way comes+!, #349 Black Hole, #350 Mystery Gift, #351 Sprinkler, #358 Hairpin, #360 Butter!, #362 Ancient Recall, #364 Coupon, #365 Telekinesis, #368 Leprosy, #372 7 Seals, #373 Angelic Prism, #374 Pop!, #376 Death's List, #381 Extension Cord, #383 Sacrificial Altar, #388 Rotten Penny, #509 Baptism by Fire, #512 Pica Run.
 
 ## Figures and claims on one host, chapters 1 to 4
 
@@ -103,6 +105,26 @@ StrategyWiki's Tainted characters page gives each tainted character's starting h
 | Tainted Azazel's half-damage beam and the sneeze's curse, and that he can't fly | The wiki's Tainted Azazel page; StrategyWiki's "broken wings" line only hints at the flight | A second host |
 | What a hit rerolls for Tainted Eden, and that self-damage and a killing hit don't | The wiki's Tainted Eden page | A second host |
 
-## The rows are stubs from chapter 13 on
+## Figures and claims on one host, chapters 13 and 14
 
-Chapters 13 and 14 still give each secret the game's name as its title and its condition, in our words, as its text. Chapters 1 to 12 have their advice, route steps and sources per group; the rest follow chapter by chapter.
+The conditions come from the wiki's achievements table; the challenge loadouts and rules match the route guide or the wiki's challenge pages. These stand on one host, or the hosts disagree.
+
+| Claim | Where it stands | What would settle it |
+| --- | --- | --- |
+| The totals for Rotten Penny (20 blue flies), Hairpin (20), Black Hole (20 Portals), Something wicked+ (6), Flooded Caves (16), Dank Depths (21), Scarred Womb (30), Krampus (20), Death's List (25), Sacrificial Altar (50), Coupon (50), Mystery Gift (500), Ancient Recall (20), Angelic Prism (10); Extension Cord's three batteries; 7 Seals | The wiki's achievements table; tboi.com says only "a lot of" flies for Rotten Penny | A second host per total |
+| Sprinkler, Telekinesis, Leprosy and Pop! come with the four no-hit Boys | The wiki | A second host |
+| Something Cute is the second chapter 30 times | The wiki and tboi.com ("Caves 30 times"); StrategyWiki says the third | — (two to one) |
+| Jumper Cables needs 2 battery items | The wiki and the route guide; tboi.com says 3 | — (two to one) |
+| The six late challenges' openers | The wiki's achievements table and challenge pages | A second host, or the game |
+| The online three need a match joined from its start | The wiki | A second host |
+| 5 Nights at Mom's: a reset breaks the streak | The route guide ("no resets") | The wiki says so outright |
+| 5 Nights at Mom's: some pairs of characters share a slot and reset the count, Tainted Lilith with Isaac among them | The wiki's notes, as "likely PC-only"; the route guide plays Isaac right after Tainted Lilith | The game |
+| Sin collector needs most of the Bestiary, not every entry | The route guide; the wiki asks for every entry and notes a v190 bug that counts monsters the Bestiary lacks | The game |
+| RERUN unlocks as the fourth lap starts | The route guide | A second host |
+| Dead God needs Recall, from Tainted Forgotten's Birthright | The route guide, from its author's own run | A second host, or the game |
+| Seeded runs and Victory Laps don't fill the Collection page | The wiki's Collection page | A second host |
+| !Platinum God! leaves out the Lost and his six unlocks | The wiki's table and StrategyWiki; the wiki's PlayStation section says seven | — |
+
+## Every chapter is written
+
+Chapters 1 to 14 have their advice, route steps and sources per group, and every chapter's conditions on one host are listed above. A fact found wrong later is fixed in its row and, where it stood on one host, struck from the tables above.
