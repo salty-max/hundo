@@ -4,6 +4,7 @@ export default {
   id: 12,
   title: "The Kiln and the First Ending",
   region: "Firelink Altar · Kiln of the First Flame",
+  teaser: "The Kiln and the First Ending",
   intro: "Finish anything you want in this cycle before entering the final arena. The ending starts your next cycle automatically.",
   sources: [["Kiln route and Black Knight variants", "https://darksouls.wikidot.com/kiln-of-the-first-flame"], ["Cycle reset and carryover", "https://darksouls.wikidot.com/new-game-plus"], ["Ending achievements", "https://steamcommunity.com/achievements/570940"]],
   groups: [

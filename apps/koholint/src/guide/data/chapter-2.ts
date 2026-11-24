@@ -4,6 +4,7 @@ export default {
   id: 2,
   title: "Bottle Grotto",
   region: "Tal Tal Heights · Goponga Swamp",
+  teaser: "Bottle Grotto",
   intro: "Rescue BowWow and follow him through the swamp. Inside Bottle Grotto, use Magic Powder and the Feather to open routes blocked by darkness, pits and switches.",
   sources: [
     ["Link’s Hideaway · Switch route", "https://www.linkshideaway.com/links-awakening-switch-walkthrough/bottle-grotto/"],

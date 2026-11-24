@@ -4,6 +4,7 @@ export default {
   id: 10,
   title: "Notes: Lilith to the Lost",
   region: "Character select · Hard",
+  teaser: "Notes: Lilith to the Lost",
   intro: "Seven more notes, Keeper and the Lost last.",
   sources: [["The secrets, with their conditions (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Achievements"], ["The secrets on Steam", "https://steamcommunity.com/stats/250900/achievements"], ["Completion marks (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Completion_Marks"]],
   groups: [

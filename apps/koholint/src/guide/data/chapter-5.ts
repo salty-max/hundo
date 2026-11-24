@@ -4,6 +4,7 @@ export default {
   id: 5,
   title: "Catfish’s Maw",
   region: "Tal Tal Heights · Martha’s Bay",
+  teaser: "Catfish’s Maw",
   intro: "Put the Flippers to work, help an unexpected travelling companion, and track the skeleton that ran off with the dungeon’s treasure. Pack bombs before diving in.",
   sources: [
     ["Zelda Dungeon · Catfish’s Maw and the ghost", "https://www.zeldadungeon.net/links-awakening-walkthrough/catfishs-maw/"],

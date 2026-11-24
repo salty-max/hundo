@@ -4,6 +4,7 @@ export default {
   id: 7,
   title: "Eagle’s Tower",
   region: "Mabe Village · Tal Tal Mountain Range",
+  teaser: "Eagle’s Tower",
   intro: "Find a way across the mountain gaps, then bring down four pillars inside a dungeon that spans multiple floors.",
   sources: [
     ["Mountain route and Bird Key", "https://gamefaqs.gamespot.com/switch/258622-the-legend-of-zelda-links-awakening/faqs/77938/the-lonely-mountaineer"],

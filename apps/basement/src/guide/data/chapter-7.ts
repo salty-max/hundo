@@ -9,6 +9,7 @@ export default {
   id: 7,
   title: "The Other Way Down",
   region: "Downpour · Mines · Mausoleum · Corpse",
+  teaser: "The Other Way Down",
   intro: "A Secret Exit opens a second road down, beside the Basement, Caves, Depths and Womb. Collect the two knife pieces on the way, cut through the flesh door at the end of the Mausoleum, and beat Mother in the Corpse.",
   sources: [
     ["The secrets, with their conditions (wiki)", WIKI],

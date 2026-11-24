@@ -3,7 +3,6 @@ import { panels } from "virtual:guide/panels";
 import { allRows, brand, byId, cats, chapterRows, chapters, CHAPTER_COUNT, completion, addons, backs, buildKinds, buildOf, buildPlan, config, guideAnchor, namedBuilds, notesFor, pickRoles, picksFor, readsNotes, tasksFor, warningsFor, hasMissables, isCategory, isRetired, leanings, missablesLeft, partsOf, readChapter, rowsByTag, tally, trackStages, weaponTrack, whatsLeft, type TrackFork, type TrackItem, type TrackStage } from "./guide";
 import liveIds from "virtual:guide/data/live-ids.txt?raw";
 import { nextUp } from "./flow";
-import { two } from "./format";
 import { validateState } from "./progress-state";
 import { readerText } from "./reader-text";
 import { viewFrom } from "./sync/fields";
@@ -41,9 +40,10 @@ describe("guide data", () => {
     for (const chapter of chapters) expect(chapterRows(chapter).length, chapter.title).toBeGreaterThan(0);
   });
 
-  it("gives each hidden chapter a line of its own on the rail, never two alike", () => {
-    // The rail shows a hidden chapter's teaser, or "Chapter N" without one (Rail.tsx); docs/chapter-data.md has the rule.
-    const shown = chapters.map((chapter) => chapter.teaser ?? `Chapter ${two(chapter.id)}`);
+  it("gives each hidden chapter a line of its own on the rail, never a bare number and never two alike", () => {
+    // The rail shows a hidden chapter's teaser, and a bare "Chapter NN" without one (Rail.tsx); docs/chapter-data.md has the rule.
+    for (const chapter of chapters) expect(chapter.teaser?.trim(), chapter.title).toBeTruthy();
+    const shown = chapters.map((chapter) => chapter.teaser);
     expect(shown.filter((teaser, i) => shown.indexOf(teaser) !== i)).toEqual([]);
   });
 

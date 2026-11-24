@@ -4,6 +4,7 @@ export default {
   id: 6,
   title: "Face Shrine",
   region: "Ancient Ruins · Southern Face Shrine · Face Shrine",
+  teaser: "Face Shrine",
   intro: "Follow the ruins to the Face Key. Inside the northern shrine, stronger lifting power turns statues and even a pair of chess knights into puzzle tools.",
   sources: [
     ["ExtremePhobia · Face Shrine", "https://gamefaqs.gamespot.com/switch/258622-the-legend-of-zelda-links-awakening/faqs/77938/level-6-face-shrine"],
