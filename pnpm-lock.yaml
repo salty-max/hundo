@@ -96,6 +96,15 @@ importers:
         specifier: ^7.4.1
         version: 7.4.1
 
+  apps/basement:
+    dependencies:
+      '@hundo/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      react:
+        specifier: 'catalog:'
+        version: 19.3.1
+
   apps/echoes:
     dependencies:
       '@hundo/core':

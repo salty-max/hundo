@@ -10,6 +10,8 @@ import { brand as hallownest } from "../../../apps/hallownest/src/guide/brand";
 import hallownestTheme from "../../../apps/hallownest/src/guide/theme.css?raw";
 import { brand as pharloom } from "../../../apps/pharloom/src/guide/brand";
 import pharloomTheme from "../../../apps/pharloom/src/guide/theme.css?raw";
+import { brand as basement } from "../../../apps/basement/src/guide/brand";
+import basementTheme from "../../../apps/basement/src/guide/theme.css?raw";
 import { brand as rdr } from "../../../apps/rdr/src/guide/brand";
 import rdrTheme from "../../../apps/rdr/src/guide/theme.css?raw";
 import type { GuideId, ThemeId } from "./ids";
@@ -22,6 +24,7 @@ export const guides = {
   lordran: { brand: lordran, palette: lordranTheme },
   hallownest: { brand: hallownest, palette: hallownestTheme },
   pharloom: { brand: pharloom, palette: pharloomTheme },
+  basement: { brand: basement, palette: basementTheme },
 } satisfies Record<GuideId, { brand: Brand; palette: string }>;
 
 /** The stylesheet the build would put in a guide's page: its palette, then its fonts. */
