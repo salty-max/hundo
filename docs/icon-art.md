@@ -47,6 +47,14 @@ Made with GPT's draft of the guide, and kept by the user's choice (19 Nov 2026),
 
 Square 1:1 painted app icon master. Helmet-like pure ivory horned mask of Hornet from Hollow Knight Silksong, paired tall outward curved needlepoint horns, small dark eye holes on a narrow tapering face, recognisable small vermilion red folded cloak below head and over shoulders. Head and cloth only, centered, bold silhouette, legible at 16–32 px, no weapons or text. Material brushwork matches painted Hundo app icons. Background a smooth subdued deep claret #5a242d softly glowing near mask, strictly dark maroon toward outer edges, flat square fully filled. Figure occupies central 62% in both axes. Do not draw a border, tile, ring, disk or drop shadow. No badges, duplicate mask, typography or screenshot.
 
+## Basement
+
+[Master](../apps/basement/scripts/icon-master.webp) · [Home-screen icon](../apps/basement/public/icons/icon-512.png)
+
+Original red D6 item artwork generated with the built-in image tool. The square outside the centred disk uses the guide’s dark surface, `#1e1612`; its disk radius is 416 on the 1024 master. The export script uses core’s shared corner and maskable geometry. A separate flat die drawing uses the light primary, `#a3241b`, for the favicon tile.
+
+Use case: stylized-concept. Original square full-bleed app icon painting for Basement Hundo, a Binding of Isaac guide. One iconic large crimson-red D6 die, three-quarter view, with chunky ivory pips, thick slightly irregular dark ink contours and simple hand-painted gouache dimensional shading. Clearly visible adjacent faces show one, two and three pips in correct arrangements. Strong single-object silhouette, fills about 60 percent of the square, centred with generous breathing room, all important corners inside a central 72-percent diameter circle. Bright muted brick-red die faces, ivory pips, deep red-brown shadows, subtle dusty paper texture. Background a smooth darker brick red close to #a3241b, square fully filled, opaque. No pre-made circle or ring, frame, rounded corners, border, typography, digits, logos, characters, faces, hands, blood or watermark. Harmonises with existing painted Hundo object icons while retaining Isaac's chunky cartoon linework.
+
 ## Tab drawings
 
 A painting shrunk to 16px loses its subject, so each guide also has a hand-drawn tab icon, `scripts/favicon.svg`: a 32-unit tile with 7-unit corners in the guide's light `--primary`, with a flat version of the painting's subject.
@@ -56,3 +64,4 @@ A painting shrunk to 16px loses its subject, so each guide also has a hand-drawn
 - **Red Dead Redemption**: the hat in peach (the dark-theme `--primary`) with a brown band.
 - **Hallownest**: the mask in ivory with its two dark eyes.
 - **Pharloom**: Hornet's horned mask in ivory over a red cloak.
+- **Basement**: an ivory D6 with dark pips on the brick-red tile.
