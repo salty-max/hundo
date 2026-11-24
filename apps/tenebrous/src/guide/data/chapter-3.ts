@@ -13,9 +13,9 @@ export default {
       location: "Southern Outskirts",
       sources: [["Every collectible by area (100% Guides)", "https://www.100pguides.com/guides/mina-the-hollower-all-collectible-locations"], ["Bonestone chests (NiaMeowDB)", "https://meowdb.com/db/mina-the-hollower/bonestone-chests"]],
       rows: [
-        ["bonestone-outskirts-commons-bounce", ["bonestone"], "Get the Bonestone on the ruined building", "From Ossex’s south gate, head down and take the second right: push the bounce pad against the wall under the chest and bounce up.", {"reference": "https://www.100pguides.com/guides/mina-the-hollower-all-collectible-locations", "place": "Southern Outskirts"}],
+        ["bonestone-outskirts-commons-bounce", ["bonestone"], "Get the Bonestone on the ruined building", "From Ossex’s south gate, head down and take the second right: push the bounce pad against the wall under the chest and bounce up.", {"reference": "https://www.100pguides.com/guides/mina-the-hollower-all-collectible-locations"}],
         ["route-basement", ["route"], "Take the western fork to the house", "Leave Ossex by the south gate and take the western branch: watch the snipers’ firing lines on the way.", {"reference": "https://meowdb.com/db/mina-the-hollower/walkthrough/southern-outskirts"}],
-        ["trinket-primed-vial-pouch", ["trinket"], "Get Primed Vial Pouch in the house’s basement", "At the house, smash the cracked trunk and burrow in through the hole in the roof: the chest is in a corner of the basement. It’s a trinket, not one of the seven Vial Pouches.", {"reference": "https://meowdb.com/db/mina-the-hollower/walkthrough/southern-outskirts", "place": "Southern Outskirts"}],
+        ["trinket-primed-vial-pouch", ["trinket"], "Get Primed Vial Pouch in the house’s basement", "At the house, smash the cracked trunk and burrow in through the hole in the roof: the chest is in a corner of the basement. It’s a trinket, not one of the seven Vial Pouches.", {"reference": "https://meowdb.com/db/mina-the-hollower/walkthrough/southern-outskirts"}],
       ],
     },
     {
@@ -24,7 +24,7 @@ export default {
       rows: [
         ["route-balloon-cave", ["route"], "Ride a balloon up to the Cave Network", "Burrow under a floating balloon to push it, then ride it up to the ledge and into the caves, crossing them platform by platform.", {"reference": "https://meowdb.com/db/mina-the-hollower/walkthrough/southern-outskirts"}],
         ["sidearm-deflector-parasol", ["sidearm"], "Get Deflector Parasol", "At the Cave Network’s exit, break the rubble shortcut, head south and strike the candles. Hold the parasol up while you jump to glide.", {"reference": "https://meowdb.com/db/mina-the-hollower/walkthrough/southern-outskirts"}],
-        ["bonestone-outskirts-western-wilds-entrance", ["bonestone"], "Get the Bonestone before the Western Wilds", "Where the Outskirts meet the road west, ride the two narrow moving platforms over the big pit past the laser troopers: the chest is in plain view on the far side.", {"reference": "https://www.100pguides.com/guides/mina-the-hollower-all-collectible-locations", "place": "Southern Outskirts"}],
+        ["bonestone-outskirts-western-wilds-entrance", ["bonestone"], "Get the Bonestone before the Western Wilds", "Where the Outskirts meet the road west, ride the two narrow moving platforms over the big pit past the laser troopers: the chest is in plain view on the far side.", {"reference": "https://www.100pguides.com/guides/mina-the-hollower-all-collectible-locations"}],
       ],
     },
     {
@@ -40,11 +40,11 @@ export default {
       location: "Ossex",
       sources: [["The 100% checklist (NiaMeowDB)", "https://meowdb.com/db/mina-the-hollower/checklist"], ["Every collectible by area (100% Guides)", "https://www.100pguides.com/guides/mina-the-hollower-all-collectible-locations"]],
       rows: [
-        ["quest-drillhardt", ["quest"], "Return to the Guild and free Drillhardt", "Follow Rhene back to Ossex. In the Guild’s back room, burrow under Drillhardt to free him: he sells the Underlab’s equipment from then on.", {"reference": "https://meowdb.com/db/mina-the-hollower/walkthrough/ossex", "place": "Ossex"}],
-        ["underlab-isle-map", ["underlab"], "Buy the Isle Map", "Drillhardt sells it at the Guild for 500 Bones once Rhene is home.", {"reference": "https://meowdb.com/db/mina-the-hollower/checklist", "place": "Ossex"}],
-        ["underlab-training-dummy", ["underlab"], "Buy the Training Dummy", "Drillhardt sells it at the Guild for 500 Bones.", {"reference": "https://meowdb.com/db/mina-the-hollower/checklist", "place": "Ossex"}],
-        ["underlab-joule-alembic", ["underlab"], "Buy the Joule Alembic", "Drillhardt sells it at the Guild for 1,000 Bones.", {"reference": "https://meowdb.com/db/mina-the-hollower/checklist", "place": "Ossex"}],
-        ["underlab-sidearm-recoverer", ["underlab"], "Buy the Sidearm Recoverer", "Drillhardt sells it at the Guild for 2,000 Bones.", {"reference": "https://meowdb.com/db/mina-the-hollower/checklist", "place": "Ossex"}],
+        ["quest-drillhardt", ["quest"], "Return to the Guild and free Drillhardt", "Follow Rhene back to Ossex. In the Guild’s back room, burrow under Drillhardt to free him: he sells the Underlab’s equipment from then on.", {"reference": "https://meowdb.com/db/mina-the-hollower/walkthrough/ossex"}],
+        ["underlab-isle-map", ["underlab"], "Buy the Isle Map", "Drillhardt sells it at the Guild for 500 Bones once Rhene is home.", {"reference": "https://meowdb.com/db/mina-the-hollower/checklist"}],
+        ["underlab-training-dummy", ["underlab"], "Buy the Training Dummy", "Drillhardt sells it at the Guild for 500 Bones.", {"reference": "https://meowdb.com/db/mina-the-hollower/checklist"}],
+        ["underlab-joule-alembic", ["underlab"], "Buy the Joule Alembic", "Drillhardt sells it at the Guild for 1,000 Bones.", {"reference": "https://meowdb.com/db/mina-the-hollower/checklist"}],
+        ["underlab-sidearm-recoverer", ["underlab"], "Buy the Sidearm Recoverer", "Drillhardt sells it at the Guild for 2,000 Bones.", {"reference": "https://meowdb.com/db/mina-the-hollower/checklist"}],
       ],
     },
   ],
