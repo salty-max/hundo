@@ -97,7 +97,6 @@ export default {
       compact: true,
       rows: [
         ["fish-shrimpter-tail", ["fish"], "Catch a Shrimpter", "Catch a Shrimpter in Nox’s Bayou.", {"reference": "https://meowdb.com/db/mina-the-hollower/checklist", "place": "Nox’s Bayou", "requires": ["angling-fishing-rod"]}],
-        ["boss-mock-moon", ["boss"], "Beat Mock Moon", "Arena at the end of Nox’s Bayou’s Moonlit Path.", {"reference": "https://meowdb.com/db/mina-the-hollower/bosses", "place": "Nox’s Bayou"}],
       ],
     },
     {
