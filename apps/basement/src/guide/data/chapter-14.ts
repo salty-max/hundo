@@ -4,7 +4,7 @@ export default {
   id: 14,
   title: "The Last Secrets",
   region: "Every floor",
-  teaser: "Late game",
+  teaser: "The Last Secrets",
   intro: "The last secrets: Mega and the two mark totals, the Platinum Gods, and Dead God, which asks for every other secret and a full Collection page.",
   sources: [["The secrets, with their conditions (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Achievements"], ["The secrets on Steam", "https://steamcommunity.com/stats/250900/achievements"], ["A Dead God route for Repentance+ (Steam guide)", "https://steamcommunity.com/sharedfiles/filedetails/?id=3712501774"], ["The Collection page (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Collection_Page"]],
   groups: [

@@ -4,7 +4,7 @@ export default {
   id: 5,
   title: "Completion sweep",
   region: "All territories",
-  teaser: "Late game",
+  teaser: "All territories",
   intro: "Finish the last unlocks, then compare the field checklist with Stats → General in your game. The checklist lets you jump back to any missed requirement.",
   groups: [
     {

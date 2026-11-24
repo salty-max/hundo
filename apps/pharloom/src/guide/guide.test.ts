@@ -74,8 +74,13 @@ describe("Silksong spoilers", () => {
     for (const text of words(early)) expect(text).not.toMatch(act);
   });
 
-  it("teases chapters 10 to 12 as late game, and the second save as itself", () => {
-    expect(chapters.slice(9).map((chapter) => chapter.teaser)).toEqual(["Late game", "Late game", "Late game", "Second save"]);
+  it("teases chapters 10 to 12 with places met by then, and the second save as itself", () => {
+    for (const chapter of chapters.slice(9, 12)) {
+      const teaser = chapter.teaser ?? "(no teaser)";
+      expect(teaser).not.toMatch(act);
+      expect(JSON.stringify(chapters.slice(0, chapter.id - 1)), teaser).toContain(teaser);
+    }
+    expect(chapters[12].teaser).toBe("Second save");
   });
 
   // A choice's block shows in its own chapter: its name, its why, and each later way's title and playthrough. None names the last

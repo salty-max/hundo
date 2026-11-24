@@ -4,7 +4,7 @@ export default {
   id: 12,
   title: "The Last Dive",
   region: "Red Memory · The Cradle · Nameless Town · The Abyss",
-  teaser: "Late game",
+  teaser: "The Cradle",
   intro: "Take the Everbloom from the Red Memory, climb back to the Cradle and above it, and check the game's own percentage. Finish Mister Mushroom's walk before you dive for the last time; the keepsakes can wait until after.",
   sources: [["Red Memory", "https://hollowknight.wiki/w/Red_Memory"], ["Everbloom", "https://hollowknight.wiki/w/Everbloom"], ["The Cradle in Act 3 and Nameless Town", "https://hollowknight.wiki/w/The_Cradle"], ["Lost Lace", "https://hollowknight.wiki/w/Lost_Lace"], ["Endings and what a reload restores", "https://hollowknight.wiki/w/Endings_(Silksong)"], ["What counts toward 100%", "https://hollowknight.wiki/w/Completion_(Silksong)"], ["Passing of the Age", "https://hollowknight.wiki/w/Passing_of_the_Age_(Wish)"], ["Mister Mushroom's seven spots, a second host", "https://www.nintendolife.com/guides/hollow-knight-silksong-passing-of-the-age-quest-all-mister-mushroom-locations"]],
   groups: [

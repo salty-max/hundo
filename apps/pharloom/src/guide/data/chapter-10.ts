@@ -4,7 +4,7 @@ export default {
   id: 10,
   title: "Through the Abyss",
   region: "Ruined Chapel · Bellways · Deep Docks · The Abyss",
-  teaser: "Late game",
+  teaser: "Ruined Chapel",
   intro: "Find the Snail Shamans in the Ruined Chapel, win back the Bellways and ride the diving bell into the Abyss. Climb out with Silk Soar, then take it to the high places you couldn't reach before.",
   sources: [["Act 3 objectives and their order", "https://hollowknight.wiki/w/Acts"], ["Act 3 route: the Cradle, Moss Grotto, the boss before the Bell Beast, the Abyss", "https://www.nintendolife.com/guides/hollow-knight-silksong-progression-guide-recommended-route"], ["The Abyss: the one-way bell, Weavenest Absolom", "https://hollowknight.wiki/w/The_Abyss_(Silksong)"], ["Silk Soar: where and how", "https://hollowknight.wiki/w/Silk_Soar"], ["Farsight: where it is and what it shows", "https://hollowknight.wiki/w/Farsight"]],
   groups: [

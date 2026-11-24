@@ -4,7 +4,7 @@ export default {
   id: 9,
   title: "Notes: Isaac to Eden",
   region: "Character select · Hard",
-  teaser: "Notes",
+  teaser: "Character select",
   intro: "Every boss is open. Fill each character’s note on Hard: Death Certificate asks for every Hard mark, and a Hard win gives the Normal mark too. A note takes at least five winning runs: one through the Cathedral and the Chest, one through Sheol and the Dark Room, one to Mother, one to the Beast and one of Greedier. Boss Rush and Hush, still on chapter 5’s timers, Mega Satan and Delirium fit inside the first two, and Delirium also fits the Mother run.",
   sources: [["A Dead God route for Repentance+ (Steam guide)", "https://steamcommunity.com/sharedfiles/filedetails/?id=3712501774"], ["The secrets, with their conditions (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Achievements"], ["The secrets on Steam", "https://steamcommunity.com/stats/250900/achievements"], ["Completion marks (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Completion_Marks"]],
   groups: [

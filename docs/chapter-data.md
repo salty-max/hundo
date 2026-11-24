@@ -30,7 +30,7 @@ export default {
 
 - **`id`**: chapters are numbered 1, 2, 3… in order, and each has rows **(tested)**. List each new module in `config.ts`'s `chapters`.
 - **`title`**, **`region`** and **`intro`** show on the chapter's banner once it's revealed.
-- **`teaser`**: what the rail shows while the chapter is still hidden. Use a place name and never story. Where even the title gives the story away, use "Late game", as chapters 8 and 9 of Echoes and 4 and 5 of Red Dead do.
+- **`teaser`**: what the rail shows while the chapter is still hidden. Use a place name and never story: a place the reader has already met, or the title where it spoils nothing. Where every option would give the story away, leave it out and the rail shows "Chapter 08". No two chapters of a guide show the same teaser, so the rail never repeats a line (`data.test.ts`).
 - **`sources`**: the chapter's references, as `[label, url]`.
 - **`groups`**: the sections. A group has a `title` and `rows`, plus optional fields:
   - `location`;

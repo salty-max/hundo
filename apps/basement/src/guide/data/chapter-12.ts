@@ -4,7 +4,6 @@ export default {
   id: 12,
   title: "The Last Tainted Notes",
   region: "Character select · Hard",
-  teaser: "Late game",
   intro: "The other eight tainted notes, in the same order: the record route plays Tainted Eden last of all the tainted characters.",
   sources: [["A Dead God route for Repentance+ (Steam guide)", "https://steamcommunity.com/sharedfiles/filedetails/?id=3712501774"], ["Tainted characters (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Tainted_Characters"], ["The secrets, with their conditions (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Achievements"], ["The secrets on Steam", "https://steamcommunity.com/stats/250900/achievements"], ["Completion marks (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Completion_Marks"]],
   groups: [

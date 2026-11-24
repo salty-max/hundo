@@ -42,7 +42,7 @@ A scene names the chapter's place, what's in it, the light, three or four colour
 
 Rules for scenes:
 
-- **Places and moods, never story.** No boss, no twist, no late-game reveal. A chapter whose teaser is "Late game" gets a scene that gives nothing away.
+- **Places and moods, never story.** No boss, no twist, no late-game reveal. A chapter whose title or places would spoil, and whose rail shows only "Chapter N", gets a scene that gives nothing away.
 - **Original art.** Don't ask for the game's own artwork, characters or logos, and don't name an artist.
 
 Ask Codex for each image, and save the full-size output in the scratchpad, never straight into the repository.

@@ -8,7 +8,7 @@ export default {
   id: 13,
   title: "Odd Jobs",
   region: "Every floor",
-  teaser: "Late game",
+  teaser: "Odd Jobs",
   intro: "The odd jobs: totals that build over every run, bosses to find, Victory Laps, feats inside one run, chapters without a hit, whole runs to plan, online play, and the late challenges.",
   sources: [
     ["A Dead God route for Repentance+ (Steam guide)", ROUTE],

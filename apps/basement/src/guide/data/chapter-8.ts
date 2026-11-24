@@ -9,7 +9,6 @@ export default {
   id: 8,
   title: "Home",
   region: "The Ascent · Home",
-  teaser: "Late game",
   intro: "Past Mother, a strange door in Depths II leads to Dad’s Note and the Ascent, back up through every floor to Home. Its closet holds a tainted version of whoever you bring: seventeen trips, one each.",
   sources: [
     ["The secrets, with their conditions (wiki)", WIKI],
