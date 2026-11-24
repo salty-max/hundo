@@ -322,12 +322,10 @@ route-moonlit
 route-mutant
 route-native-audit
 route-nether-kraken
-route-optional-fights
 route-orrery-hub
 route-ossex-intro
 route-ossex-services
 route-pinky
-route-return-tools
 route-sandfalls-mine
 route-scholars
 route-septemburg-pads
