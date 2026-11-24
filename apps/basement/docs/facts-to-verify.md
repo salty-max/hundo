@@ -60,10 +60,24 @@ The fandom wiki is a fork of wiki.gg, so the two count as one source. isaacguru.
 | The Mausoleum's door costs two full hearts | The wiki's Mausoleum page | A second host |
 | A Marked Skull on Depths II always drops The Fool | The route guide | The wiki's Marked Skull page |
 | Eve starts with the Razor Blade only once Satan as Eve has unlocked it, as well as the 439 coins | StrategyWiki says both; the wiki's condition names only the coins | The wiki's Razor Blade page |
+
+## Figures and claims on one host, chapters 9 and 10
+
+The character notes rest on StrategyWiki's Regular characters page; the wiki's own pages for Keeper and the Lost agree where cited.
+
+| Claim | Where it stands | What would settle it |
+| --- | --- | --- |
+| Isaac starts with the D6 once Isaac is beaten as ??? | StrategyWiki; the wiki's marks table gives the D6 for ???'s Isaac mark | The wiki's Isaac page |
+| Lazarus revives once a floor, and the next floor gives the life back | StrategyWiki | The wiki's Lazarus page |
+| Box of Friends copies Lilith's familiars when used | StrategyWiki | The wiki's Box of Friends page |
+| ???'s Poop spawns a friendly fly for each poop he destroys | StrategyWiki | The wiki's ??? page |
+| Azazel starts with The Fool and black hearts | StrategyWiki | The wiki's Azazel page |
+| Eden Tokens come from Mom's Heart, It Lives!, Ultra Greed and the Beast | StrategyWiki | The wiki's Eden page |
+| Keeper's Store Key comes from Satan, which the route takes on its Dark Room run | The achievements table and the route guide | — |
 | Downpour's door takes a key and the Mines' two bombs | The wiki's Downpour and Mines pages | A second host |
 | Boss Rush opens up to 25 minutes after Mom in Mausoleum II, and whatever the time while holding the Broken Shovel | The wiki's Boss Rush and Forgotten pages | A second host |
 | The Lost's Holy Mantle doesn't show in the pause menu | The wiki's Lost page | A second host |
 
-## The rows are stubs from chapter 9 on
+## The rows are stubs from chapter 11 on
 
-Chapters 9 to 14 still give each secret the game's name as its title and its condition, in our words, as its text. Chapters 1 to 8 have their advice, route steps and sources per group; the rest follow chapter by chapter.
+Chapters 11 to 14 still give each secret the game's name as its title and its condition, in our words, as its text. Chapters 1 to 10 have their advice, route steps and sources per group; the rest follow chapter by chapter.
