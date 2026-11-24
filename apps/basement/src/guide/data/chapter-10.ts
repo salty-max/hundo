@@ -5,7 +5,7 @@ export default {
   title: "Notes: Lilith to the Lost",
   region: "Character select · Hard",
   teaser: "Notes",
-  intro: "Eight more notes, Keeper and the Lost last.",
+  intro: "Seven more notes, Keeper and the Lost last.",
   sources: [["The secrets, with their conditions (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Achievements"], ["The secrets on Steam", "https://steamcommunity.com/stats/250900/achievements"], ["Completion marks (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Completion_Marks"]],
   groups: [
     {
@@ -17,6 +17,8 @@ export default {
     {
       title: "Lilith’s note",
       compact: true,
+      note: "Lilith can’t shoot: her Incubus fires for her, with her stats. Her active Box of Friends copies her familiars each time it’s used. Advice (StrategyWiki): build around familiars, and aim with the Incubus.",
+      sources: [["Regular characters (StrategyWiki)", "https://strategywiki.org/wiki/The_Binding_of_Isaac:_Repentance/Regular_characters"], ["Completion marks (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Completion_Marks"]],
       rows: [
         ["mark-lilith-heart", ["mark-heart", "baby", "secret"], "Mom’s Heart on Hard", "Beat Mom’s Heart or It Lives! on Hard as Lilith. It also unlocks Goat Head Baby."],
         ["mark-lilith-isaac", ["mark-isaac"], "Isaac on Hard", "Beat Isaac in the Cathedral on Hard as Lilith. Hard also gives the Normal mark."],
@@ -47,6 +49,8 @@ export default {
     {
       title: "Apollyon’s note",
       compact: true,
+      note: "Apollyon’s Void swallows items for stat boosts, and fires every swallowed active item at once when used again. Advice (StrategyWiki): use it on items you’d otherwise leave behind.",
+      sources: [["Regular characters (StrategyWiki)", "https://strategywiki.org/wiki/The_Binding_of_Isaac:_Repentance/Regular_characters"], ["Completion marks (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Completion_Marks"]],
       rows: [
         ["mark-apollyon-heart", ["mark-heart", "item", "secret"], "Mom’s Heart on Hard", "Beat Mom’s Heart or It Lives! on Hard as Apollyon. It also unlocks Smelter."],
         ["mark-apollyon-isaac", ["mark-isaac"], "Isaac on Hard", "Beat Isaac in the Cathedral on Hard as Apollyon. Hard also gives the Normal mark."],
@@ -77,6 +81,8 @@ export default {
     {
       title: "The Forgotten’s note",
       compact: true,
+      note: "Two characters in one, swapped with the Drop button: the Forgotten swings a bone club, thrown by charging it, and holds bone hearts; the Soul shoots, holds soul hearts and stays chained to the body.",
+      sources: [["Regular characters (StrategyWiki)", "https://strategywiki.org/wiki/The_Binding_of_Isaac:_Repentance/Regular_characters"], ["Completion marks (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Completion_Marks"]],
       rows: [
         ["mark-forgotten-heart", ["mark-heart", "item", "secret"], "Mom’s Heart on Hard", "Beat Mom’s Heart or It Lives! on Hard as the Forgotten. It also unlocks Marrow."],
         ["mark-forgotten-isaac", ["mark-isaac"], "Isaac on Hard", "Beat Isaac in the Cathedral on Hard as the Forgotten. Hard also gives the Normal mark."],
@@ -107,6 +113,8 @@ export default {
     {
       title: "Bethany’s note",
       compact: true,
+      note: "Bethany turns soul and black hearts into soul charges that refill her active items. Her Book of Virtues spawns wisps that fight beside her, and other actives she picks up sit on top of the book and spawn wisps too.",
+      sources: [["Regular characters (StrategyWiki)", "https://strategywiki.org/wiki/The_Binding_of_Isaac:_Repentance/Regular_characters"], ["Completion marks (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Completion_Marks"]],
       rows: [
         ["mark-bethany-heart", ["mark-heart", "baby", "secret"], "Mom’s Heart on Hard", "Beat Mom’s Heart or It Lives! on Hard as Bethany. It also unlocks Wisp Baby."],
         ["mark-bethany-isaac", ["mark-isaac"], "Isaac on Hard", "Beat Isaac in the Cathedral on Hard as Bethany. Hard also gives the Normal mark."],
@@ -137,6 +145,8 @@ export default {
     {
       title: "Jacob and Esau’s note",
       compact: true,
+      note: "Two brothers who move and shoot together; hold Drop to move Jacob alone. They pick up items separately, and if either dies, both do.",
+      sources: [["Regular characters (StrategyWiki)", "https://strategywiki.org/wiki/The_Binding_of_Isaac:_Repentance/Regular_characters"], ["Completion marks (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Completion_Marks"]],
       rows: [
         ["mark-jacob-esau-heart", ["mark-heart", "baby", "secret"], "Mom’s Heart on Hard", "Beat Mom’s Heart or It Lives! on Hard as Jacob & Esau. It also unlocks Double Baby."],
         ["mark-jacob-esau-isaac", ["mark-isaac"], "Isaac on Hard", "Beat Isaac in the Cathedral on Hard as Jacob & Esau. Hard also gives the Normal mark."],
@@ -167,6 +177,8 @@ export default {
     {
       title: "Keeper’s note",
       compact: true,
+      note: "Keeper’s health is coin hearts, which only coins heal, and he fires three tears at once, slowly. Beating Isaac gives him the Wooden Nickel, an active item that, used, brings coins in most rooms. Advice: the record route takes the Chest run with Hush first, for the Wooden Nickel and A Penny, then the Sheol and Dark Room run, where Satan gives the Store Key.",
+      sources: [["Regular characters (StrategyWiki)", "https://strategywiki.org/wiki/The_Binding_of_Isaac:_Repentance/Regular_characters"], ["Completion marks (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Completion_Marks"], ["A Dead God route for Repentance+ (Steam guide)", "https://steamcommunity.com/sharedfiles/filedetails/?id=3712501774"], ["Keeper (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Keeper"]],
       rows: [
         ["mark-keeper-heart", ["mark-heart", "baby", "secret"], "Mom’s Heart on Hard", "Beat Mom’s Heart or It Lives! on Hard as Keeper. It also unlocks Super Greed Baby."],
         ["mark-keeper-isaac", ["mark-isaac"], "Isaac on Hard", "Beat Isaac in the Cathedral on Hard as Keeper. Hard also gives the Normal mark."],
@@ -197,6 +209,8 @@ export default {
     {
       title: "The Lost’s note",
       compact: true,
+      note: "The Lost dies to any hit, but flies, shoots through rocks, and with chapter 6’s 879-coin unlock starts every run with the Holy Mantle’s shield. Devil deals cost him nothing, but he can take only one in each Devil Room, and his Eternal D6 rerolls items he can’t use. Advice: the record route clears It’s the Key (chapter 13) on the Lost’s Dark Room run.",
+      sources: [["Regular characters (StrategyWiki)", "https://strategywiki.org/wiki/The_Binding_of_Isaac:_Repentance/Regular_characters"], ["Completion marks (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Completion_Marks"], ["A Dead God route for Repentance+ (Steam guide)", "https://steamcommunity.com/sharedfiles/filedetails/?id=3712501774"], ["The Lost (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/The_Lost"]],
       rows: [
         ["mark-lost-heart", ["mark-heart", "baby", "secret"], "Mom’s Heart on Hard", "Beat Mom’s Heart or It Lives! on Hard as the Lost. It also unlocks -0- Baby."],
         ["mark-lost-isaac", ["mark-isaac"], "Isaac on Hard", "Beat Isaac in the Cathedral on Hard as the Lost. Hard also gives the Normal mark."],
