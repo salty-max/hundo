@@ -5,7 +5,7 @@ export default {
   title: "Bone Beach",
   region: "Bone Beach",
   teaser: "Bone Beach",
-  intro: "Bone Beach: the shop tent and the Calcified Caves, Fian’s cell, then into the Dreadworm, its Stomach Mine and Gut Depths, to Mined Mind and the beach’s generator.",
+  intro: "Bone Beach: the shop tent and the Calcified Caves, the fiancé’s cell, then into the Dreadworm, its Stomach Mine and Gut Depths, to Mined Mind and the beach’s generator.",
   sources: [["Regional walkthrough", "https://meowdb.com/db/mina-the-hollower/walkthrough/bone-beach"], ["Community regional collectible hints", "https://meowdb.com/db/mina-the-hollower/region-checklists"]],
   groups: [
     {
@@ -32,8 +32,8 @@ export default {
       location: "Bone Beach",
       sources: [["Every collectible by area (100% Guides)", "https://www.100pguides.com/guides/mina-the-hollower-all-collectible-locations"]],
       rows: [
-        ["quest-fian-rescue", ["quest"], "Free Fian in the Calcified Caves", "Below the waterfalls at the beach’s left side, a Kear opens the Calcified Caves. Break the wall on the left beside Fian’s cell: it hides a second button, and that one opens the cell.", {"reference": "https://meowdb.com/db/mina-the-hollower/walkthrough/bone-beach"}],
-        ["bonestone-beach-calcified-caves-jail", ["bonestone"], "Get the Bonestone by Fian’s cell", "The same wall hides the chest.", {"reference": "https://www.100pguides.com/guides/mina-the-hollower-all-collectible-locations"}],
+        ["quest-fian-rescue", ["quest"], "Free the fiancé in the Calcified Caves", "Below the waterfalls at the beach’s left side, a Kear opens the Calcified Caves. Break the wall on the left beside the fiancé’s cell: it hides a second button, and that one opens the cell.", {"reference": "https://meowdb.com/db/mina-the-hollower/walkthrough/bone-beach"}],
+        ["bonestone-beach-calcified-caves-jail", ["bonestone"], "Get the Bonestone by the fiancé’s cell", "The same wall hides the chest.", {"reference": "https://www.100pguides.com/guides/mina-the-hollower-all-collectible-locations"}],
       ],
     },
     {

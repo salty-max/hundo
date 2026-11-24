@@ -5,7 +5,7 @@ export default {
   title: "Return journeys",
   region: "Return journeys",
   teaser: "Return journeys",
-  intro: "Back across the island with the tools you’ve gathered: the fish the rod can now reach, the doors that want Spark Containers, Ossex’s secret fights, Dugin’s hunt and the ledges that needed the Drill Driver. A Spark door opens once you hold as many Spark Containers as it has slots, and you keep them, so the same three open every one.",
+  intro: "Back across the island with the tools you’ve gathered: the fish the rod can now reach, the doors with Spark slots, Ossex’s secret fights, Dugin’s hunt and the ledges that needed the Drill Driver. There are three Spark Containers in all, and the doors below ask for one, two or three.",
   sources: [["Regional walkthrough", "https://meowdb.com/db/mina-the-hollower/walkthrough/ossex"], ["Community regional collectible hints", "https://meowdb.com/db/mina-the-hollower/region-checklists"]],
   groups: [
     {
@@ -28,7 +28,7 @@ export default {
         ["trinket-warding-beastium", ["trinket"], "Get Warding Beastium", "In Ossex’s Courtyard, cross the gap on the right with a trinket or sidearm that carries you over gaps: the chest is at the edge.", {"reference": "https://www.100pguides.com/guides/mina-the-hollower-all-collectible-locations"}],
         ["boss-evra", ["boss"], "Beat Evra", "Right of Warding Beastium, a Kear opens a lock; the bushes beyond hide a hole down into Goddred’s Grave. Evra waits at its end.", {"reference": "https://www.100pguides.com/guides/mina-the-hollower-all-collectible-locations"}],
         ["health-rose-evra", ["health-rose"], "Get the Health Rose from Evra", "Beating Evra gives a Health Rose.", {"reference": "https://www.100pguides.com/guides/mina-the-hollower-all-collectible-locations"}],
-        ["bonestone-ossex-strategy-center", ["bonestone"], "Get the Bonestone in the Strategy Center", "The Strategy Center, the red-domed building on Ossex’s east side, opens its red door to a Spark Container. Inside, break the chest beyond the table open from range with a sidearm such as the Volt Hatchet, then burrow under the table to it.", {"reference": "https://www.100pguides.com/guides/mina-the-hollower-all-collectible-locations"}],
+        ["bonestone-ossex-strategy-center", ["bonestone"], "Get the Bonestone in the Strategy Center", "The Strategy Center, the red-domed building on Ossex’s east side, has a red door that takes one Spark. Inside, break the chest beyond the table open from range with a sidearm such as the Volt Hatchet, then burrow under the table to it.", {"reference": "https://www.100pguides.com/guides/mina-the-hollower-all-collectible-locations"}],
         ["bonestone-ossex-strategy-center-ophidio", ["bonestone"], "Get the green snake’s Bonestone", "In the same building, the green snake drops a gem when Whisper and Vesper’s upgraded charged throw hits it.", {"reference": "https://www.100pguides.com/guides/mina-the-hollower-all-collectible-locations"}],
         ["boss-armand", ["boss"], "Beat Armand", "Try to buy a second weapon from Legovich and you get a letter instead: Armand is in the forge under the shop. Beat him, and Legovich’s Arms sells again.", {"reference": "https://meowdb.com/db/mina-the-hollower/bosses"}],
         ["boss-wonder-willis", ["boss"], "Beat Wonder Willis", "Once Cliff is back with his band, Wonder Willis, a big shark, will fight you in the Ossex Music Hall.", {"reference": "https://www.100pguides.com/guides/mina-the-hollower-all-collectible-locations", "requires": ["trinket-tumbling-tutu"]}],
