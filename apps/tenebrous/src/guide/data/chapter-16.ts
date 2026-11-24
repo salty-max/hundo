@@ -1,0 +1,53 @@
+import type { RawChapter } from "@hundo/core/types";
+
+export default {
+  id: 16,
+  title: "Astral Orrery",
+  region: "Astral Orrery",
+  teaser: "Astral Orrery",
+  intro: "Activate every island-side mirror switch, then complete the four Orrery branches and their shared hub.",
+  sources: [["Regional walkthrough", "https://meowdb.com/db/mina-the-hollower/walkthrough/astral-orrery"], ["Community regional collectible hints", "https://meowdb.com/db/mina-the-hollower/region-checklists"]],
+  groups: [
+    {
+      title: "Mirror’s End and the four branches",
+      location: "Astral Orrery",
+      rows: [
+        ["route-six-mirrors", ["route"], "Activate the switches through all six island mirrors", "Activate the mirrors around the island, among them the ones in Queensbury’s Statue Head Hall and the Manor Foyer.", {"reference": "https://meowdb.com/db/mina-the-hollower/walkthrough/astral-orrery"}],
+        ["route-orrery-hub", ["route"], "Reach the Stellarium through Mirror’s End", "Finish the hub’s side paths, then climb its momentum-platform route.", {"reference": "https://meowdb.com/db/mina-the-hollower/walkthrough/astral-orrery"}],
+        ["route-gravity", ["route"], "Clear the blue Gravity Zone", "Use the colored switches to alternate platforms and black holes.", {"reference": "https://meowdb.com/db/mina-the-hollower/walkthrough/astral-orrery"}],
+        ["route-cog", ["route"], "Clear the red Cog Chamber", "Ride the cogs to the blue cubes.", {"reference": "https://meowdb.com/db/mina-the-hollower/walkthrough/astral-orrery"}],
+        ["route-mutant", ["route"], "Clear the green Mutant Lab", "Move beneath and onto the glass using its star entry points.", {"reference": "https://meowdb.com/db/mina-the-hollower/walkthrough/astral-orrery"}],
+        ["route-scholars", ["route"], "Clear the Hall of Scholars and return to the hub", "Finish the last branch and beat the Lumenarks, then return to the hub.", {"reference": "https://meowdb.com/db/mina-the-hollower/walkthrough/astral-orrery"}],
+        ["route-generator-orrery", ["route"], "Restore the Starry Generator", "Defeat the Congealed, collect the Health Rose and finish the generator climb.", {"reference": "https://meowdb.com/db/mina-the-hollower/walkthrough/astral-orrery"}],
+      ],
+    },
+    {
+      title: "Remaining room checks",
+      location: "Astral Orrery",
+      compact: true,
+      rows: [
+        ["weapon-orrery-stellarium", ["weapon"], "Open the weapon chest: Stellarium", "After the ice section, drop two ledges in the main area, chest to the south; Battery Buster’s Burst Shot.", {"reference": "https://meowdb.com/db/mina-the-hollower/weapons", "place": "Astral Orrery"}],
+        ["trinket-vial-salvo", ["trinket"], "Get Vial Salvo", "Tubert’s shop, Astral Orrery, 2000 Bones.", {"reference": "https://meowdb.com/db/mina-the-hollower/checklist", "place": "Astral Orrery"}],
+        ["kear-orrery-tubert", ["kear"], "Get the Kear: alien test tube shop (1000 Bones)", "Green sector, after two rope shortcuts open, talk to the alien in the orange tube on the left.", {"reference": "https://meowdb.com/db/mina-the-hollower/kears", "place": "Astral Orrery"}],
+        ["bonestone-orrery-gravity-zone-long-hallway", ["bonestone"], "Get the Bonestone: Gravity Zone Long Hallway", "Destroy the marked wall.", {"reference": "https://meowdb.com/db/mina-the-hollower/bonestone-chests", "place": "Astral Orrery"}],
+        ["kear-orrery-gravity-zone-after-purple-switch", ["kear"], "Get the Kear: blue sector portal room", "Hit the switch that makes portals and jump straight into the two portals on the right.", {"reference": "https://meowdb.com/db/mina-the-hollower/kears", "place": "Astral Orrery"}],
+        ["bonestone-orrery-gravity-zone-below-green-switch", ["bonestone"], "Get the Bonestone: gravity field south end, green switch room", "The green-switch room leads further down to it.", {"reference": "https://meowdb.com/db/mina-the-hollower/bonestone-chests", "place": "Astral Orrery"}],
+        ["bonestone-orrery-cog-chamber-west-secret-room", ["bonestone"], "Get the Bonestone: Cog Chamber West Secret Room", "Through the gear room to a large area, drop through the lower-left floor hole.", {"reference": "https://meowdb.com/db/mina-the-hollower/bonestone-chests", "place": "Astral Orrery"}],
+        ["kear-orrery-cog-chamber-east-secret-room", ["kear"], "Get the Kear: crimson sector hidden chamber", "Rotating-gear room: put a blue square on the middle of three far-right turrets to open a hole.", {"reference": "https://meowdb.com/db/mina-the-hollower/kears", "place": "Astral Orrery"}],
+        ["bonestone-orrery-mutant-lab-east-secret-room", ["bonestone"], "Get the Bonestone: mutant Lab path", "Break the marked wall; chest in the room beyond.", {"reference": "https://meowdb.com/db/mina-the-hollower/bonestone-chests", "place": "Astral Orrery"}],
+        ["trinket-bridge-weaver", ["trinket"], "Get Bridge Weaver", "Chest at a room’s edge.", {"reference": "https://meowdb.com/db/mina-the-hollower/checklist", "place": "Astral Orrery"}],
+        ["bonestone-orrery-hall-of-scholars-below-boss-chamber", ["bonestone"], "Get the Bonestone: Hall of Scholars Below Boss Chamber", "After the Lumenarks fight, drop from the indicated ledge.", {"reference": "https://meowdb.com/db/mina-the-hollower/bonestone-chests", "place": "Astral Orrery"}],
+        ["bonestone-orrery-hall-of-scholars-exit", ["bonestone"], "Get the Bonestone: right of the Hall of Scholars exit mirror", "Just right of the mirror out of the Hall of Scholars: break the wall.", {"reference": "https://meowdb.com/db/mina-the-hollower/bonestone-chests", "place": "Astral Orrery"}],
+        ["health-rose-congealed", ["health-rose"], "Get the Health Rose from the Congealed", "Reward for beating The Congealed.", {"reference": "https://meowdb.com/db/mina-the-hollower/checklist", "place": "Astral Orrery"}],
+        ["boss-lumenarks", ["boss"], "Beat Lumenarks", "Astral Orrery cultist boss.", {"reference": "https://meowdb.com/db/mina-the-hollower/bosses", "place": "Astral Orrery"}],
+        ["boss-orrery-warden", ["boss"], "Beat the Orrery Warden", "A boss that patrols the Astral Orrery.", {"reference": "https://meowdb.com/db/mina-the-hollower/bosses"}],
+        ["boss-congealed", ["boss"], "Beat The Congealed", "End of the Hall of Scholars, Astral Orrery; required, on the way to the Astral Generator; Health Rose.", {"reference": "https://meowdb.com/db/mina-the-hollower/bosses", "place": "Astral Orrery"}],
+        ["bonestone-mirrors-end-red-switch", ["bonestone"], "Get the Bonestone: Mirror’s End Red Switch", "Right of the big central mirror, small tunnel under the red-mirror area; in the open.", {"reference": "https://www.100pguides.com/guides/mina-the-hollower-all-collectible-locations", "place": "Mirror’s End"}],
+        ["trinket-reckless-beastium", ["trinket"], "Get Reckless Beastium", "Reunite Dr. Naught with his brain.", {"reference": "https://meowdb.com/db/mina-the-hollower/checklist", "place": "Mirror’s End"}],
+        ["trinket-bag-mirrors-end", ["trinket-bag"], "Get the Trinket Bag: Mirror’s End  Bag", "Kear-locked box on the Orrery’s western side; needs the Nox’s Bayou and Bone Beach mirrors.", {"reference": "https://meowdb.com/db/mina-the-hollower/checklist", "place": "Mirror’s End"}],
+        ["fish-trunkstar-core", ["fish"], "Catch a Trunkstar", "Catch a Trunkstar in Astral Orrery.", {"reference": "https://meowdb.com/db/mina-the-hollower/checklist", "place": "Mirror’s End", "requires": ["angling-fishing-rod"]}],
+        ["bonestone-mirrors-end-blue-switch-path", ["bonestone"], "Get the Bonestone: Mirror’s End Blue Switch Path", "Up the right side of the blue mirror; chest.", {"reference": "https://www.100pguides.com/guides/mina-the-hollower-all-collectible-locations", "place": "Mirror’s End"}],
+      ],
+    },
+  ],
+} satisfies RawChapter;
