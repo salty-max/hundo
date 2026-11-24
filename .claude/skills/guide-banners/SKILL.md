@@ -139,7 +139,7 @@ Wide atmospheric composition of an empty cold stone recess with a tall antique i
 
 An oversized warped oval mirror is embedded upright in a jagged wall of black thorn-like roots and violet stone, right of centre. View close to the ground, a dramatic tilted oval silhouette filling the scene height. Its glass reflects only an empty dim red stone passage, no face, person or creature. Violet ink-stained floor puddles spread sideways; a torn blank cream paper sheet catches at the mirror base. Muted plum, cold lavender, black ink and restrained dusty crimson reflection. Roots frame the edges in sweeping curves. Surreal corruption theme, no tabletop, desk, chair, candle, chest or brown cellar.
 
-**12. Tainted Notes, the Hard Ones**
+**12. The Last Tainted Notes**
 
 Very steep high-angle view across a narrow cracked stone causeway running diagonally upward toward the right over a deep muted crimson chasm. Jagged short iron spikes flank the walkway, with a safe empty strip down its centre. A few blank torn cream paper scraps caught along a crack, subtle rust-orange light rising from below. Angular strong diagonals and dark red negative space distinguish this illustration. Dusty scarlet, graphite, pale grey stone and ivory. No room-level back wall, furniture, windows, chest, mirrors, candles, people or creatures. Symbolic difficult route, not an accurate game map; readable midtones and simplified rounded ink-drawn stone.
 

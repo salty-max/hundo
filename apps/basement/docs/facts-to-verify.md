@@ -78,6 +78,31 @@ The character notes rest on StrategyWiki's Regular characters page; the wiki's o
 | Boss Rush opens up to 25 minutes after Mom in Mausoleum II, and whatever the time while holding the Broken Shovel | The wiki's Boss Rush and Forgotten pages | A second host |
 | The Lost's Holy Mantle doesn't show in the pause menu | The wiki's Lost page | A second host |
 
-## The rows are stubs from chapter 11 on
+## Figures and claims on one host, chapters 11 and 12
 
-Chapters 11 to 14 still give each secret the game's name as its title and its condition, in our words, as its text. Chapters 1 to 10 have their advice, route steps and sources per group; the rest follow chapter by chapter.
+StrategyWiki's Tainted characters page gives each tainted character's starting health, pickups, stats and select-screen line, and prose for Tainted Isaac alone. So the notes' starting items, hearts and Tainted Isaac's eight-item limit stand on two hosts, and almost every other mechanic stands on that character's wiki page alone.
+
+| Claim | Where it stands | What would settle it |
+| --- | --- | --- |
+| Tainted Lilith's Gello hits for three times her damage and returns when fire is released | The wiki's Tainted Lilith page | A second host |
+| Anima Sola freezes for 5 seconds and always takes Dark Esau; Esau's touch makes Tainted Jacob the Lost, without the mantle, until the next floor | The wiki's Tainted Jacob page | A second host |
+| Dark Arts' freeze and delayed damage; health ups give Tainted Judas black hearts | The wiki's Tainted Judas page | A second host |
+| Tainted Eve makes a clot from half a heart after 2 seconds of held fire | The wiki's Tainted Eve page | A second host |
+| Tainted Eve has the slowest fire rate of any character | The wiki's Tainted Eve page; StrategyWiki's table gives her 1.20 tears, and lower figures to some characters who charge their attacks | A second host saying it outright |
+| Berserk lasts 5 seconds plus one a kill, with a jawbone | The wiki's Tainted Samson page | A second host |
+| Hurting enemies earns Tainted ??? poop; Hold saves the next one; leaving a Greed room clears it | The wiki's Tainted ??? page | A second host |
+| Tainted Lazarus switches form on each room clear; Flip is the only way to the ghostly item | The wiki's Tainted Lazarus page | A second host |
+| Tainted Magdalene's hug, the 2-second half hearts, the drain above two red hearts, double healing | The wiki's Tainted Magdalene page | A second host |
+| Tainted Keeper's four tears, vanishing coins, paid items and keyless shops | The wiki's Tainted Keeper page | A second host |
+| Tainted Lost: defensive items rerolled, about one card in ten a Holy Card, flight and spectral tears | The wiki's Tainted Lost page | A second host |
+| Tainted Cain's items break into pickups; recipes change each run | The wiki's Tainted Cain page | A second host |
+| Abyss's locusts, and one locust for a choice of items | The wiki's Tainted Apollyon page | A second host |
+| Tainted Forgotten can't move or be hurt, and buys what he's thrown into | The wiki's Tainted Forgotten page | A second host |
+| Recall, from Tainted Forgotten's Birthright, counts on the Collection page | The route guide, from its author's own run | A second host, or the Collection page in the game |
+| Tainted Bethany's blood charges, the three-quarter rule, a wisp's one-in-four chance of the room's pool | The wiki's Tainted Bethany page | A second host |
+| Tainted Azazel's half-damage beam and the sneeze's curse, and that he can't fly | The wiki's Tainted Azazel page; StrategyWiki's "broken wings" line only hints at the flight | A second host |
+| What a hit rerolls for Tainted Eden, and that self-damage and a killing hit don't | The wiki's Tainted Eden page | A second host |
+
+## The rows are stubs from chapter 13 on
+
+Chapters 13 and 14 still give each secret the game's name as its title and its condition, in our words, as its text. Chapters 1 to 12 have their advice, route steps and sources per group; the rest follow chapter by chapter.
