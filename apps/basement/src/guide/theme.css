@@ -1,0 +1,8 @@
+:root{
+  --paper:#f3ead9;--surface:#fffaf0;--raised:#ebdfc8;--ink:#2b1d16;--muted:#5e4c3f;--line:#e0d2b8;
+  --primary:#a3241b;--on-primary:#fff;--accent:#8fc1ee;--on-accent:#10233a;--focus:#1f5f9e;
+}
+:root[data-theme="dark"]{
+  --paper:#140f0c;--surface:#1e1612;--raised:#2a1f19;--ink:#f3e7d3;--muted:#c7b7a3;--line:#3a2c24;
+  --primary:#f08c7e;--on-primary:#2a0d09;--accent:#8fc1ee;--on-accent:#10233a;--focus:#8fc1ee;
+}
