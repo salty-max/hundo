@@ -11,6 +11,7 @@ Spoiler-aware, installable completion guides for single-player games: one app pe
 | [`apps/hallownest`](apps/hallownest) | *Hollow Knight* | [hallownest.hundo.quest](https://hallownest.hundo.quest) | hundo-hallownest |
 | [`apps/pharloom`](apps/pharloom) | *Hollow Knight: Silksong* | [pharloom.hundo.quest](https://pharloom.hundo.quest) | hundo-pharloom |
 | [`apps/basement`](apps/basement) | *The Binding of Isaac: Repentance+* | [basement.hundo.quest](https://basement.hundo.quest) | hundo-basement |
+| [`apps/tenebrous`](apps/tenebrous) | *Mina the Hollower* | [tenebrous.hundo.quest](https://tenebrous.hundo.quest) | hundo-tenebrous |
 
 Each app's history from its old repository is kept under its folder, so `git log -- apps/koholint` goes back to the first commit.
 

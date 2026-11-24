@@ -1,0 +1,9 @@
+/* Tenebrous's palette: plum and brass on parchment. Everything else, from borders to the banner tint, derives from it in packages/core/src/tokens.css. */
+:root{
+  --paper:#f4efe5;--surface:#fdfaf3;--raised:#ece4d4;--ink:#2a1e2b;--muted:#5d4e5a;--line:#e0d5c3;
+  --primary:#62285a;--on-primary:#fff;--accent:#d2a450;--on-accent:#2e2008;--focus:#8a3a62;
+}
+:root[data-theme="dark"]{
+  --paper:#1d151e;--surface:#2a1e2b;--raised:#362838;--ink:#f3ebdf;--muted:#cbbcc7;--line:#4a3a4c;
+  --primary:#dca9d2;--on-primary:#2a1028;--accent:#d8ad5e;--on-accent:#2e2008;--focus:#d8ad5e;
+}

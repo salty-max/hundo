@@ -79,6 +79,7 @@ The guide's README says the banners are original AI-generated illustrations, as 
 | Hallownest | Hand-inked painted environment, layered parallax, dark silhouette edges, graphic 2D shapes, subtle grain; empty places, no characters. |
 | Pharloom | Hand-painted 2D environment, inked edges, layered silhouette depth, saturated regional palette, subtle texture; empty places, no characters. Bold dark ink outlines, with near-black foreground silhouettes framing the bottom and the edges; the rest mid-dark and readable, never near-black, never soft or misty. |
 | Basement | Hand-drawn horror-comedy environment: chunky, slightly irregular black ink outlines, simplified rounded shapes, muted gouache fills on worn paper, restrained dimensional shading; empty places, no characters. |
+| Tenebrous | Hand-inked gothic storybook painting: crisp silhouette edges, tactile gouache shading, subtle paper grain, layered 2D environmental depth and restrained Victorian machinery; charming but unsettling, readable midtones; empty places, no characters. |
 | Koholint, Red Dead | not recorded when their banners were made |
 
 ## Basement scenes
@@ -150,3 +151,93 @@ An empty shabby arcade alcove framed by parted dusty coral-red velvet curtains, 
 **14. The Last Secrets**
 
 Extreme close environmental view of an enormous old keyhole-shaped opening through a thick cracked blue-grey stone wall at right-centre. The round upper hole and narrow lower slot form the single bold silhouette; warm peach-gold light pours through from a softly glowing empty hidden recess beyond. A few floating dust flecks and small chips of stone, long golden beam sweeping across the dark slate foreground. Cool slate, pale turquoise, peach and soft gold, readable midtones. No key itself, treasure chest, paper, desk, windows, characters or ending imagery. A final secret threshold, understated and mysterious, not a dungeon map.
+
+## Tenebrous scenes
+
+The twenty banners were generated before the guide existed, with the shared prompt below and one scene each, then exported at quality 52 to keep the set near the house's weight. These are interpretive environments, not maps.
+
+### Shared prompt
+
+Use case: stylized-concept. Original environmental chapter illustration for a fan guide to Mina the Hollower. One coherent full-bleed ultrawide 3:1 scene. Cohesive hand-inked gothic storybook painting, crisp silhouette edges, tactile gouache shading, subtle paper grain, layered 2D environmental depth and restrained Victorian machinery. A charming but unsettling adventure atmosphere, readable midtones rather than near-black. Do not imitate pixel sprites or a named artist. Focal detail around 70 percent across, quiet lower-contrast left third for a future title fade; important shapes survive a central horizontal crop. No characters, creatures, bosses, plot reveals, writing, glyphs, signage text, logos, UI, panels, borders or watermark. Interpretive environment, not a navigation map.
+
+### Scenes
+
+**1. Loner’s Landing**
+
+A storm-battered Victorian wooden shipwreck on a stony shore, splintered boardwalks, bent iron lamps, low crumbling sea walls, pale surf and distant cliffs. Focal broken hull to the right. Slate blue, muted burgundy, old ivory, faint amber lamps.
+
+**2. Ossex**
+
+An empty compact Victorian gothic town square with a stone fountain, steep slate rooftops, narrow canals, iron railings and warm shop windows; the manor roofline sits far in the background. Focal fountain and townhouses to the right. Brick red, dusky plum, muted teal and brass.
+
+**3. Southern Outskirts**
+
+Rugged grassy outskirts divided by deep rock clefts, a squat timber-and-stone barracks, lowered rope shortcuts and a few battered fences; a visible empty cellar entrance in the right foreground. Moss green, earth brown, muted crimson and pale lilac sky.
+
+**4. Eastern Heath and Mourner’s Mile**
+
+An overgrown gothic cemetery path between low iron fences, crooked gravestones, candle niches and small stone mausoleums, with a ruined bridge over dark water in the distance. Focal mausoleum and path to the right. Dusty violet, grey-green, parchment stone, amber light.
+
+**5. Queensbury Crypt**
+
+The interior of a grand stone crypt: pillared brick hall, carved stone tombs, iron fences, a purple carpet strip, floor grates and small brass candle stands; a shadowed arch opens right of centre. No figures or living statues. Bone white, cool slate, dark plum and candle amber.
+
+**6. Western Wilds**
+
+An empty rocky foundry district with brick chimneys, old iron bridges, red mineral outcrops and narrow channels of glowing lava cutting through black volcanic soil. Focal foundry facade and lava channel to the right. Iron grey, brick crimson, muted moss and molten orange.
+
+**7. Kindlewood**
+
+An empty autumn hamlet of timber farmhouses and barns among copper-leaved trees, a leaf-strewn lane, low fences and a modest windmill silhouette. Focal crooked house and warm window right of centre. Burnt orange, russet, dark green and cream.
+
+**8. Septemburg**
+
+Stormy autumn farmland with abandoned tractors, immense tangled roots, wooden barns, wind-bent crop rows and empty hanging cloths; a distant pale lightning glow without a central bolt. Focal red barn and twisted trees to the right. Copper orange, violet storm sky, moss green and pale gold.
+
+**9. Backwaters**
+
+A quiet swamp settlement with small crooked stilt houses, rope walkways, floating wooden platforms and a dark green pool edged with reeds; one little shop hut with a ladder leaning outside, no signs. Moss green, muted teal, warm wood and pale yellow lamplight.
+
+**10. Nox’s Bayou**
+
+A flooded gothic bayou of half-submerged stone ruins, broken boats, broad lilypads, thorny vegetation and a rusty water-level mechanism beside a raised walkway. Focal flooded arch and boat right of centre. Deep teal, algae green, muted purple and bronze.
+
+**11. Sandfalls**
+
+A windswept eroded sandstone mining passage opening toward pale dunes and a small weathered station, with timber braces, ropes and a narrow dark cave mouth. Focal mine entrance to the right. Ochre, sandy cream, dusty rose and cool blue shadow.
+
+**12. Bone Beach**
+
+An empty coastal mining settlement built around enormous ancient ivory ribs emerging from sand, timber scaffolds, mine carts and small tents, with a cold grey sea beyond. No creature head or active body, no characters. Focal curved ribs and mine entry right of centre. Ivory, muted coral sand, slate sea and deep burgundy accents.
+
+**13. The island railway**
+
+An empty antique railway bridge between marshland and rocky coast, a small Victorian station and a distant unoccupied locomotive, ropes and wooden footbridges below. Focal rails and station curve right. Weathered brass, smoky blue, brown wood and warm cream.
+
+**14. Coltrane Peak**
+
+A frozen Victorian railway yard on a mountain: snowbound tracks, icy stone platforms, frosted wooden bridges, an empty steam locomotive half-buried in snow and pale glassy ice over a pool. Focal locomotive and rail arch to the right. Ice blue, snow ivory, muted lavender and warm brass lamps.
+
+**15. Return journeys**
+
+Ossex revisited at violet dusk: empty canal, ornate iron railings, warm windows, a brick workshop and a quiet lamp-lit lane; the fountain silhouette recedes behind. Focal workshop doorway right of centre. Burgundy, dusky violet, warm amber and weathered cream.
+
+**16. Astral Orrery**
+
+An empty impossible astronomical installation with brass orrery rings, stone-and-glass scholarly halls, floating mechanical platforms and a star-lit blue void beyond arched windows. Restrained cosmic scale, no figures, eyes or plot objects. Focal circular mechanism right of centre. Indigo, turquoise, antique gold and ivory.
+
+**17. Final collection sweep**
+
+A cozy empty underground field laboratory with a sturdy wooden desk, unlabeled glass vials, a brass lamp, a closed trinket chest and a rolled blank parchment, reached through a small dirt tunnel. Focal workbench to the right. Warm ivory, dusty plum, burgundy and brass.
+
+**18. Radiant Manor**
+
+An empty opulent Victorian manor corridor with pale carved stone pillars, burgundy carpet, luminous glass windows, restrained gold fittings and tall doors at the far right. No dining guests or portraits of people. Ivory, deep crimson, muted indigo and soft golden light.
+
+**19. New Game Plus**
+
+A quiet gothic study with a travel trunk, a closed leather journal, a small brass key-gear and an unlit lantern on a table beside a window overlooking distant slate rooftops. Focal table and window to the right. Plum, old ivory, warm brown and brass. No text or symbols.
+
+**20. Challenge routes**
+
+An empty moonlit cobblestone path past a low iron fence and simple stone arch, with a distant lantern and pale mist over the ground, solemn yet inviting. Focal arch right of centre. Slate blue, dusty crimson, moonlit ivory and subdued gold.

@@ -55,6 +55,14 @@ Original red D6 item artwork generated with the built-in image tool. The square 
 
 Use case: stylized-concept. Original square full-bleed app icon painting for Basement Hundo, a Binding of Isaac guide. One iconic large crimson-red D6 die, three-quarter view, with chunky ivory pips, thick slightly irregular dark ink contours and simple hand-painted gouache dimensional shading. Clearly visible adjacent faces show one, two and three pips in correct arrangements. Strong single-object silhouette, fills about 60 percent of the square, centred with generous breathing room, all important corners inside a central 72-percent diameter circle. Bright muted brick-red die faces, ivory pips, deep red-brown shadows, subtle dusty paper texture. Background a smooth darker brick red close to #a3241b, square fully filled, opaque. No pre-made circle or ring, frame, rounded corners, border, typography, digits, logos, characters, faces, hands, blood or watermark. Harmonises with existing painted Hundo object icons while retaining Isaac's chunky cartoon linework.
 
+## Tenebrous
+
+[Master](../apps/tenebrous/scripts/icon-master.webp) · [Home-screen icon](../apps/tenebrous/public/icons/icon-512.png)
+
+Original silver mace-and-whip artwork generated with the built-in image tool, then framed in the Hundo circle (disk radius 416 on the 1024 master) on the guide's dark surface, `#2a1e2b`. The export script uses core's shared corner and maskable geometry. A separate flat mace drawing uses the light primary, `#62285a`, for the favicon tile.
+
+Use case: stylized-concept. Square original painted gothic adventure inventory icon for Mina the Hollower. A single chunky antique silver spiked mace head attached to a short curled dark leather whip, with a small warm brass grip. Clean readable iconic silhouette, object centered and occupying 66 percent of the square, generous margins. Hand-painted highlights, subtle paper texture, ivory silver, antique gold and dark plum accents. Background rich muted burgundy-crimson. No outer ring, no frame, no text, letters, logos, characters or faces.
+
 ## Tab drawings
 
 A painting shrunk to 16px loses its subject, so each guide also has a hand-drawn tab icon, `scripts/favicon.svg`: a 32-unit tile with 7-unit corners in the guide's light `--primary`, with a flat version of the painting's subject.
@@ -65,3 +73,4 @@ A painting shrunk to 16px loses its subject, so each guide also has a hand-drawn
 - **Hallownest**: the mask in ivory with its two dark eyes.
 - **Pharloom**: Hornet's horned mask in ivory over a red cloak.
 - **Basement**: an ivory D6 with dark pips on the brick-red tile.
+- **Tenebrous**: an ivory mace on a brass handle, on the plum tile.
