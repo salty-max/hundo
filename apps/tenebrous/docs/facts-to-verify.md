@@ -57,4 +57,7 @@ The guide's own lists count their rows:
 | The tent corridor's Bonestone | 100% Guides counts it on Bone Beach, down the tent's back corridor; NiaMeowDB lists the same tent-hideout route under Sandfalls. The draft's id names it for the Boardwalk at Loner's Landing, and ids don't move | |
 | Bone Beach's four unnamed Bonestones | 100% Guides numbers them; which of the draft's room names (entrance, above the tent, message in a bottle, behind Furgus) goes with which is a reading of its directions, and a reader ticks each where they find it | The rooms' names in the game |
 | The tent merchant | 100% Guides calls the merchant Brac; NiaMeowDB, the Delver. The rows name neither | The merchant's name |
+| The Emporium's Spark Container | 100% Guides lists it among the Emporium's stock without saying when it goes on sale. It sits in chapter 15, before the two Spark doors that need it, rather than with the shop's other stock in chapter 17 | When the Emporium first offers it |
+| Blaise's three races | 100% Guides names the three spots and that the races give Bones, Bellows Bustle and a Kear; which race gives which isn't settled, so the rows don't say | The races |
+| Dugin's return | 100% Guides: he can turn up in the same spot both times, and comes back only after the next story tower. On this route the first fight comes after Coltrane Peak's, so the second waits for the Astral Orrery's | When he first appears |
 | Stat bonuses | Left out of the rows (+1 Defense and the like): the cited lists don't give them | Each trinket's page |
