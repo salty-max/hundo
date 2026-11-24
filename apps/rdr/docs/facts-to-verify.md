@@ -69,6 +69,6 @@ Not flagged because we have fewer than two sources, and so unverified:
 
 ## Chapter text
 
-- Chapter 4 and 5 names are hidden behind “Late game” while locked, because their titles hint at the story. Chapters 1–3 show their region names.
+- Chapter 4 and 5 names are hidden while locked, because their titles hint at the story: the rail shows “Great Plains”, met in chapter 3, and “All territories”. Chapters 1–3 show their region names.
 - The chapter intros were checked by eye for story leaks, not by a playtester.
 - No Stranger step names a story mission from a later chapter, checked by eye and by the source-checker helper on 2026-11-18. Deadalus and Son’s chapter 2 step names West Elizabeth, which the rail already shows as chapter 3’s region.

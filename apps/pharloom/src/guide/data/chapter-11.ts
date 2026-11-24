@@ -4,7 +4,7 @@ export default {
   id: 11,
   title: "The Old Hearts and Fleatopia",
   region: "Grand Gate · Sands of Karak · Far Fields · Verdania · Fleatopia",
-  teaser: "Late game",
+  teaser: "Fleatopia",
   intro: "Enter four old memories with the Elegy of the Deep, win at least three of Pharloom's old hearts and bring them to the Snail Shamans. Around them, run the flea festival, take the new Wishes and settle the late duels.",
   sources: [["The Old Hearts and the three heart objectives", "https://hollowknight.wiki/w/Acts"], ["The four memories the Elegy opens", "https://hollowknight.wiki/w/Elegy_of_the_Deep"], ["Act 3 route and the hearts, a second host", "https://www.nintendolife.com/guides/hollow-knight-silksong-progression-guide-recommended-route"], ["Festival of the Flea: the games and the scores", "https://hollowknight.wiki/w/Festival_of_the_Flea"], ["Hearts as mementos", "https://hollowknight.wiki/w/Materium"]],
   groups: [

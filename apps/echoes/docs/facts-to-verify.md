@@ -53,7 +53,7 @@ Game8 ([list of missables and one-time events](https://game8.co/games/Zelda-Echo
 
 ## Wording and spoilers
 
-- Chapters 8 and 9 show "Late game" in the rail while hidden. Their group titles inside the chapters can still name late bosses; they were checked by eye, not by a playtester.
+- While hidden, chapter 8 shows "Chapter 8" in the rail and chapter 9 "All of Hyrule". Their group titles inside the chapters can still name late bosses; they were checked by eye, not by a playtester.
 - Directions and puzzle solutions were not replayed. Some tips depend on which echoes you already have.
 
 ## Content not carried over

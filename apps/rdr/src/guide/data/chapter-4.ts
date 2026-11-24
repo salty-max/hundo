@@ -4,7 +4,7 @@ export default {
   id: 4,
   title: "Beecher’s Hope",
   region: "Great Plains",
-  teaser: "Late game",
+  teaser: "Great Plains",
   intro: "Follow the ranch mission markers. Return to the journal after the final main mission for the last Stranger task and any unfinished requirements.",
   groups: [
     {

@@ -4,7 +4,6 @@ export default {
   id: 8,
   title: "Eternal Forest and finale",
   region: "Eternal Forest",
-  teaser: "Late game",
   intro: "Start here once the three Goddess Sanctions are complete. This chapter gives the final puzzle and boss solutions.",
   sources: [
     ["Eternal Forest and the six pedestals", "https://www.nintendolife.com/guides/zelda-echoes-of-wisdom-the-eternal-forest-walkthrough"],

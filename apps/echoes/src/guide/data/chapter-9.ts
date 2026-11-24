@@ -5,7 +5,7 @@ export default {
   id: 9,
   title: "Final collection sweep",
   region: "All of Hyrule",
-  teaser: "Late game",
+  teaser: "All of Hyrule",
   intro: "You can run these loops once their gates open or return after the credits. The Echo, Might Crystal, recipe and Slumber Dojo lists at the bottom cover every pickup the route doesn't.",
   sources: [
     ["Eastern Temple puzzles and chests", "https://www.nintendolife.com/guides/zelda-echoes-of-wisdom-lets-play-a-game-side-quest-eastern-temple-walkthrough-cloud-boss"],
