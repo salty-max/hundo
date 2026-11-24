@@ -35,4 +35,15 @@ Every secret's number, name and condition come from the Binding of Isaac wiki's 
 
 ## Credits
 
-Kalam and Atkinson Hyperlegible Next are bundled with their SIL OFL licenses in `public/fonts`. The heart-container icon and the plain cardboard chapter banners are placeholders, drawn for this guide, until its art is made. *The Binding of Isaac* belongs to Edmund McMillen and Nicalis; this is an unofficial fan guide.
+Kalam and Atkinson Hyperlegible Next are bundled with their SIL OFL licenses in `public/fonts`. The fourteen chapter banners and the red D6 app icon are original AI-generated illustrations, exported through the shared Hundo pipelines. The browser favicon is a simplified drawing of the same die. The banner recipes live in the `guide-banners` skill; the icon prompt is in [the artwork notes](../../docs/icon-art.md#basement). *The Binding of Isaac* belongs to Edmund McMillen and Nicalis; this is an unofficial fan guide.
+
+## Rebuild artwork
+
+Retain the original generation PNGs outside the repository, then export them into this guide:
+
+```bash
+node apps/basement/scripts/artwork.mjs /path/to/masters
+pnpm -C apps/basement icons
+```
+
+The folder must contain `chapter-1.png` through `chapter-14.png` and `icon.png`. Chapter banners are 1800 × 600 WebP and stay below 200 KB each. The app icon painting is 1024px, with core exporting the app, maskable, Apple, launcher and favicon variants.
