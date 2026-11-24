@@ -35,6 +35,7 @@ The fandom wiki is a fork of wiki.gg, so the two count as one source. isaacguru.
 143 of the 641 conditions rest on the wiki alone (most co-op babies and challenge unlocks, the tainted Mega Satan pickups, some Booster Pack items and donation tiers). Their rows are drafted from the wiki's condition, and each chapter's pass lists here the ones it found no second host for.
 
 - **Chapters 1 to 4:** #155 Angels, #158 The Tank, #159 Solar System, #160 Suicide King, #161 Cat Got Your Tongue, #162 Demo Man, #163 Cursed!, #165 The Family Man, #166 Purist, #228 2 new pills, #234 Blue Womb, #265 XXXXXXXXL, #266 SPEED!, #269 Have a Heart, #270 I RULE!, #271 BRAINS!, #272 PRIDE DAY!, #273 Onan's Streak, #274 The Guardian, #277 Backasswards, #278 Aprils fool, #279 Pokey Mans, #280 Ultra Hard, #281 PONG, #328 Mr. Resetter!, #331 Laz Bleeds More!, #332 Maggy Now Holds a Pill!, #333 Charged Key, #334 Samson Feels Healthy!, #340 Apollyon, #342 Burning Basement, #348 The gate is open!, #359 Wooden Cross, #370 Filigree Feather, #508 Bloody Mary, #641 Item Descriptions. The challenge rows agree with isaacguru's challenge table, which copies the wiki's, so it doesn't count.
+- **Chapters 5 to 8:** #199 Lilith, #242 Lucky Pennies, #243 Special Hanging Shopkeepers, #245 Cain holds Paperclip, #246 Everything is Terrible 2!!!, #247 Special Shopkeepers, #248 Eve now holds Razor Blade, #275 Generosity, #320 New Area, #357 Lil Delirium, #405 Jacob and Esau, #510 Isaac's Awakening, #511 Seeing Double, #513 Hot Potato, #514 Cantripped!, #515 Red Redemption, #516 DELETE THIS, #635 A Strange Door.
 
 ## Figures and claims on one host, chapters 1 to 4
 
@@ -46,6 +47,22 @@ The fandom wiki is a fork of wiki.gg, so the two count as one source. isaacguru.
 | "The record route": its author held the Repentance Dead God speedrun record as of April 2026 | The Steam guide's own credits | speedrun.com's leaderboard |
 | Lazarus Risen can't unlock Bethany | The wiki's Completion Marks notes; the game's own text says "without losing a life" | Two hosts that say it outright |
 
-## The rows are stubs from chapter 5 on
+## Figures and claims on one host, chapters 5 to 8
 
-Chapters 5 to 14 still give each secret the game's name as its title and its condition, in our words, as its text. Chapters 1 to 4 have their advice, route steps and sources per group; the rest follow chapter by chapter.
+| Claim | Where it stands | What would settle it |
+| --- | --- | --- |
+| Boss Rush: 30 bosses in waves; a Devil Room visit after Mom must end before 20 minutes | The wiki's Boss Rush page | A second host |
+| The Blue Womb's way disappears once the clock passes 30 minutes | The wiki's ??? (floor) page; the route guide agrees on 30 | A second host for the re-entry rule |
+| On Repentance+, beating ???, the Lamb, Mega Satan or Mother always opens a portal to the Void | The wiki's Void page | Repentance+ patch notes |
+| The Forgotten: with the Broken Shovel, Mom drops only the Negative and the Cathedral's beam stays away | The wiki's Forgotten page | A second host |
+| Greed mode has seven floors; the Greed Donation Machine appears after Ultra Greed; each character's jam chance rises as it donates | The wiki's Greed Mode and Greed Donation Machine pages; the route guide on jams | A second host for the jam rule |
+| Keeper: every heart turns into blue flies, and on Repentance+ gold hearts into coins | The wiki's Keeper page | A second host |
+| The Mausoleum's door costs two full hearts | The wiki's Mausoleum page | A second host |
+| A Marked Skull on Depths II always drops The Fool | The route guide | The wiki's Marked Skull page |
+| Downpour's door takes a key and the Mines' two bombs | The wiki's Downpour and Mines pages | A second host |
+| Boss Rush opens up to 25 minutes after Mom in Mausoleum II, and whatever the time while holding the Broken Shovel | The wiki's Boss Rush and Forgotten pages | A second host |
+| The Lost's Holy Mantle doesn't show in the pause menu | The wiki's Lost page | A second host |
+
+## The rows are stubs from chapter 9 on
+
+Chapters 9 to 14 still give each secret the game's name as its title and its condition, in our words, as its text. Chapters 1 to 8 have their advice, route steps and sources per group; the rest follow chapter by chapter.
