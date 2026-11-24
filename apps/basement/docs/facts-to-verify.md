@@ -59,6 +59,7 @@ The fandom wiki is a fork of wiki.gg, so the two count as one source. isaacguru.
 | Keeper: every heart turns into blue flies, and on Repentance+ gold hearts into coins | The wiki's Keeper page | A second host |
 | The Mausoleum's door costs two full hearts | The wiki's Mausoleum page | A second host |
 | A Marked Skull on Depths II always drops The Fool | The route guide | The wiki's Marked Skull page |
+| Eve starts with the Razor Blade only once Satan as Eve has unlocked it, as well as the 439 coins | StrategyWiki says both; the wiki's condition names only the coins | The wiki's Razor Blade page |
 | Downpour's door takes a key and the Mines' two bombs | The wiki's Downpour and Mines pages | A second host |
 | Boss Rush opens up to 25 minutes after Mom in Mausoleum II, and whatever the time while holding the Broken Shovel | The wiki's Boss Rush and Forgotten pages | A second host |
 | The Lost's Holy Mantle doesn't show in the pause menu | The wiki's Lost page | A second host |
