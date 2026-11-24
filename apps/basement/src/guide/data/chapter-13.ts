@@ -146,7 +146,7 @@ export default {
         ["pickup-rune-of-dagaz", ["pickup", "secret"], "Unlock Rune of Dagaz", "Complete Darkness Falls (challenge #4)."],
         ["pickup-rules-card", ["pickup", "secret"], "Unlock Rules Card", "Complete Glass Cannon (challenge #11)."],
         ["item-gold-bomb", ["item", "secret"], "Unlock Gold Bomb", "Complete Blue Bomber (challenge #23)."],
-        ["pickup-pills-percs-addicted", ["pickup", "secret"], "Unlock 2 new pills", "Complete PAY TO PLAY (challenge #24)."],
+        ["pickup-pills-pay-to-play", ["pickup", "secret"], "Unlock 2 new pills", "Complete PAY TO PLAY (challenge #24)."],
         ["item-purgatory", ["item", "secret"], "Unlock Purgatory", "Complete Baptism by Fire (challenge #38)."],
         ["challenge-pica-run", ["challenge", "secret"], "Open the challenge Pica Run", "Beat Mom’s Heart 11 times and unlock Marbles."],
         ["trinket-ice-cube", ["trinket", "secret"], "Unlock Ice Cube", "Complete Pica Run (challenge #41)."],
