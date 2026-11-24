@@ -858,8 +858,8 @@ pickup-mega-chest
 pickup-member-card
 pickup-mr-resetter
 pickup-once-more-with-feeling
-pickup-pills-percs-addicted
-pickup-pills-power-pill-retro-vision
+pickup-pills-have-a-heart
+pickup-pills-pay-to-play
 pickup-queen-of-hearts
 pickup-rotten-beggar
 pickup-rotten-heart

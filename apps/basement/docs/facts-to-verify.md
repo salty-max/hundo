@@ -32,8 +32,20 @@ The fandom wiki is a fork of wiki.gg, so the two count as one source. isaacguru.
 
 ## Conditions on one host
 
-143 of the 641 conditions rest on the wiki alone (most co-op babies and challenge unlocks, the tainted Mega Satan pickups, some Booster Pack items and donation tiers). Their rows are drafted from the wiki's condition. Phase 2 checks them chapter by chapter against a second host; any that finds none is listed here by number.
+143 of the 641 conditions rest on the wiki alone (most co-op babies and challenge unlocks, the tainted Mega Satan pickups, some Booster Pack items and donation tiers). Their rows are drafted from the wiki's condition, and each chapter's pass lists here the ones it found no second host for.
 
-## The rows are stubs
+- **Chapters 1 to 4:** #155 Angels, #158 The Tank, #159 Solar System, #160 Suicide King, #161 Cat Got Your Tongue, #162 Demo Man, #163 Cursed!, #165 The Family Man, #166 Purist, #228 2 new pills, #234 Blue Womb, #265 XXXXXXXXL, #266 SPEED!, #269 Have a Heart, #270 I RULE!, #271 BRAINS!, #272 PRIDE DAY!, #273 Onan's Streak, #274 The Guardian, #277 Backasswards, #278 Aprils fool, #279 Pokey Mans, #280 Ultra Hard, #281 PONG, #328 Mr. Resetter!, #331 Laz Bleeds More!, #332 Maggy Now Holds a Pill!, #333 Charged Key, #334 Samson Feels Healthy!, #340 Apollyon, #342 Burning Basement, #348 The gate is open!, #359 Wooden Cross, #370 Filigree Feather, #508 Bloody Mary, #641 Item Descriptions. The challenge rows agree with isaacguru's challenge table, which copies the wiki's, so it doesn't count.
 
-This first version gives each secret the game's name as its title and its condition, in our words, as its text. The advice, the route steps and the sources per group come chapter by chapter after it.
+## Figures and claims on one host, chapters 1 to 4
+
+| Claim | Where it stands | What would settle it |
+| --- | --- | --- |
+| The angels: the 9th sacrifice brings Uriel and the 11th Gabriel; past the 12th each sacrifice has a 50% chance to take you to the Dark Room | The wiki's Angel, Mega Satan and Dark Room pages | A second host |
+| The Polaroid and the Negative drop from Mom once unlocked, and you keep only one | The wiki's Polaroid and Negative pages | A second host |
+| Ehwaz used in Womb II always leads to Sheol | The wiki's Ehwaz page; the route guide uses it to reach Sheol | A second host for "always" |
+| "The record route": its author held the Repentance Dead God speedrun record as of April 2026 | The Steam guide's own credits | speedrun.com's leaderboard |
+| Lazarus Risen can't unlock Bethany | The wiki's Completion Marks notes; the game's own text says "without losing a life" | Two hosts that say it outright |
+
+## The rows are stubs from chapter 5 on
+
+Chapters 5 to 14 still give each secret the game's name as its title and its condition, in our words, as its text. Chapters 1 to 4 have their advice, route steps and sources per group; the rest follow chapter by chapter.
