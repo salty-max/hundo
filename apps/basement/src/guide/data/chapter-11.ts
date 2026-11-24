@@ -5,8 +5,8 @@ export default {
   title: "Tainted Notes",
   region: "Character select · Hard",
   teaser: "Late game",
-  intro: "The tainted notes, from the gentlest.",
-  sources: [["The secrets, with their conditions (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Achievements"], ["The secrets on Steam", "https://steamcommunity.com/stats/250900/achievements"], ["Completion marks (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Completion_Marks"]],
+  intro: "Nine of the seventeen tainted notes, in the order the record route first plays each character. A tainted note unlocks less than a regular one. Mom’s Heart on Hard still counts for its mark but unlocks nothing; Isaac, ???, Satan and the Lamb share one unlock; and Boss Rush and Hush share one, a Soul stone.",
+  sources: [["A Dead God route for Repentance+ (Steam guide)", "https://steamcommunity.com/sharedfiles/filedetails/?id=3712501774"], ["Tainted characters (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Tainted_Characters"], ["The secrets, with their conditions (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Achievements"], ["The secrets on Steam", "https://steamcommunity.com/stats/250900/achievements"], ["Completion marks (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Completion_Marks"]],
   groups: [
     {
       title: "Milestones",
@@ -17,6 +17,8 @@ export default {
     {
       title: "Tainted Lilith’s note",
       compact: true,
+      note: "Tainted Lilith can’t fire tears. Instead she launches Gello, a baby on a cord that hits for three times her damage and comes back when you let go of fire. Advice (wiki): use the baby as a melee weapon, and take tears ups, which launch it faster. Advice: the record route opens the tainted notes with her, resets any run that doesn’t start well, and wins ZIP! (chapter 13) on her Dark Room run. It leaves her Greedier win until her last run before Tainted Eden (chapter 12).",
+      sources: [["Tainted characters (StrategyWiki)", "https://strategywiki.org/wiki/The_Binding_of_Isaac:_Repentance/Tainted_characters"], ["Tainted Lilith (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Tainted_Lilith"], ["A Dead God route for Repentance+ (Steam guide)", "https://steamcommunity.com/sharedfiles/filedetails/?id=3712501774"]],
       rows: [
         ["mark-tainted-lilith-heart", ["mark-heart"], "Mom’s Heart on Hard", "Beat Mom’s Heart or It Lives! on Hard as Tainted Lilith. Hard also gives the Normal mark."],
         ["mark-tainted-lilith-isaac", ["mark-isaac"], "Isaac on Hard", "Beat Isaac in the Cathedral on Hard as Tainted Lilith. Hard also gives the Normal mark."],
@@ -41,6 +43,8 @@ export default {
     {
       title: "Tainted Jacob’s note",
       compact: true,
+      note: "Tainted Jacob starts with Anima Sola, which freezes the nearest enemy for 5 seconds, and Dark Esau chases him through the whole run. If Esau catches him, he plays as the Lost, without the Holy Mantle, until the next floor. Advice (wiki): Anima Sola always freezes Dark Esau when he’s on screen, so save it for him; his charges hurt enemies too. Advice: the record route wins his Greedier mark first, long before the rest of his note.",
+      sources: [["Tainted characters (StrategyWiki)", "https://strategywiki.org/wiki/The_Binding_of_Isaac:_Repentance/Tainted_characters"], ["Tainted Jacob (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Tainted_Jacob"], ["A Dead God route for Repentance+ (Steam guide)", "https://steamcommunity.com/sharedfiles/filedetails/?id=3712501774"]],
       rows: [
         ["mark-tainted-jacob-heart", ["mark-heart"], "Mom’s Heart on Hard", "Beat Mom’s Heart or It Lives! on Hard as Tainted Jacob. Hard also gives the Normal mark."],
         ["mark-tainted-jacob-isaac", ["mark-isaac"], "Isaac on Hard", "Beat Isaac in the Cathedral on Hard as Tainted Jacob. Hard also gives the Normal mark."],
@@ -65,6 +69,8 @@ export default {
     {
       title: "Tainted Judas’ note",
       compact: true,
+      note: "Tainted Judas starts with two black hearts, three coins and Dark Arts. Used, Dark Arts makes him fast and untouchable for a moment; enemies he passes through freeze, then take damage when it ends. He can’t have red hearts, so health ups give him black ones. Advice (wiki): play him aggressively. Dark Arts lets him walk through spikes and shots, so he can enter Curse Rooms safely, and he’s very strong in Greed mode. Advice: the record route wins his Greedier mark first, long before the rest of his note, and leaves his Beast win until after Tainted Forgotten’s note (chapter 12).",
+      sources: [["Tainted characters (StrategyWiki)", "https://strategywiki.org/wiki/The_Binding_of_Isaac:_Repentance/Tainted_characters"], ["Tainted Judas (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Tainted_Judas"], ["A Dead God route for Repentance+ (Steam guide)", "https://steamcommunity.com/sharedfiles/filedetails/?id=3712501774"]],
       rows: [
         ["mark-tainted-judas-heart", ["mark-heart"], "Mom’s Heart on Hard", "Beat Mom’s Heart or It Lives! on Hard as Tainted Judas. Hard also gives the Normal mark."],
         ["mark-tainted-judas-isaac", ["mark-isaac"], "Isaac on Hard", "Beat Isaac in the Cathedral on Hard as Tainted Judas. Hard also gives the Normal mark."],
@@ -89,6 +95,8 @@ export default {
     {
       title: "Tainted Isaac’s note",
       compact: true,
+      note: "Item pedestals cycle between two items for Tainted Isaac, so he has more to choose from, but he can carry only eight passive items. Quest items, such as the key pieces and Dad’s Note, don’t count. Taking a ninth puts one of his items back on the pedestal, and the Drop button picks which. Advice (StrategyWiki): look for eight items that work well together, rather than the strongest one by one. Advice (wiki): an item that gives health or pickups when taken can go back straight away, and what it gave stays.",
+      sources: [["Tainted characters (StrategyWiki)", "https://strategywiki.org/wiki/The_Binding_of_Isaac:_Repentance/Tainted_characters"], ["Tainted Isaac (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Tainted_Isaac"]],
       rows: [
         ["mark-tainted-isaac-heart", ["mark-heart"], "Mom’s Heart on Hard", "Beat Mom’s Heart or It Lives! on Hard as Tainted Isaac. Hard also gives the Normal mark."],
         ["mark-tainted-isaac-isaac", ["mark-isaac"], "Isaac on Hard", "Beat Isaac in the Cathedral on Hard as Tainted Isaac. Hard also gives the Normal mark."],
@@ -113,6 +121,8 @@ export default {
     {
       title: "Tainted Eve’s note",
       compact: true,
+      note: "Tainted Eve has the slowest fire rate of any character. Holding fire for 2 seconds turns half a heart into a blood clot that fires beside her. Advice (wiki): her strength grows with her clots. Tap fire instead of holding it when you want to keep your health, and once a floor is clear, turn every heart left on it into clots.",
+      sources: [["Tainted characters (StrategyWiki)", "https://strategywiki.org/wiki/The_Binding_of_Isaac:_Repentance/Tainted_characters"], ["Tainted Eve (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Tainted_Eve"]],
       rows: [
         ["mark-tainted-eve-heart", ["mark-heart"], "Mom’s Heart on Hard", "Beat Mom’s Heart or It Lives! on Hard as Tainted Eve. Hard also gives the Normal mark."],
         ["mark-tainted-eve-isaac", ["mark-isaac"], "Isaac on Hard", "Beat Isaac in the Cathedral on Hard as Tainted Eve. Hard also gives the Normal mark."],
@@ -137,6 +147,8 @@ export default {
     {
       title: "Tainted Samson’s note",
       compact: true,
+      note: "Dealing or taking damage builds Tainted Samson up to berserk. Berserk lasts 5 seconds, plus a second for each kill; he swings a jawbone instead of firing, moves faster and hits harder. Advice (wiki): enter a room, kill as much as you can and rush on to the next to stay berserk.",
+      sources: [["Tainted characters (StrategyWiki)", "https://strategywiki.org/wiki/The_Binding_of_Isaac:_Repentance/Tainted_characters"], ["Tainted Samson (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Tainted_Samson"]],
       rows: [
         ["mark-tainted-samson-heart", ["mark-heart"], "Mom’s Heart on Hard", "Beat Mom’s Heart or It Lives! on Hard as Tainted Samson. Hard also gives the Normal mark."],
         ["mark-tainted-samson-isaac", ["mark-isaac"], "Isaac on Hard", "Beat Isaac in the Cathedral on Hard as Tainted Samson. Hard also gives the Normal mark."],
@@ -161,6 +173,8 @@ export default {
     {
       title: "Tainted ???’s note",
       compact: true,
+      note: "Tainted ??? has no bombs. Bomb pickups become poop, and hurting enemies earns more; he places poops instead, each with its own effect, and some explode. His Hold saves the next poop for later. Advice (wiki): spend poops freely early on, keep one that explodes in Hold to open Secret Rooms, and finish Greed waves without leaving the room, since leaving clears his poops from the floor.",
+      sources: [["Tainted characters (StrategyWiki)", "https://strategywiki.org/wiki/The_Binding_of_Isaac:_Repentance/Tainted_characters"], ["Tainted ??? (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Tainted_%3F%3F%3F"]],
       rows: [
         ["mark-tainted-blue-baby-heart", ["mark-heart"], "Mom’s Heart on Hard", "Beat Mom’s Heart or It Lives! on Hard as Tainted ???. Hard also gives the Normal mark."],
         ["mark-tainted-blue-baby-isaac", ["mark-isaac"], "Isaac on Hard", "Beat Isaac in the Cathedral on Hard as Tainted ???. Hard also gives the Normal mark."],
@@ -185,6 +199,8 @@ export default {
     {
       title: "Tainted Lazarus’ note",
       compact: true,
+      note: "Tainted Lazarus switches between his living and dead forms each time a room is cleared, and each form keeps its own items. Item pedestals also show a ghostly second item, and his Flip, which switches forms on demand, is the only way to take it. Advice (wiki): use Flip in Treasure Rooms, shops, and Devil and Angel Rooms to take items for both forms.",
+      sources: [["Tainted characters (StrategyWiki)", "https://strategywiki.org/wiki/The_Binding_of_Isaac:_Repentance/Tainted_characters"], ["Tainted Lazarus (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Tainted_Lazarus"]],
       rows: [
         ["mark-tainted-lazarus-heart", ["mark-heart"], "Mom’s Heart on Hard", "Beat Mom’s Heart or It Lives! on Hard as Tainted Lazarus. Hard also gives the Normal mark."],
         ["mark-tainted-lazarus-isaac", ["mark-isaac"], "Isaac on Hard", "Beat Isaac in the Cathedral on Hard as Tainted Lazarus. Hard also gives the Normal mark."],
@@ -209,6 +225,8 @@ export default {
     {
       title: "Tainted Magdalene’s note",
       compact: true,
+      note: "Tainted Magdalene hits enemies that touch her with a melee hug, and slain enemies can drop half hearts that vanish within 2 seconds. Above two red hearts her health slowly drains, and healing from anything but heart pickups counts double. Advice (wiki): charge into groups and live off the hearts they drop, and take damage ups early, since her damage is low.",
+      sources: [["Tainted characters (StrategyWiki)", "https://strategywiki.org/wiki/The_Binding_of_Isaac:_Repentance/Tainted_characters"], ["Tainted Magdalene (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Tainted_Magdalene"]],
       rows: [
         ["mark-tainted-magdalene-heart", ["mark-heart"], "Mom’s Heart on Hard", "Beat Mom’s Heart or It Lives! on Hard as Tainted Magdalene. Hard also gives the Normal mark."],
         ["mark-tainted-magdalene-isaac", ["mark-isaac"], "Isaac on Hard", "Beat Isaac in the Cathedral on Hard as Tainted Magdalene. Hard also gives the Normal mark."],
