@@ -5,12 +5,14 @@ export default {
   title: "Notes: Isaac to Eden",
   region: "Character select · Hard",
   teaser: "Notes",
-  intro: "Every boss is open. Fill each character’s note on Hard: Death Certificate asks for every Hard mark, and Hard gives the Normal mark too.",
-  sources: [["The secrets, with their conditions (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Achievements"], ["The secrets on Steam", "https://steamcommunity.com/stats/250900/achievements"], ["Completion marks (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Completion_Marks"]],
+  intro: "Every boss is open. Fill each character’s note on Hard: Death Certificate asks for every Hard mark, and a Hard win gives the Normal mark too. A note takes at least five winning runs: one through the Cathedral and the Chest, one through Sheol and the Dark Room, one to Mother, one to the Beast and one of Greedier. Boss Rush and Hush, still on chapter 5’s timers, Mega Satan and Delirium fit inside the first two, and Delirium also fits the Mother run.",
+  sources: [["A Dead God route for Repentance+ (Steam guide)", "https://steamcommunity.com/sharedfiles/filedetails/?id=3712501774"], ["The secrets, with their conditions (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Achievements"], ["The secrets on Steam", "https://steamcommunity.com/stats/250900/achievements"], ["Completion marks (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Completion_Marks"]],
   groups: [
     {
       title: "Isaac’s note",
       compact: true,
+      note: "Isaac has balanced stats and a starting bomb, which opens an early Secret Room. Once you’ve beaten Isaac in the Cathedral as ???, he starts every run with the D6, which rerolls an item into another. Advice (StrategyWiki): reroll weak items.",
+      sources: [["Regular characters (StrategyWiki)", "https://strategywiki.org/wiki/The_Binding_of_Isaac:_Repentance/Regular_characters"], ["Completion marks (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Completion_Marks"]],
       rows: [
         ["mark-isaac-heart", ["mark-heart", "baby", "secret"], "Mom’s Heart on Hard", "Beat Mom’s Heart or It Lives! on Hard as Isaac. It also unlocks Lost Baby."],
         ["mark-isaac-isaac", ["mark-isaac"], "Isaac on Hard", "Beat Isaac in the Cathedral on Hard as Isaac. Hard also gives the Normal mark."],
@@ -40,6 +42,8 @@ export default {
     {
       title: "Magdalene’s note",
       compact: true,
+      note: "Slower, with more health and the Yum Heart to heal. Advice (StrategyWiki): she’s the best character for Sacrifice Rooms, where she can pay health for rewards.",
+      sources: [["Regular characters (StrategyWiki)", "https://strategywiki.org/wiki/The_Binding_of_Isaac:_Repentance/Regular_characters"], ["Completion marks (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Completion_Marks"]],
       rows: [
         ["mark-magdalene-heart", ["mark-heart", "baby", "secret"], "Mom’s Heart on Hard", "Beat Mom’s Heart or It Lives! on Hard as Magdalene. It also unlocks Cute Baby."],
         ["mark-magdalene-isaac", ["mark-isaac"], "Isaac on Hard", "Beat Isaac in the Cathedral on Hard as Magdalene. Hard also gives the Normal mark."],
@@ -70,6 +74,8 @@ export default {
     {
       title: "Cain’s note",
       compact: true,
+      note: "Fast and hard-hitting but frail, with short range, so he fights up close. His Lucky Foot improves room rewards and makes pills safe, and his key and the Paper Clip (chapter 6) open golden chests.",
+      sources: [["Regular characters (StrategyWiki)", "https://strategywiki.org/wiki/The_Binding_of_Isaac:_Repentance/Regular_characters"], ["Completion marks (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Completion_Marks"]],
       rows: [
         ["mark-cain-heart", ["mark-heart", "baby", "secret"], "Mom’s Heart on Hard", "Beat Mom’s Heart or It Lives! on Hard as Cain. It also unlocks Glass Baby."],
         ["mark-cain-isaac", ["mark-isaac"], "Isaac on Hard", "Beat Isaac in the Cathedral on Hard as Cain. Hard also gives the Normal mark."],
@@ -100,6 +106,8 @@ export default {
     {
       title: "Judas’ note",
       compact: true,
+      note: "Judas starts frail, able to take only one hit, but his Book of Belial and high damage hit hard, and the book raises the chance of Devil and Angel Rooms. Advice (StrategyWiki): keep out of Sacrifice and Curse Rooms and rely on soul hearts.",
+      sources: [["Regular characters (StrategyWiki)", "https://strategywiki.org/wiki/The_Binding_of_Isaac:_Repentance/Regular_characters"], ["Completion marks (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Completion_Marks"]],
       rows: [
         ["mark-judas-heart", ["mark-heart", "baby", "secret"], "Mom’s Heart on Hard", "Beat Mom’s Heart or It Lives! on Hard as Judas. It also unlocks Shadow Baby."],
         ["mark-judas-isaac", ["mark-isaac"], "Isaac on Hard", "Beat Isaac in the Cathedral on Hard as Judas. Hard also gives the Normal mark."],
@@ -130,6 +138,8 @@ export default {
     {
       title: "???’s note",
       compact: true,
+      note: "??? has no red heart containers: health-ups give him soul hearts instead, and never taking red heart damage makes Devil and Angel Rooms easier to find. The Poop he starts with spawns a friendly fly for each poop he destroys.",
+      sources: [["Regular characters (StrategyWiki)", "https://strategywiki.org/wiki/The_Binding_of_Isaac:_Repentance/Regular_characters"], ["Completion marks (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Completion_Marks"]],
       rows: [
         ["mark-blue-baby-heart", ["mark-heart", "baby", "secret"], "Mom’s Heart on Hard", "Beat Mom’s Heart or It Lives! on Hard as ???. It also unlocks Dead Baby."],
         ["mark-blue-baby-isaac", ["mark-isaac"], "Isaac on Hard", "Beat Isaac in the Cathedral on Hard as ???. Hard also gives the Normal mark."],
@@ -160,6 +170,8 @@ export default {
     {
       title: "Eve’s note",
       compact: true,
+      note: "Eve is strongest when hurt: with one red heart or less, the Whore of Babylon powers her up, and the Razor Blade lets her hurt herself on purpose. StrategyWiki’s advice is to take Devil deals as Eve, since paying red hearts keeps her low. The Razor Blade start comes from chapter 6’s 439 coins once beating Satan as Eve has unlocked the Razor.",
+      sources: [["Regular characters (StrategyWiki)", "https://strategywiki.org/wiki/The_Binding_of_Isaac:_Repentance/Regular_characters"], ["Completion marks (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Completion_Marks"]],
       rows: [
         ["mark-eve-heart", ["mark-heart", "baby", "secret"], "Mom’s Heart on Hard", "Beat Mom’s Heart or It Lives! on Hard as Eve. It also unlocks Crow Baby."],
         ["mark-eve-isaac", ["mark-isaac"], "Isaac on Hard", "Beat Isaac in the Cathedral on Hard as Eve. Hard also gives the Normal mark."],
@@ -190,6 +202,8 @@ export default {
     {
       title: "Samson’s note",
       compact: true,
+      note: "Bloody Lust raises Samson’s damage every time he’s hit, for the rest of the floor. Advice (StrategyWiki): damage that pays anyway feeds it twice, such as Curse Rooms and Blood Donation Machines.",
+      sources: [["Regular characters (StrategyWiki)", "https://strategywiki.org/wiki/The_Binding_of_Isaac:_Repentance/Regular_characters"], ["Completion marks (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Completion_Marks"]],
       rows: [
         ["mark-samson-heart", ["mark-heart", "baby", "secret"], "Mom’s Heart on Hard", "Beat Mom’s Heart or It Lives! on Hard as Samson. It also unlocks Fighting Baby."],
         ["mark-samson-isaac", ["mark-isaac"], "Isaac on Hard", "Beat Isaac in the Cathedral on Hard as Samson. Hard also gives the Normal mark."],
@@ -220,6 +234,8 @@ export default {
     {
       title: "Azazel’s note",
       compact: true,
+      note: "Azazel flies, fires a short charged beam with the shortest reach of any character, and starts with black hearts and The Fool card. Advice: the record route plays him on Normal for many of its early wins.",
+      sources: [["Regular characters (StrategyWiki)", "https://strategywiki.org/wiki/The_Binding_of_Isaac:_Repentance/Regular_characters"], ["Completion marks (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Completion_Marks"], ["A Dead God route for Repentance+ (Steam guide)", "https://steamcommunity.com/sharedfiles/filedetails/?id=3712501774"]],
       rows: [
         ["mark-azazel-heart", ["mark-heart", "baby", "secret"], "Mom’s Heart on Hard", "Beat Mom’s Heart or It Lives! on Hard as Azazel. It also unlocks Begotten Baby."],
         ["mark-azazel-isaac", ["mark-isaac"], "Isaac on Hard", "Beat Isaac in the Cathedral on Hard as Azazel. Hard also gives the Normal mark."],
@@ -249,6 +265,8 @@ export default {
     {
       title: "Lazarus’ note",
       compact: true,
+      note: "Lazarus has a spare life: dying revives him as Lazarus Risen with a damage boost, once a floor, and the next floor gives the life back.",
+      sources: [["Regular characters (StrategyWiki)", "https://strategywiki.org/wiki/The_Binding_of_Isaac:_Repentance/Regular_characters"], ["Completion marks (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Completion_Marks"]],
       rows: [
         ["mark-lazarus-heart", ["mark-heart", "baby", "secret"], "Mom’s Heart on Hard", "Beat Mom’s Heart or It Lives! on Hard as Lazarus. It also unlocks Wrapped Baby."],
         ["mark-lazarus-isaac", ["mark-isaac"], "Isaac on Hard", "Beat Isaac in the Cathedral on Hard as Lazarus. Hard also gives the Normal mark."],
@@ -279,6 +297,8 @@ export default {
     {
       title: "Eden’s note",
       compact: true,
+      note: "Eden’s stats and items are random every run, and each run costs an Eden Token, earned by beating Mom’s Heart, It Lives!, Ultra Greed or the Beast.",
+      sources: [["Regular characters (StrategyWiki)", "https://strategywiki.org/wiki/The_Binding_of_Isaac:_Repentance/Regular_characters"], ["Completion marks (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Completion_Marks"]],
       rows: [
         ["mark-eden-heart", ["mark-heart", "baby", "secret"], "Mom’s Heart on Hard", "Beat Mom’s Heart or It Lives! on Hard as Eden. It also unlocks Glitch Baby."],
         ["mark-eden-isaac", ["mark-isaac"], "Isaac on Hard", "Beat Isaac in the Cathedral on Hard as Eden. Hard also gives the Normal mark."],
