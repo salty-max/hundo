@@ -4,6 +4,7 @@ export default {
   id: 9,
   title: "Wind Fish’s Egg",
   region: "Mabe Village · Mt. Tamaranch",
+  teaser: "Wind Fish’s Egg",
   intro: "Read your file’s maze directions, gather supplies and face the final battle. Return to the cleared save for the last Trendy Game prize.",
   sources: [
     ["The Great Egg and postgame", "https://gamefaqs.gamespot.com/switch/258622-the-legend-of-zelda-links-awakening/faqs/77938/the-great-egg"],

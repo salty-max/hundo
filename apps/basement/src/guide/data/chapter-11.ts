@@ -4,6 +4,7 @@ export default {
   id: 11,
   title: "Tainted Notes",
   region: "Character select · Hard",
+  teaser: "Tainted Notes",
   intro: "Nine of the seventeen tainted notes, in the order the record route first plays each character. A tainted note unlocks less than a regular one. Mom’s Heart on Hard still counts for its mark but unlocks nothing; Isaac, ???, Satan and the Lamb share one unlock; and Boss Rush and Hush share one, a Soul stone.",
   sources: [["A Dead God route for Repentance+ (Steam guide)", "https://steamcommunity.com/sharedfiles/filedetails/?id=3712501774"], ["Tainted characters (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Tainted_Characters"], ["The secrets, with their conditions (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Achievements"], ["The secrets on Steam", "https://steamcommunity.com/stats/250900/achievements"], ["Completion marks (wiki)", "https://bindingofisaacrebirth.wiki.gg/wiki/Completion_Marks"]],
   groups: [

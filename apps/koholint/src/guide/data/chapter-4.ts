@@ -4,6 +4,7 @@ export default {
   id: 4,
   title: "Angler’s Tunnel",
   region: "Animal Village · Yarna Desert · Tal Tal Heights",
+  teaser: "Angler’s Tunnel",
   intro: "Cross the river to Animal Village, open the desert road with Marin’s help, and trace the waterfall back to its source. The Pegasus Boots also open two worthwhile detours.",
   sources: [
     ["Nintendo Life · Yarna Desert and the waterfall", "https://www.nintendolife.com/guides/zelda-links-awakening-angler-key-location-animal-village-yarna-desert-and-mountain-waterfall"],

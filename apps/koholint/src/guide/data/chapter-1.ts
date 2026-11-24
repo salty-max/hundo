@@ -4,6 +4,7 @@ export default {
   id: 1,
   title: "Tail Cave",
   region: "Mabe Village · Mysterious Forest",
+  teaser: "Tail Cave",
   intro: "Recover Link’s equipment, undo the forest’s trick and open the first dungeon. Make a village circuit for early hearts and a Fairy Bottle before facing Moldorm.",
   sources: [
     ["Link’s Hideaway · Switch route", "https://www.linkshideaway.com/links-awakening-switch-walkthrough/tail-cave/"],

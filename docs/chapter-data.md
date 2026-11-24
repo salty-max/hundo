@@ -30,7 +30,7 @@ export default {
 
 - **`id`**: chapters are numbered 1, 2, 3… in order, and each has rows **(tested)**. List each new module in `config.ts`'s `chapters`.
 - **`title`**, **`region`** and **`intro`** show on the chapter's banner once it's revealed.
-- **`teaser`**: what the rail shows while the chapter is still hidden. Use a place name and never story: a place the reader has already met, or the title where it spoils nothing. Where every option would give the story away, leave it out and the rail shows "Chapter 08". No two chapters of a guide show the same teaser, so the rail never repeats a line (`data.test.ts`).
+- **`teaser`**: what the rail shows while the chapter is still hidden. Every chapter has one: a place the reader has already met, else the chapter's title. Never leave it out: the rail would then show a bare "Chapter 08". No two chapters of a guide show the same teaser. `data.test.ts` holds both.
 - **`sources`**: the chapter's references, as `[label, url]`.
 - **`groups`**: the sections. A group has a `title` and `rows`, plus optional fields:
   - `location`;
@@ -158,7 +158,7 @@ export const questlines: Questlines = {
 - **Steps are row ids in route order, each once** **(tested)**. Order comes from the route alone: the steps a reader has revealed are then always the line's first ones. An arc that truly runs against the route is two lines.
 - **`cover`** lists tags whose every row must be in some line **(tested)**. A row may be in two lines, as Logan's and Griggs's farewell is.
 - **A line's `id`** is kebab-case and unique **(tested)**, and stays once live: it's the line's address.
-- **A name says only what the line's first step's chapter already says**: the character as first met ("Siegmeyer of Catarina", never the daughter met later). It shows as soon as that chapter is revealed, so it follows the same rule as a chapter's `teaser`. There's no blurb, for the same reason. No test can catch a name that spoils.
+- **A name says only what the line's first step's chapter already says**: the character as first met ("Siegmeyer of Catarina", never the daughter met later). It shows as soon as that chapter is revealed, so it never tells story from later on. There's no blurb, for the same reason. No test can catch a name that spoils.
 - A line is a claim that its steps belong together. Group only what the rows' own texts or two sources tie together, and put any doubt in `facts-to-verify.md`.
 
 ## Builds

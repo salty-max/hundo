@@ -4,6 +4,7 @@ export default {
   id: 8,
   title: "Turtle Rock",
   region: "Western Tal Tal Mountains · Turtle Rock",
+  teaser: "Turtle Rock",
   intro: "Head west through the mountains, then solve a network of lava crossings, locked rooms and side-view tunnels.",
   sources: [
     ["Western mountain route", "https://gamefaqs.gamespot.com/switch/258622-the-legend-of-zelda-links-awakening/faqs/77938/unto-the-turtle"],

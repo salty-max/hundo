@@ -4,6 +4,7 @@ export default {
   id: 3,
   title: "Key Cavern",
   region: "Ukuku Prairie · Kanalet Castle",
+  teaser: "Key Cavern",
   intro: "Recover five Golden Leaves for Richard, then use his secret passage to find the Slime Key. Bring Bombs for Key Cavern and open all four basement doors for a full sweep.",
   sources: [
     ["Link’s Hideaway · Switch route", "https://www.linkshideaway.com/links-awakening-switch-walkthrough/key-cavern/"],
