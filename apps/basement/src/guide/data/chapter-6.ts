@@ -48,7 +48,7 @@ export default {
         ["donation-cain-holds-paperclip", ["donation", "secret"], "Unlock Cain holds Paperclip", "Reach 68 coins: Cain then starts with the Paper Clip."],
         ["donation-everything-is-terrible-2", ["donation", "secret"], "Unlock Everything is Terrible 2!!!", "Reach 111 coins: Greed mode gets harder."],
         ["donation-special-shopkeepers", ["donation", "secret"], "Unlock Special Shopkeepers", "Reach 234 coins."],
-        ["donation-eve-now-holds-razor-blade", ["donation", "secret"], "Unlock Eve now holds Razor Blade", "Reach 439 coins: Eve then starts with the Razor Blade."],
+        ["donation-eve-now-holds-razor-blade", ["donation", "secret"], "Unlock Eve now holds Razor Blade", "Reach 439 coins: Eve then starts with the Razor Blade, once beating Satan as Eve has unlocked it."],
         ["donation-greedier", ["donation", "secret"], "Unlock Greedier!", "Reach 500 coins: Greedier, the harder Greed mode, opens. Its final boss is Ultra Greedier."],
         ["donation-store-key", ["donation", "secret"], "Unlock Store Key", "Reach 666 coins."],
         ["donation-lost-holds-holy-mantle", ["donation", "secret"], "Unlock Lost holds Holy Mantle", "Reach 879 coins: from then on the Lost starts every run with the Holy Mantle’s shield, which the pause menu doesn’t show."],
