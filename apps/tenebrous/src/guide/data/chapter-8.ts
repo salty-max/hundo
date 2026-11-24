@@ -42,7 +42,7 @@ export default {
         ["bonestone-septemburg-tunnel-locked", ["bonestone"], "Get the Bonestone in the giant pig’s room", "Past the bridge and a log, beat the giant pig in its room: the chest beside it is behind a Kear lock.", {"reference": "https://www.100pguides.com/guides/mina-the-hollower-all-collectible-locations"}],
         ["trinket-repulsing-root", ["trinket"], "Buy Repulsing Root from the scarecrow merchant", "Up the path right of the bridge, untie the scarecrow on the right platform of the leaf-blower field: he’s a merchant, and Repulsing Root costs 1,250 Bones.", {"reference": "https://meowdb.com/db/mina-the-hollower/checklist"}],
         ["kear-septemburg-crow-town", ["kear"], "Buy the scarecrow merchant’s Kear", "The scarecrow merchant sells a Kear too, for 750 Bones.", {"reference": "https://meowdb.com/db/mina-the-hollower/kears"}],
-        ["weapon-septemburg-rooftop-casket", ["weapon"], "Open the weapon chest in Crow Town", "Left of the scarecrow merchant’s shop, pass the bottom-left door: an enemy smashes out of it as you go by. Go in and up the stairs to the red chest on the balcony. It holds the Guardian Casket, or its Coffin Toss upgrade if you already own the weapon.", {"reference": "https://www.100pguides.com/guides/mina-the-hollower-all-collectible-locations"}],
+        ["weapon-septemburg-rooftop-casket", ["weapon"], "Open the weapon chest in Crow Town", "Left of the scarecrow merchant’s shop, pass the bottom-left door: an enemy smashes out of it as you go by. Go in and up the stairs to the red chest on the balcony, a chest for the Guardian Casket: the weapon itself or one of its upgrades.", {"reference": "https://www.100pguides.com/guides/mina-the-hollower-all-collectible-locations"}],
       ],
     },
     {
