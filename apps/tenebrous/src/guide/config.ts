@@ -46,10 +46,10 @@ export const targets: BoardItem[] = [
   { tag: "fish", goal: 16, list: "game" },
   { tag: "underlab", goal: 9, list: "game" },
   { tag: "boss", goal: 26, list: "guide" },
-  { tag: "weapon", goal: 11, list: "guide" },
+  { tag: "weapon", goal: 9, list: "guide" },
   { tag: "sidearm", goal: 13, list: "guide" },
   { tag: "gear", goal: 6, list: "guide" },
-  { tag: "quest", goal: 17, list: "guide" },
+  { tag: "quest", goal: 16, list: "guide" },
 ];
 
 const config: GuideConfig = {
