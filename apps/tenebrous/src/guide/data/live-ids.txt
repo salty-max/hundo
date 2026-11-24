@@ -257,7 +257,6 @@ quest-child-three
 quest-child-two
 quest-drillhardt
 quest-fian-rescue
-quest-fishing-audit
 quest-furgus-vial
 quest-gluttons-jug
 quest-gourdan
@@ -309,12 +308,9 @@ route-icebound
 route-kindlewood-fire
 route-kindlewood-road
 route-knights-rest
-route-manor-ballroom
 route-manor-choir
 route-manor-gallery
 route-manor-library
-route-manor-performance
-route-manor-prepare
 route-manor-rafters
 route-manor-roof
 route-mirren
@@ -449,8 +445,6 @@ weapon-coltrane-rail-yard
 weapon-crypt-foyer-chest
 weapon-landing-belowdecks-left
 weapon-landing-belowdecks-right
-weapon-legovich-battery-buster
-weapon-legovich-guardian-casket
 weapon-orrery-stellarium
 weapon-ossex-courtyard
 weapon-septemburg-rooftop-casket

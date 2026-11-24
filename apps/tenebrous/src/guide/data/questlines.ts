@@ -16,6 +16,6 @@ export const questlines: Questlines = {
     { id: "poppit", name: "The hidden merchants", steps: ["trinket-willow-the-wisp", "trinket-helio-the-wisp", "trinket-keri-the-wisp", "gear-disturbing-dance"] },
     { id: "blaise", name: "The station races", steps: ["gear-train-pass", "quest-blaise-first-race", "trinket-bellows-bustle", "kear-ossex-blaise-final-race"] },
     { id: "rupert", name: "The icy crossing", steps: ["quest-rupert", "trinket-watchful-eye", "kear-coltrane-rail-yard-room-rupert"] },
-    { id: "choir", name: "The Manor choir", steps: ["route-manor-choir", "route-manor-performance", "bonestone-manor-meowstros-chamber"] },
+    { id: "choir", name: "The Manor choir", steps: ["route-manor-choir", "bonestone-manor-meowstros-chamber"] },
   ],
 };
