@@ -52,7 +52,7 @@ export default {
       title: "Sparkly spots on the way",
       location: "Tantegel · Erdrick’s Hollow · Roadside Inn",
       map: ["Realm of Darkness", "https://www.realmofdarkness.net/dq/hd2d-dq-sparkly-spots/"],
-      note: "Sparkly spots are the blue sparkles on the world map: walk over one to pick up its whole pile. Realm of Darkness’s numbered map shows where each one is.",
+      note: "Sparkly spots are the blue sparkles on the world map, each a free pile of items. Realm of Darkness’s numbered map shows where each one is.",
       compact: true,
       rows: [
         ["sparkle-west-of-tantegel", ["sparkle"], "Pick up the Seed of Stamina west of Tantegel", "The sparkly spot west of Tantegel holds a Seed of Stamina and a Medicinal Herb.", {"place": "Tantegel", "reference": "https://www.realmofdarkness.net/dq/hd2d-dq-sparkly-spots/"}],
