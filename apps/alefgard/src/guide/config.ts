@@ -30,7 +30,7 @@ export const targets: BoardItem[] = [
   { tag: "secret-spot", goal: 15, list: "game" },
   { tag: "sigil", goal: 5, list: "game" },
   { tag: "recipe", goal: 8, list: "game" },
-  { tag: "equipment", goal: 90, list: "guide" },
+  { tag: "equipment", goal: 96, list: "guide" },
   { tag: "sparkle", goal: 48, list: "guide" },
   { tag: "boss", goal: 13, list: "guide" },
   { tag: "quest", goal: 8, list: "guide" },
