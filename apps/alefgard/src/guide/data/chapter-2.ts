@@ -1,0 +1,71 @@
+import type { RawChapter } from "@hundo/core/types";
+
+export default {
+  id: 2,
+  title: "Galenholm, Kol and the first shrine",
+  region: "Galenholm · Wayfarer’s Chapel · Forgotten Ruins · Kol · Shrine of Rain",
+  teaser: "Galenholm",
+  intro: "This loop supplies an exploration spell, begins Zalen’s quest, and brings you to the first major story lead. The map’s red doors remain closed until the next chapter.",
+  sources: [["Galenholm and the eastbound route", "https://guidelovers.com/dragon-quest-i-hd-2d-remake/galenholm/"], ["Kol and the shrine visit", "https://guidelovers.com/dragon-quest-i-hd-2d-remake/kol/"], ["Kol map", "https://www.gamerguides.com/dragon-quest-i-and-ii-hd-2d-remake/maps/kol-dragon-quest-i"], ["Initial Shrine of Rain visit", "https://gamefaqs.gamespot.com/pc/470902-dragon-quest-i-and-ii-hd-2d-remake/faqs/82279/dq1-shrine-of-rain"], ["Every sparkly spot (Realm of Darkness)", "https://www.realmofdarkness.net/dq/hd2d-dq-sparkly-spots/"]],
+  groups: [
+    {
+      title: "Galenholm and the eastern road",
+      location: "Galenholm · Wayfarer’s Chapel · Forgotten Ruins · Kol",
+      rows: [
+        ["medal-galenholm-pier", ["mini-medal"], "Search the pot on Galenholm’s western pier", "Enter the northwestern coastal town and walk down the wooden steps west of the item shop. The medal is in a pot on the pier."],
+        ["scroll-safe-passage", ["scroll"], "Learn Safe Passage from the southwest house", "Examine the bookshelf in the house southwest of the shops. Cast Safe Passage before crossing damaging marshes. This is particularly helpful on the eastern route."],
+        ["loot-galenholm-open", ["search"], "Search Galenholm’s inn and beach", "Check the inn dressers for Leather Armour and Boxer Shorts, the beach pots for a Seed of Wisdom and gold, and the barrel by the item shop for a Pot Lid. Buy an upgrade only after comparing these free finds."],
+        ["equip-leather-armour-galenholm", ["equipment"], "Take the Leather Armour in the inn", "Check the inn dressers for Leather Armour and Boxer Shorts, the beach pots for a Seed of Wisdom and gold, and the barrel by the item shop for a Pot Lid."],
+        ["equip-boxer-shorts-galenholm", ["equipment"], "Take the Boxer Shorts in the inn", "Check the inn dressers for Leather Armour and Boxer Shorts, the beach pots for a Seed of Wisdom and gold, and the barrel by the item shop for a Pot Lid."],
+        ["equip-pot-lid-galenholm", ["equipment"], "Take the Pot Lid by the item shop", "Check the inn dressers for Leather Armour and Boxer Shorts, the beach pots for a Seed of Wisdom and gold, and the barrel by the item shop for a Pot Lid."],
+        ["route-wayfarers-chapel", ["search"], "Visit Wayfarer’s Chapel east of the Hollow", "Travel back east across the northern region. Search the chapel’s inn bags for a Seed of Stamina and gold. Register the location for travel, then continue toward the Forgotten Ruins beyond the river."],
+        ["quest-zalen-forgotten-ruins", ["quest"], "Speak to Zalen at the Forgotten Ruins", "Approach the bard among the ruined houses and finish his conversation. This begins a sequence of meetings that continues throughout the story."],
+        ["medal-forgotten-ruins", ["mini-medal"], "Search the barrel in the southern ruined house", "Check inside the southern house for the medal. Also inspect the northwest pot for a Seed of Strength."],
+        ["spot-forgotten-east", ["secret-spot"], "Search the desert Secret Spot east of the Forgotten Ruins", "Look near the northeast edge of the small desert beyond the ruins. The central barrels include a Thorn Whip. Check the equipment screen before moving on."],
+        ["equip-thorn-whip-forgotten-spot", ["equipment"], "Take the Thorn Whip in the desert Secret Spot", "The central barrels include a Thorn Whip."],
+        ["spot-kol-west", ["secret-spot"], "Visit the lone-tree Secret Spot west of Kol", "On the northeastern landmass, inspect the conspicuous lone pine in the forest west of town. This spot contains conversation rather than treasure. Crossing the long bridge on the approach also advances the guards’ story."],
+      ],
+    },
+    {
+      title: "Kol and the Faerie Flute",
+      location: "Kol",
+      rows: [
+        ["medal-kol-shop", ["mini-medal"], "Take the medal upstairs in Kol’s large shop", "Go upstairs in the western shop building and inspect the pot on the right. The smithy occupies the other side of this floor."],
+        ["medal-kol-poison", ["mini-medal"], "Take the medal beside Kol’s northern poison patch", "Climb into the northern part of town and inspect the pot beside the shop and purple marsh. Use Safe Passage where needed."],
+        ["item-faerie-flute", ["key-item"], "Pick up the Faerie Flute south of the hot spring", "Examine the sparkle on the ground just below the hot-spring building. Keep the flute. It has a practical use against a later guardian."],
+        ["loot-kol-open", ["search"], "Search Kol and inspect the well", "Check the horse-side pot, the hot-spring pot, the shop barrels and the barrel outside the inn. Climb down the well to register its locked chest for the Magic Key return. Rest and save before the next walk."],
+      ],
+    },
+    {
+      title: "The first visit to the Shrine of Rain",
+      location: "Shrine of Rain",
+      rows: [
+        ["story-rain-first-visit", ["story"], "Meet the Sage of Rain", "Leave Kol toward the westbound forest route, then follow it north and east to the tower. Finish the sage’s scenes and the overnight sequence. The upper tower is still gated."],
+        ["scroll-crack", ["scroll"], "Learn Crack from the shrine’s southeast chest", "Explore east from the stairs and follow the passage to its southern dead end. Read the scroll after opening the chest."],
+        ["medal-rain-ground", ["mini-medal"], "Take the shrine’s northwest pot medal", "Search the pair of pots on the northwest side of the accessible floor. The other holds a Chimaera Wing."],
+        ["loot-rain-ground", ["search"], "Find the Prayer Ring in the shrine’s southern room", "Examine the square pattern in the middle of the southern room. Keep the ring as an MP recovery option. Use its item description to understand the chance of breakage."],
+        ["story-report-to-lorik", ["story"], "Report back to King Lorik", "Return to Tantegel Castle and speak to the king. Let the new scenes finish before following the Thief’s Key lead to Galenholm.", {"place": "Tantegel"}],
+      ],
+    },
+    {
+      title: "Sparkly spots on the way",
+      location: "Wayfarer’s Chapel · Forgotten Ruins · Kol · Shrine of Rain · Galenholm",
+      compact: true,
+      rows: [
+        ["sparkle-northwest-of-wayfarers-chapel", ["sparkle"], "Pick up the Seed of Defence northwest of Wayfarer’s Chapel", "The sparkling pile northwest of Wayfarer’s Chapel on the world map includes the Seed of Defence. Pick up the whole pile.", {"place": "Wayfarer’s Chapel"}],
+        ["sparkle-north-of-wayfarers-chapel", ["sparkle"], "Pick up the Leather Shield north of Wayfarer’s Chapel", "The sparkling pile north of Wayfarer’s Chapel on the world map includes the Leather Shield. Pick up the whole pile.", {"place": "Wayfarer’s Chapel"}],
+        ["sparkle-southeast-of-wayfarers-chapel", ["sparkle"], "Pick up the Medicinal Herbs southeast of Wayfarer’s Chapel", "The sparkling pile southeast of Wayfarer’s Chapel on the world map includes the Medicinal Herbs. Pick up the whole pile.", {"place": "Wayfarer’s Chapel"}],
+        ["sparkle-southeast-of-wayfarers-chapel-by-the-marsh", ["sparkle"], "Pick up the Divine Dagger southeast of Wayfarer’s Chapel by the marsh", "The sparkling pile southeast of Wayfarer’s Chapel by the marsh on the world map includes the Divine Dagger. Pick up the whole pile.", {"place": "Wayfarer’s Chapel"}],
+        ["sparkle-east-of-the-forgotten-ruins", ["sparkle"], "Pick up the Chimaera Wings east of the Forgotten Ruins", "The sparkling pile east of the Forgotten Ruins on the world map includes the Chimaera Wings. Pick up the whole pile.", {"place": "Forgotten Ruins"}],
+        ["sparkle-south-of-the-forgotten-ruins", ["sparkle"], "Pick up the Seeds of Wisdom and Luck south of the Forgotten Ruins", "The sparkling pile south of the Forgotten Ruins on the world map includes the Seeds of Wisdom and Luck. Pick up the whole pile.", {"place": "Forgotten Ruins"}],
+        ["sparkle-southwest-of-kol", ["sparkle"], "Pick up the Copper Sword southwest of Kol", "The sparkling pile southwest of Kol on the world map includes the Copper Sword. Pick up the whole pile.", {"place": "Kol"}],
+        ["sparkle-south-of-the-shrine-of-rain", ["sparkle"], "Pick up the Dazzle-Me-Not south of the Shrine of Rain", "The sparkling pile south of the Shrine of Rain on the world map includes the Dazzle-Me-Not. Pick up the whole pile.", {"place": "Shrine of Rain"}],
+        ["sparkle-southwest-of-the-shrine-of-rain", ["sparkle"], "Pick up the Scale Shield southwest of the Shrine of Rain", "The sparkling pile southwest of the Shrine of Rain on the world map includes the Scale Shield. Pick up the whole pile.", {"place": "Shrine of Rain"}],
+        ["sparkle-east-of-galenholm", ["sparkle"], "Pick up the Leather Hat east of Galenholm", "The sparkling pile east of Galenholm on the world map includes the Leather Hat. Pick up the whole pile.", {"place": "Galenholm"}],
+        ["sparkle-southeast-of-galenholm", ["sparkle"], "Pick up the Seed of Strength southeast of Galenholm", "The sparkling pile southeast of Galenholm on the world map includes the Seed of Strength. Pick up the whole pile.", {"place": "Galenholm"}],
+        ["sparkle-northeast-of-kol", ["sparkle"], "Pick up the Seed of Magic northeast of Kol", "The sparkling pile northeast of Kol on the world map includes the Seed of Magic. Pick up the whole pile.", {"place": "Kol"}],
+        ["sparkle-west-of-kol", ["sparkle"], "Pick up the Hardwood Headwear west of Kol", "The sparkling pile west of Kol on the world map includes the Hardwood Headwear. Pick up the whole pile.", {"place": "Kol"}],
+      ],
+    },
+  ],
+} satisfies RawChapter;

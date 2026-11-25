@@ -63,6 +63,14 @@ Original silver mace-and-whip artwork generated with the built-in image tool, th
 
 Use case: stylized-concept. Square original painted gothic adventure inventory icon for Mina the Hollower. A single chunky antique silver spiked mace head attached to a short curled dark leather whip, with a small warm brass grip. Clean readable iconic silhouette, object centered and occupying 66 percent of the square, generous margins. Hand-painted highlights, subtle paper texture, ivory silver, antique gold and dark plum accents. Background rich muted burgundy-crimson. No outer ring, no frame, no text, letters, logos, characters or faces.
 
+## Alefgard
+
+[Master](../apps/alefgard/scripts/icon-master.webp) · [Home-screen icon](../apps/alefgard/public/icons/icon-512.png)
+
+Made with the guide's research draft and kept by the user's choice (25 Nov 2026): like Hallownest's, it paints a character, the series' blue Slime, where most guides paint an object. Its navy frame (`#101644`) is the guide's dark `--surface`.
+
+Dragon Quest I HD-2D guide. A classic friendly blue Slime from Dragon Quest with a rounded teardrop silhouette and little pointed peak, a wide bright pink-red smile with two white oval eyes and dark pupils, smoothly rounded translucent blue body with light azure painted highlights. Deep royal navy tile, quieter muted indigo circular field, a little soft cool reflected light under the slime. Pose front-facing, strongly iconic, broad baseline, no ground scene, other monsters, accessories, sparkles, pixels, or title text. Keep the face simple and immediately readable.
+
 ## Tab drawings
 
 A painting shrunk to 16px loses its subject, so each guide also has a hand-drawn tab icon, `scripts/favicon.svg`: a 32-unit tile with 7-unit corners in the guide's light `--primary`, with a flat version of the painting's subject.
@@ -74,3 +82,4 @@ A painting shrunk to 16px loses its subject, so each guide also has a hand-drawn
 - **Pharloom**: Hornet's horned mask in ivory over a red cloak.
 - **Basement**: an ivory D6 with dark pips on the brick-red tile.
 - **Tenebrous**: an ivory mace on a brass handle, on the plum tile.
+- **Alefgard**: the Slime in azure with white eyes and a pink smile, on the cobalt tile.
