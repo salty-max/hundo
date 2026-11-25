@@ -21,8 +21,10 @@ const tag = (selector: string, name: string, attributes: Record<string, string>)
 
 /**
  * The page's title, description, canonical and robots rule, for the address shown and what is revealed (search.ts). One place in the
- * app rather than one per page, since the pages stay drawn while hidden (Pages). It edits the shell's own title and description, so
- * there is only ever one of each; the canonical and the noindex exist only here, never in the shell, so the two can't disagree.
+ * app rather than one per page, since the pages stay drawn while hidden (Pages). It edits the title and description the page was
+ * served with, and finds the canonical and the noindex if the file for the address (routes.ts) has them, so there is only ever one of
+ * each. The shell has neither, since its address could be any, and a route's file carries what this sets for a first visit: for a crawler
+ * the two agree, and for a reader who revealed a chapter this drops the file's noindex.
  */
 export function Head() {
   const { pathname } = useLocation();

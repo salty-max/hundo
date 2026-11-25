@@ -132,6 +132,8 @@ describe("deploy settings", () => {
     // (before the file lookup, so a 404 carries it too)
     for (const path of ["/", "/guide/3", "/assets/nope.js", "/workbox-nope.js"]) expect(matching(csps, path), path).toHaveLength(1);
     expect(csp).toMatch(/(^|;\s*)script-src 'self'(;|$)/);
+    // inline styles stay allowed: the fonts' `<style>`, and the `<noscript>` rule that shows each route's text when scripts are off (routes.ts)
+    expect(csp).toMatch(/(^|;\s*)style-src 'self' 'unsafe-inline'(;|$)/);
     // theme-init.js has to stay an external file for this reason
     const scripts = [...page.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)];
     expect(scripts.length).toBeGreaterThan(0);

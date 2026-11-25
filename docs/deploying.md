@@ -108,7 +108,7 @@ Nothing reaches production without being looked at on a preview deployment first
 1. Push a branch. Each project whose ignore command sees a change builds a preview deployment of it, and the Vercel dashboard and the GitHub pull request link to each one.
 2. On each preview that built:
    - the change itself, on desktop and phone, in light and dark ([testing.md](testing.md#in-a-browser));
-   - a deep link such as `/guide/3` loads the app;
+   - a deep link such as `/guide/3` loads the app, and its raw HTML is the route's own file: `curl -s <preview-url>/guide/3` (through `vercel curl`, as below) has `<title>Chapter 3 is hidden · …</title>`, one `<link rel="canonical" href="https://<sub>.hundo.quest/guide/3">` and `noindex`, where `/guide/1` has its own canonical and no `noindex` and `/checklist/all/2` the shell's, with neither. `/guide/3` must answer 200 with no redirect to `/guide/3/`. If the file isn't served at the address, the catch-all still gives the shell and deep links work, so the route files are lost, not the guide;
    - a made-up hashed asset such as `/assets/nope.js` returns 404 with no long cache, and so do a made-up font, icon and `/workbox-nope.js` (`headers.sh` checks all four), while `/api/sync` and `/api/nope` are the sync API's own answers;
    - the headers: `curl -sI <preview-url>/` shows the Content-Security-Policy and the security headers;
    - `/theme-init.js` loads, and the page doesn't flash the wrong theme on reload;
