@@ -10,6 +10,7 @@
     { "name": "pharloom", "runtimeExecutable": "pnpm", "runtimeArgs": ["--filter", "hundo-pharloom", "dev", "--port", "5700", "--strictPort"], "port": 5700, "autoPort": true },
     { "name": "basement", "runtimeExecutable": "pnpm", "runtimeArgs": ["--filter", "hundo-basement", "dev", "--port", "5800", "--strictPort"], "port": 5800, "autoPort": true },
     { "name": "tenebrous", "runtimeExecutable": "pnpm", "runtimeArgs": ["--filter", "hundo-tenebrous", "dev", "--port", "5900", "--strictPort"], "port": 5900, "autoPort": true },
+    { "name": "alefgard", "runtimeExecutable": "pnpm", "runtimeArgs": ["--filter", "hundo-alefgard", "dev", "--port", "6100", "--strictPort"], "port": 6100, "autoPort": true },
     { "name": "koholint-preview", "runtimeExecutable": "sh", "runtimeArgs": ["-c", "pnpm --filter hundo-koholint build && pnpm --filter hundo-koholint preview --port ${PORT:-4200} --strictPort"], "port": 4200, "autoPort": true },
     { "name": "rdr-preview", "runtimeExecutable": "sh", "runtimeArgs": ["-c", "pnpm --filter hundo-rdr build && pnpm --filter hundo-rdr preview --port ${PORT:-4300} --strictPort"], "port": 4300, "autoPort": true },
     { "name": "echoes-preview", "runtimeExecutable": "sh", "runtimeArgs": ["-c", "pnpm --filter hundo-echoes build && pnpm --filter hundo-echoes preview --port ${PORT:-4400} --strictPort"], "port": 4400, "autoPort": true },
@@ -18,6 +19,7 @@
     { "name": "pharloom-preview", "runtimeExecutable": "sh", "runtimeArgs": ["-c", "pnpm --filter hundo-pharloom build && pnpm --filter hundo-pharloom preview --port ${PORT:-4700} --strictPort"], "port": 4700, "autoPort": true },
     { "name": "basement-preview", "runtimeExecutable": "sh", "runtimeArgs": ["-c", "pnpm --filter hundo-basement build && pnpm --filter hundo-basement preview --port ${PORT:-4800} --strictPort"], "port": 4800, "autoPort": true },
     { "name": "tenebrous-preview", "runtimeExecutable": "sh", "runtimeArgs": ["-c", "pnpm --filter hundo-tenebrous build && pnpm --filter hundo-tenebrous preview --port ${PORT:-4900} --strictPort"], "port": 4900, "autoPort": true },
+    { "name": "alefgard-preview", "runtimeExecutable": "sh", "runtimeArgs": ["-c", "pnpm --filter hundo-alefgard build && pnpm --filter hundo-alefgard preview --port ${PORT:-4000} --strictPort"], "port": 4000, "autoPort": true },
     { "name": "home", "runtimeExecutable": "pnpm", "runtimeArgs": ["--filter", "hundo-home", "dev", "--port", "5100", "--strictPort"], "port": 5100, "autoPort": true },
     { "name": "home-preview", "runtimeExecutable": "sh", "runtimeArgs": ["-c", "pnpm --filter hundo-home build && pnpm --filter hundo-home preview --port ${PORT:-4100} --strictPort"], "port": 4100, "autoPort": true },
     { "name": "storybook", "runtimeExecutable": "pnpm", "runtimeArgs": ["--filter", "hundo-stories", "storybook", "--port", "6600", "--exact-port"], "port": 6600, "autoPort": true }

@@ -74,7 +74,7 @@ The guide's README says the banners are original AI-generated illustrations, as 
 | Guide | Style line |
 | --- | --- |
 | Echoes | A cohesive, beautifully lit miniature fantasy diorama with rounded handcrafted shapes, hand-painted wood and stone, touchable moss and vegetation, soft shadows, subtle depth of field, and the warmth of a storybook. |
-| Dragon Quest I (research banners) | The art direction of an HD-2D Japanese RPG: a richly layered miniature scene, deliberately pixel-crafted architectural and foliage detail, tactile stone, water and wood, atmospheric volumetric light, gentle tilt-shift depth. Restrained JRPG concept-art composition with clear silhouettes at small sizes, sincere classic medieval fantasy. No pixel-grid overlay. |
+| Alefgard | The art direction of an HD-2D Japanese RPG: a richly layered miniature scene, deliberately pixel-crafted architectural and foliage detail, tactile stone, water and wood, atmospheric volumetric light, gentle tilt-shift depth. Restrained JRPG concept-art composition with clear silhouettes at small sizes, sincere classic medieval fantasy. No pixel-grid overlay. |
 | Lordran | Restrained painterly oil realism: hand-painted environmental concept art with subtle brush texture, a muted earthy palette, soft atmospheric light and grounded proportions. Empty places, no characters or bosses. Keep the overall image mid-toned and readable, never near-black. |
 | Hallownest | Hand-inked painted environment, layered parallax, dark silhouette edges, graphic 2D shapes, subtle grain; empty places, no characters. |
 | Pharloom | Hand-painted 2D environment, inked edges, layered silhouette depth, saturated regional palette, subtle texture; empty places, no characters. Bold dark ink outlines, with near-black foreground silhouettes framing the bottom and the edges; the rest mid-dark and readable, never near-black, never soft or misty. |
@@ -241,3 +241,53 @@ A quiet gothic study with a travel trunk, a closed leather journal, a small bras
 **20. Challenge routes**
 
 An empty moonlit cobblestone path past a low iron fence and simple stone arch, with a distant lantern and pale mist over the ground, solemn yet inviting. Focal arch right of centre. Slate blue, dusty crimson, moonlit ivory and subdued gold.
+
+## Alefgard scenes
+
+The ten banners were generated with the guide's draft, before the guide existed, with the shared prompt below and one scene each, then converted at quality 68 to 80 to stay under 200 KB. Chapter 10's banner was made for the draft's "Completion and crafting" chapter; it still fits the Craft-Master's recipes.
+
+### Shared prompt
+
+Use case: stylized-concept. Create one full-bleed 3:1 landscape banner for a fan walkthrough of Dragon Quest I HD-2D Remake. Original environmental illustration with the art direction of an HD-2D Japanese RPG: a richly layered miniature scene, deliberately pixel-crafted architectural and foliage detail, tactile stone, water and wood, atmospheric volumetric light, gentle tilt-shift depth. Restrained JRPG concept-art composition with clear silhouettes at small sizes, sincere classic medieval fantasy. The setting dominates, with a strong readable focal subject around 70% across the frame near the middle vertically. The left 45% has quieter scenery with low contrast and few details for a future text overlay. Keep the right side attractive when the left fades out. Palette varies with the setting while maintaining a consistent handcrafted look. Spoiler-conscious. No people, faces, bosses, words, letters, UI, logos, watermarks, frames, inset panels, or pixel-grid overlay.
+
+### Scenes
+
+**1. Tantegel and Erdrick’s Hollow**
+
+Tantegel at the beginning of the adventure. A classic stone castle with a compact fortified town and cool slate roofs, seen from across clear coastal water and green hills. A dirt road in the foreground invites the viewer into the countryside. Spring green, cobalt water, warm ivory stone, clear morning sunshine. Put the castle silhouette on the right.
+
+**2. Galenholm, Kol and the first shrine**
+
+Galenholm on the northwestern coast of Alefgard. A sheltered fishing town with modest timber and stone cottages on the right, little wooden piers and tied boats, pale sea haze to the left, forested hills behind the houses. Muted marine blue, warm timber, soft early daylight. Show one coherent place, not a montage.
+
+**3. Craggy Cave and the Thief’s Key**
+
+Approach to Craggy Cave. A clear dark cave entrance in a broken ochre rock escarpment on the right, a weathered wooden fence and loose stones by a scrubby trail, shaded green heath and scattered pines. Copper-brown cliffs, deep blue shadow, late afternoon sunlight. No locks, keys, creatures or combat shown.
+
+**4. The dwarves, the faeries and the Magic Key**
+
+Faerie Village tucked around a great tree and a quiet pool. An intimate forest glade with modest round timber and stone buildings nestled amongst mossy roots, little golden lights, fronds and silver reflections. Emerald, aqua and a few lilac flowers. Late-afternoon light filtering through the canopy. Keep the buildings right of center and the left woodland calm.
+
+**5. The princess, Weirdwood and Cantlin**
+
+Weirdwood, a tangled woodland with old trunks, crooked roots, and a path that disappears under veils of still mist. A small weathered stone waymarker without writing on the right side gives a sense of scale. Deep pine green, slate blue fog and a little amber light through branches. Treat it as a mysterious place to explore, without showing any quest outcome or enemies.
+
+**6. Weeping Isle and the last key**
+
+Weeping Isle exterior. A steep weathered rock island with narrow ledges, a modest stone arch set into its cliff face and white surf at its base. Vast stormy silver-blue sea and soft horizon on the left, wet stone layered with sparse grass, light breaking through cool mist. The cliff and arch are the right-side focal point.
+
+**7. The lyre and the sacred treasures**
+
+Shrine of Rain beside woodland and water, a tall unobtrusively weathered stone shrine tower rising on the right, narrow arched windows, wet tiled steps, shallow pools and pines. Fine rain and soft pewter daylight, desaturated blue, silver and pale gold. Quiet left side with reeds and broad reflections. No relics, ritual, or characters.
+
+**8. Zalen and the final equipment sweep**
+
+A quiet Alefgard roadside at dusk, with a weathered wooden lyre resting against a stone beside the path among grasses and small flowers. The path leads to distant blue hills and a small bridge crossing a river. Brass, rose-gold light, faded blue hills, a little olive green. Lyre and bend in path form the right-side focal point. No legendary equipment or reveal.
+
+**9. The final castle**
+
+The ominous silhouette of the Dragonlord’s Castle on a remote rocky island at evening, a jagged cluster of medieval stone towers above rough water and strands of fog. Calm smoky negative space on the left, an angular blue-black fortress on the right, subdued violet storm clouds and just a hint of ember light. Dark fairy-tale atmosphere without battle, boss, treasure or ending details.
+
+**10. The Craft-Master and a second save**
+
+A tidy medieval alchemist’s bench in an Alefgard woodland workshop. On the right a small mortar, corked glass recipe bottles, two little herb sprigs, cloth and a few copper coins, lit by softly glowing beeswax candlelight. Quiet dark walnut backstage on the left to support type. Cozy ochre, green glass, faded wine red and warm wood. No labels, lettering, legendary relics or people.

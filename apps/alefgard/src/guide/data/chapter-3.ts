@@ -1,0 +1,80 @@
+import type { RawChapter } from "@hundo/core/types";
+
+export default {
+  id: 3,
+  title: "Craggy Cave and the Thief’s Key",
+  region: "Roadside Inn · Craggy Cave · the red doors · Quagmire Cave",
+  teaser: "Roadside Inn",
+  intro: "Follow the key’s trail through two conversations before entering Craggy Cave. Afterwards, make one circuit of the red doors, then cross Quagmire Cave toward Rimuldar.",
+  sources: [["Craggy Cave route and branches", "https://guidelovers.com/dragon-quest-i-hd-2d-remake/craggy-cave/"], ["Craggy Cave treasure and encounters", "https://gamefaqs.gamespot.com/pc/470902-dragon-quest-i-and-ii-hd-2d-remake/faqs/82279/dq1-craggy-cave"], ["Red-door circuit", "https://guidelovers.com/dragon-quest-i-hd-2d-remake/thiefs-key/"], ["Grave of Galen map", "https://www.gamerguides.com/dragon-quest-i-and-ii-hd-2d-remake/maps/grave-of-galen-dragon-quest-i"], ["Every sparkly spot (Realm of Darkness)", "https://www.realmofdarkness.net/dq/hd2d-dq-sparkly-spots/"]],
+  groups: [
+    {
+      title: "The stolen key",
+      location: "Galenholm · Roadside Inn · Nameless Ruins · Craggy Cave",
+      rows: [
+        ["story-swindler", ["story"], "Follow the swindler from Galenholm to the Roadside Inn", "Trigger the gathering near Galenholm’s entrance, then visit the marked room in the Roadside Inn. The next destination is Craggy Cave, beyond the inn’s south exit."],
+        ["quest-zalen-nameless-ruins", ["quest"], "Speak to Zalen at the Nameless Ruins", "Detour to the ruins southwest of the marsh on the western landmass. Finish the bard’s second conversation. Search the northern house from behind for the Ruby Wristband, then follow the mountain corridor east to the cave."],
+        ["equip-ruby-wristband-nameless-ruins", ["equipment"], "Take the Ruby Wristband in the northern house", "Search the northern house from behind for the Ruby Wristband, then follow the mountain corridor east to the cave."],
+        ["boss-robbin-ood", ["boss"], "Defeat Robbin’ ’Ood and his two followers", "Heal at the entrance before crossing toward the bandits. Remove the followers first to reduce incoming attacks. Use group damage if your current spells support it, then concentrate on the leader. Accept his request to find the missing man."],
+      ],
+    },
+    {
+      title: "Craggy Cave branches",
+      location: "Craggy Cave",
+      rows: [
+        ["medal-craggy-b1", ["mini-medal"], "Open the Mini Medal chest north of the bandit fight", "On B1, take the northern route and inspect the small chamber to the right. Clear branches from the entrance outward before taking the main descent."],
+        ["scroll-muster-strength", ["scroll"], "Learn Muster Strength in the northwest B2 room", "Take B1’s northwest staircase to the isolated lower room. Open its single chest, read the scroll, then return upstairs."],
+        ["scroll-nose-for-treasure", ["scroll"], "Learn Nose for Treasure in northeast B1", "Go through the large northeastern room to its eastern chest chamber. Use the ability now and again after clearing each map section. A remaining count may include a locked container."],
+        ["loot-craggy-upper", ["search"], "Clear B1 and its two short stair branches", "Search the southwest gold chest, the eastern Boomerang chest and the Ten Ton Toupee chest. The southeast stairs lead to pots containing an Iron Axe and medicine. Check the barrels and pots in the large northeast room. The toupee is cursed, so inspect its description before equipping it."],
+        ["equip-boomerang-craggy", ["equipment"], "Take the Boomerang on B1", "Search the southwest gold chest, the eastern Boomerang chest and the Ten Ton Toupee chest."],
+        ["equip-ten-ton-toupee-craggy", ["equipment"], "Take the Ten Ton Toupee on B1", "Search the southwest gold chest, the eastern Boomerang chest and the Ten Ton Toupee chest. It’s cursed, so read its description before you equip it."],
+        ["equip-iron-axe-craggy", ["equipment"], "Take the Iron Axe down the southeast stairs", "The southeast stairs lead to pots containing an Iron Axe and medicine."],
+        ["loot-craggy-lower", ["search"], "Clear the main B2 route before the deepest chamber", "From the main descent, take the eastern Bronze Shield detour. Search the northwest Magic Water chest and the small southwestern room for a Seed of Stamina and gold. Sweep the medicine pots while following the corridor toward the missing bandit."],
+        ["equip-bronze-shield-craggy", ["equipment"], "Take the Bronze Shield on B2", "From the main descent, take the eastern Bronze Shield detour."],
+        ["boss-sorcerer", ["boss"], "Defeat the Sorcerer and free the captives", "Enter with both spell healing and healing items available. Fizzle can seal your spells. Deal damage between heals and use the charge skill you just learned when it is safe to spend a setup turn."],
+        ["equip-choker-craggy", ["equipment"], "Take the Choker beyond the Sorcerer", "After the Sorcerer falls, open the left of the two chests on B2 for the Choker. It’s cursed, so read its description before you equip it."],
+        ["equip-zombie-mail-craggy", ["equipment"], "Take the Zombie Mail beyond the Sorcerer", "The right of the two chests beyond the Sorcerer holds the Zombie Mail. It’s cursed, so read its description before you equip it."],
+        ["key-thiefs", ["key-item"], "Collect the Thief’s Key from Robbin’ ’Ood", "Walk back to the bandits at the entrance after the rescue. The key opens red doors and red chests. The blue and dark locks need later keys."],
+      ],
+    },
+    {
+      title: "The red-door circuit",
+      location: "Tantegel · Wayfarer’s Chapel · Galenholm · Grave of Galen · Kol",
+      rows: [
+        ["loot-red-tantegel", ["search"], "Open the red rooms in Tantegel town", "Search the inn’s newly accessible room for a Rousing Ring and gold. In the house by the church, search both floors for a Seed of Life, Magic Water, Pure Water and gold. Its specialist can help with cursed equipment. Leave the two differently coloured chests for later."],
+        ["equip-rousing-ring-tantegel-town", ["equipment"], "Take the Rousing Ring in the inn’s red room", "Search the inn’s newly accessible room for a Rousing Ring and gold."],
+        ["medal-tantegel-red", ["mini-medal"], "Collect the medal in Tantegel Castle’s eastern upstairs room", "Open the red route on the east side of the castle, pass the chapel and climb to the upper room. Inspect the northeastern pots for the medal and gold, and the barrel for Leather Armour."],
+        ["equip-leather-armour-tantegel-castle", ["equipment"], "Take the Leather Armour in the eastern upstairs room", "Inspect the northeastern pots for the medal and gold, and the barrel for Leather Armour."],
+        ["medal-wayfarers-chapel", ["mini-medal"], "Search Wayfarer’s Chapel’s red-door dresser", "Open the side room and inspect its dresser. Take the Seed of Defence from the pot as well."],
+        ["loot-red-galenholm", ["search"], "Open Galenholm’s dock building and enter the tomb", "Use the red door northeast of the fountain. Follow the northern branch to the dock chest for the Arriviste’s Vest. The western exit leads toward the Grave of Galen."],
+        ["equip-arrivistes-vest-galenholm", ["equipment"], "Take the Arriviste’s Vest in the dock building", "Follow the northern branch to the dock chest for the Arriviste’s Vest."],
+        ["medal-galen-entrance", ["mini-medal"], "Collect the accessible Grave of Galen medal", "From the tomb entrance, take the upper-right route, head east and climb the first stairs into the small dead end. Search the pot. The deeper dungeon remains behind an Ultimate Key door."],
+        ["scroll-whistle", ["scroll"], "Learn Whistle from the tomb’s northern chest group", "Explore farther east on the accessible entrance level and use the staircase into the three-chest dead end. Collect Whistle, gold and the Cower Ring. Read the scroll. Whistle can trigger encounters when you later need experience or monster defeats."],
+        ["equip-cower-ring-grave-of-galen", ["equipment"], "Take the Cower Ring in the three-chest dead end", "Collect Whistle, gold and the Cower Ring. It’s cursed, so read its description before you equip it."],
+        ["loot-galen-first-floor", ["search"], "Search the remaining accessible tomb rooms", "Inspect the southern room for a Seed of Life, the northwest pots for gold and Magic Water, and the eastern barrel for Plain Clothes. Recheck the area with Nose for Treasure, accounting for the locked deeper door."],
+        ["equip-plain-clothes-grave-of-galen", ["equipment"], "Take the Plain Clothes in the eastern barrel", "Inspect the southern room for a Seed of Life, the northwest pots for gold and Magic Water, and the eastern barrel for Plain Clothes."],
+        ["loot-red-kol", ["search"], "Open Kol’s western red-door house", "Finish the guard’s scene and take the Seed of Luck from the pot. Rest before crossing the marsh south of town."],
+      ],
+    },
+    {
+      title: "Quagmire Cave passage",
+      location: "Quagmire Cave",
+      rows: [
+        ["medal-quagmire-b1", ["mini-medal"], "Take Quagmire Cave’s northeast barrel medal", "Use Safe Passage on the surrounding marsh. Enter the cave and take the eastern dead end near the northern entrance before following the long passage south."],
+        ["equip-iron-lance-quagmire", ["equipment"], "Open the Iron Lance chest near the blue door", "Follow the guards’ scene, then explore east at the lower junction. The chest is south of the locked blue route. Return west to leave through the southern exit. Search the medicine containers on B1 as you pass."],
+      ],
+    },
+    {
+      title: "Sparkly spots on the way",
+      location: "Roadside Inn · Nameless Ruins · Kol · Quagmire Cave’s eastern approach",
+      compact: true,
+      rows: [
+        ["sparkle-south-of-the-roadside-inn", ["sparkle"], "Pick up the Dazzle-Me-Not south of the Roadside Inn", "The sparkling pile south of the Roadside Inn on the world map includes the Dazzle-Me-Not. Pick up the whole pile.", {"place": "Roadside Inn"}],
+        ["sparkle-northeast-of-the-nameless-ruins", ["sparkle"], "Pick up the Seed of Defence northeast of the Nameless Ruins", "The sparkling pile northeast of the Nameless Ruins on the world map includes the Seed of Defence. Pick up the whole pile.", {"place": "Nameless Ruins"}],
+        ["sparkle-southeast-of-kol-dragon-scale", ["sparkle"], "Pick up the Dragon Scale southeast of Kol", "The sparkling pile southeast of Kol on the world map includes the Dragon Scale. Pick up the whole pile.", {"place": "Kol"}],
+        ["sparkle-southeast-of-kol-seed-of-strength", ["sparkle"], "Pick up the Seed of Strength southeast of Kol", "The sparkling pile southeast of Kol on the world map includes the Seed of Strength. Pick up the whole pile.", {"place": "Kol"}],
+        ["sparkle-west-of-quagmire-caves-eastern-approach", ["sparkle"], "Pick up the Seed of Stamina west of Quagmire Cave’s eastern approach", "The sparkling pile west of Quagmire Cave’s eastern approach on the world map includes the Seed of Stamina. Pick up the whole pile.", {"place": "Quagmire Cave’s eastern approach"}],
+      ],
+    },
+  ],
+} satisfies RawChapter;

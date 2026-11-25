@@ -1,0 +1,9 @@
+/* Alefgard's palette: the Slime's cobalt and its smile's coral. Everything else, from borders to the banner tint, derives from it in packages/core/src/tokens.css. */
+:root{
+  --paper:#f4f6fb;--surface:#fdfdff;--raised:#e8edf8;--ink:#141a3a;--muted:#4b5272;--line:#d6dcec;
+  --primary:#1d4fc4;--on-primary:#fff;--accent:#f0806a;--on-accent:#3a0f08;--focus:#1d4fc4;
+}
+:root[data-theme="dark"]{
+  --paper:#0b0f33;--surface:#101644;--raised:#18205a;--ink:#eef1ff;--muted:#bcc3e6;--line:#2a3370;
+  --primary:#9fbaff;--on-primary:#0d1440;--accent:#f0806a;--on-accent:#3a0f08;--focus:#f0806a;
+}
