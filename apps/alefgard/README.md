@@ -30,7 +30,7 @@ The Vercel project `hundo-alefgard` builds this folder as its Root Directory and
 
 ## Content and accuracy
 
-The route comes from Guide Lovers’ chapter walkthrough and RPG Site’s walkthrough, the collections from Realm of Darkness’s medal, Secret Spot, sparkly spot and area treasure lists, and the equipment’s kinds from Gamer Guides’ Dragon Quest I database. It started from a research draft and is rewritten chapter by chapter from those sources; nothing was replayed in the game. [docs/facts-to-verify.md](docs/facts-to-verify.md) lists what is still unconfirmed.
+The route comes from Guide Lovers’ chapter walkthrough and RPG Site’s walkthrough, the collections from Realm of Darkness’s medal, Secret Spot, sparkly spot and area treasure lists, and the equipment’s kinds from Gamer Guides’ Dragon Quest I database. It started from a research draft and was rewritten chapter by chapter from those sources, each row checked against the page it cites; nothing was replayed in the game. [docs/facts-to-verify.md](docs/facts-to-verify.md) lists what is still unconfirmed.
 
 ## Credits
 
