@@ -7,7 +7,8 @@ import { defineConfig, type Plugin } from "vite";
 import { VitePWA, type VitePWAOptions } from "vite-plugin-pwa";
 import { fontCss, fontPreloads } from "./src/fonts.ts";
 import { bannerSizes } from "./banners.ts";
-import { OG_HEIGHT, OG_WIDTH, ogFile, ogImage, searchFiles, websiteJsonLd } from "./seo.ts";
+import { OG_HEIGHT, OG_WIDTH, guideFacts, ogFile, ogImage, routeFiles, searchFiles, websiteJsonLd } from "./seo.ts";
+import { escapeHtml, ROUTE_FOLDERS, shellMain } from "./src/routes.ts";
 import { iconUrl, iconUrls } from "./icon-versions.ts";
 import { guideManifest } from "./manifest.ts";
 import { darkPalette, lightPalette } from "./palette.ts";
@@ -16,8 +17,6 @@ import type { Brand } from "./src/types.ts";
 const here = (path: string) => fileURLToPath(new URL(path, import.meta.url));
 // index.html loads the app through this id, which resolves to core's main.tsx.
 const ENTRY = "/@core/main.tsx";
-
-const escapeHtml = (value: string) => value.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
 /** What index.html's `%GUIDE_<KEY>%` marks are filled with. `ogFile` is the link preview picture's path in the build (seo.ts). */
 export const shellValues = (brand: Brand, palette: Record<string, string>, dark: Record<string, string>, ogFile: string) => {
@@ -42,6 +41,7 @@ export const shellValues = (brand: Brand, palette: Record<string, string>, dark:
     JSONLD: websiteJsonLd(brand),
     FONTS: fontCss(brand),
     FONT_PRELOADS: fontPreloads(brand),
+    MAIN: shellMain(brand),
   };
   return values;
 };
@@ -104,6 +104,9 @@ export const pwaOptions = (root: string, brand: Brand, palette: Record<string, s
   workbox: {
     // Precache the whole shell, fonts and banners so the guide works offline.
     globPatterns: ["**/*.{js,css,html,webp,woff2,png,svg}"],
+    // Not the copies of the shell made for each address (routes.ts): the worker answers every address with index.html (below), and a
+    // reader who has the worker never needs them. They are for a first visit and for crawlers.
+    globIgnores: [`{${ROUTE_FOLDERS.join(",")}}/**/index.html`],
     // Client-side routes (/guide/3 …) all resolve to the app shell.
     navigateFallback: "index.html",
     // /api is the sync API, never a page; robots.txt, the sitemap and the link preview picture are files a reader may open in a tab.
@@ -124,6 +127,9 @@ export const guideConfig = (root: string, brand: Brand) => {
   let preview: Promise<{ file: string; source: Buffer }> | undefined;
   const og = () =>
     (preview ??= ogImage(`${root}/src/guide/banners/chapter-1.webp`).then((source) => ({ file: ogFile(source), source })));
+  // What the sitemap and the files for each address are made from: the guide's own config, read once per build.
+  let facts: ReturnType<typeof guideFacts> | undefined;
+  const site = () => (facts ??= guideFacts(root));
   // In production /api is a rewrite to the sync API (vercel.json). Here the dev and preview servers send it to the local one
   // (`pnpm -C services/sync dev`, on 8787), keeping the page's own host so the API sees what it would see behind the rewrite.
   const proxy = { "/api": { target: process.env.SYNC_API ?? "http://127.0.0.1:8787" } };
@@ -136,7 +142,8 @@ export const guideConfig = (root: string, brand: Brand) => {
     },
     plugins: [
       guideShell(root, brand, palette, dark, og),
-      searchFiles(brand, og),
+      searchFiles(brand, og, site),
+      routeFiles(site),
       iconUrls(`${root}/public`),
       bannerSizes(),
       react(),

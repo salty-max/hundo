@@ -27,16 +27,13 @@
   <title>%GUIDE_TITLE%</title>
   %GUIDE_FONT_PRELOADS%
   <style>%GUIDE_FONTS%</style>
+  <noscript><style>#root>main{position:static;width:auto;height:auto;margin:0;padding:1rem;overflow:visible;clip:auto;clip-path:none;white-space:normal}#root a{text-decoration:underline}</style></noscript>
   <script src="/theme-init.js" vite-ignore></script>
 </head>
 <body>
-  <div id="root"></div>
+  <div id="root">%GUIDE_MAIN%</div>
   <noscript>
-    <div class="p-3.75">
-      <h1>%GUIDE_NAME%</h1>
-      <p>%GUIDE_DESCRIPTION%</p>
-      <p>Enable JavaScript to open the guide and save checklist progress.</p>
-    </div>
+    <p class="p-4">Enable JavaScript to open the guide and save checklist progress.</p>
   </noscript>
   <script type="module" src="/@core/main.tsx"></script>
 </body>

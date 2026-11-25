@@ -4,7 +4,8 @@ import type { Brand } from "./types";
  * What search engines get, and what they never get. A crawler keeps no storage between pages, so it always sees the guide as a first
  * visit does: chapter 1 open and every later chapter hidden. Nothing past chapter 1 is shown to it, so nothing past chapter 1 can reach
  * a result's title or snippet. These three pages are the indexed ones (the sitemap's list); a hidden chapter says noindex, and every
- * other address names one of them as its canonical. Pure, so the build (seo.ts) and the page (Head.tsx) share it.
+ * other address names one of them as its canonical. Pure, so the build (seo.ts, which writes each route's file from it, routes.ts) and
+ * the page (Head.tsx) share it.
  */
 
 /** The pages a search engine is given, as the sitemap lists them. */

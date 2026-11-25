@@ -5,7 +5,6 @@ import page from "../index.html?raw";
 import { OG_HEIGHT, OG_WIDTH, ogFile, ogImage, robotsTxt, sitemapXml, websiteJsonLd } from "../seo";
 import { pwaOptions, shellValues } from "../vite";
 import { brand } from "./guide";
-import { INDEXED_PATHS } from "./search";
 
 // What a build gives crawlers and link previews (seo.ts). The policy itself, what is indexed and what never is, is search.test.tsx's.
 const root = process.env.GUIDE_ROOT!;
@@ -15,11 +14,9 @@ describe("the build's search files", () => {
     expect(robotsTxt(brand.home)).toBe(`User-agent: *\nDisallow: /api/\n\nSitemap: ${brand.home}/sitemap.xml\n`);
   });
 
-  it("lists exactly the indexed pages in the sitemap", () => {
-    const locs = [...sitemapXml(brand.home).matchAll(/<loc>([^<]*)<\/loc>/g)].map(([, loc]) => loc);
-    expect(locs).toEqual(INDEXED_PATHS.map((path) => brand.home + path));
-    expect(locs).toContain(`${brand.home}/guide/1`);
-    expect(locs.some((loc) => /\/guide\/([2-9]|\d{2})/.test(loc))).toBe(false);
+  it("lists the paths it is given, each on the guide's address (routes.test.ts holds which)", () => {
+    const locs = [...sitemapXml(brand.home, ["/guide/1", "/checklist"]).matchAll(/<loc>([^<]*)<\/loc>/g)].map(([, loc]) => loc);
+    expect(locs).toEqual([`${brand.home}/guide/1`, `${brand.home}/checklist`]);
   });
 
   it("gives the shell a WebSite block that no text can close early", () => {
@@ -71,7 +68,8 @@ describe("the shell's tags for link previews", () => {
     ]) {
       expect(page).toContain(tag);
     }
-    // A canonical or robots rule in the shell would hold for every address; the page sets them (Head.tsx).
+    // A canonical or robots rule in the shell would hold for every address, `/guide/1/<entry>` and the unknown ones included. The file made
+    // for each route has its own (routes.ts), and the page sets them for every address once it loads (Head.tsx).
     expect(page).not.toMatch(/rel="canonical"|name="robots"/);
   });
 
