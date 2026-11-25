@@ -21,6 +21,7 @@ ending-dragonlords-offer
 equip-agility-gilet-sanctum-spot
 equip-agility-ring-valley-spot
 equip-arrivistes-vest-galenholm
+equip-bamboo-pole-rimuldar
 equip-banishing-bell-sanctum-spot
 equip-boomerang-craggy
 equip-boxer-shorts-galenholm
@@ -48,15 +49,18 @@ equip-erdricks-sword
 equip-faerie-foil
 equip-full-moon-ring-faerie-village
 equip-full-moon-ring-shrine-of-rain
+equip-fur-vest-dwarves
 equip-garish-garb-rimuldar-spot
 equip-garish-garb-weeping-isle
 equip-hapless-helm
 equip-hate-mail
 equip-headsmans-axe-tantegel-castle
+equip-hermes-hat-damdara
 equip-ice-shield-dwarves
 equip-ice-shield-weeping-isle
 equip-iron-armour-cantlin
 equip-iron-axe-craggy
+equip-iron-lance-dwarves
 equip-iron-lance-quagmire
 equip-leather-armour-galenholm
 equip-leather-armour-tantegel-castle
@@ -65,6 +69,7 @@ equip-leather-suit-roadside-inn
 equip-mad-cap-quagmire
 equip-mask-of-implacability-wayfarers-inn
 equip-mirror-shield-roadside-spot
+equip-oaken-club-dwarves
 equip-oaken-club-tantegel-castle
 equip-orochis-sword-kol
 equip-phantom-mask-citadel
@@ -82,6 +87,7 @@ equip-ruby-wristband-dwarves
 equip-ruby-wristband-nameless-ruins
 equip-ruby-wristband-weeping-isle
 equip-ruinous-shield
+equip-ruinous-shield-damdara
 equip-siren-sword-weirdwood
 equip-slime-earrings-wayfarers-inn
 equip-spiked-armour-valley-spot
@@ -94,6 +100,7 @@ equip-sword-of-ruin
 equip-tectonic-plate-dwarves
 equip-tempest-shield-faerie-village
 equip-ten-ton-toupee-craggy
+equip-ten-ton-toupee-dwarves
 equip-thiefs-turban-weirdwood
 equip-thorn-whip-forgotten-spot
 equip-thorn-whip-weeping-isle
@@ -119,7 +126,10 @@ loot-blue-circuit
 loot-cantlin-open
 loot-craggy-lower
 loot-craggy-upper
+loot-damdara
 loot-dwarves-open
+loot-dwarves-town
+loot-faerie-village
 loot-final-b3
 loot-final-b5
 loot-final-b6
@@ -134,6 +144,7 @@ loot-rain-seeds
 loot-red-galenholm
 loot-red-kol
 loot-red-tantegel
+loot-rimuldar-open
 loot-tantegel-castle-open
 loot-tantegel-town-open
 loot-ultimate-remaining
@@ -208,7 +219,11 @@ reward-medals-40
 reward-medals-5
 reward-medals-8
 route-hollow-approach
+route-to-damdara
 route-to-galenholm
+route-to-rimuldar
+route-to-the-dwarves
+route-to-the-faerie-village
 route-wayfarers-chapel
 scroll-attack-attacker
 scroll-crack
@@ -313,6 +328,7 @@ story-rain-first-visit
 story-rainbow-bridge
 story-repair-bridge
 story-report-to-lorik
+story-rimuldar-captain
 story-sick-craftsman
 story-summon-rubiss
 story-sunup-syrup
