@@ -24,6 +24,7 @@ equip-arrivistes-vest-galenholm
 equip-banishing-bell-sanctum-spot
 equip-boomerang-craggy
 equip-boxer-shorts-galenholm
+equip-boxer-shorts-kol
 equip-boxer-shorts-tantegel-castle
 equip-bronze-shield-craggy
 equip-cat-suit-galenholm
@@ -60,6 +61,7 @@ equip-iron-lance-quagmire
 equip-leather-armour-galenholm
 equip-leather-armour-tantegel-castle
 equip-leather-shield-hollow
+equip-leather-suit-roadside-inn
 equip-mad-cap-quagmire
 equip-mask-of-implacability-wayfarers-inn
 equip-mirror-shield-roadside-spot
@@ -206,6 +208,7 @@ reward-medals-40
 reward-medals-5
 reward-medals-8
 route-hollow-approach
+route-to-galenholm
 route-wayfarers-chapel
 scroll-attack-attacker
 scroll-crack
@@ -266,8 +269,8 @@ sparkle-southeast-of-erdricks-hollow
 sparkle-southeast-of-galenholm
 sparkle-southeast-of-kol-dragon-scale
 sparkle-southeast-of-kol-seed-of-strength
-sparkle-southeast-of-wayfarers-chapel
-sparkle-southeast-of-wayfarers-chapel-by-the-marsh
+sparkle-southeast-of-wayfarers-chapel-divine-dagger
+sparkle-southeast-of-wayfarers-chapel-herbs
 sparkle-southeast-of-weeping-isle
 sparkle-southwest-of-damdara
 sparkle-southwest-of-erdricks-hollow
@@ -277,7 +280,7 @@ sparkle-southwest-of-the-shrine-of-rain
 sparkle-southwest-of-the-wayfarers-inn
 sparkle-southwest-of-weeping-isle
 sparkle-west-of-kol
-sparkle-west-of-quagmire-caves-eastern-approach
+sparkle-west-of-quagmire-cave
 sparkle-west-of-tantegel
 sparkle-west-of-the-faerie-village
 spot-cantlin-swamp
@@ -304,6 +307,7 @@ story-final-shortcut
 story-final-throne
 story-galen-return
 story-gwaelin-homecoming
+story-gwaelin-taken
 story-hollow-inscription
 story-rain-first-visit
 story-rainbow-bridge
