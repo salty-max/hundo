@@ -18,7 +18,7 @@ export interface Deps {
 }
 
 /** The brand.id of every guide. A test holds this list to the apps' own brands. */
-export const GUIDES = ["binding-of-isaac", "dark-souls-remastered", "echoes-of-wisdom", "hollow-knight", "links-awakening", "mina-the-hollower", "red-dead-redemption", "silksong"];
+export const GUIDES = ["binding-of-isaac", "dark-souls-remastered", "dragon-quest-i-hd-2d", "echoes-of-wisdom", "hollow-knight", "links-awakening", "mina-the-hollower", "red-dead-redemption", "silksong"];
 
 const PROTOCOL = 1;
 const DAY = 86_400;
